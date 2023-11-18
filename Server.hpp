@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/18 11:13:11 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/18 11:25:30 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ class Server
 		void	_handleEvent( struct kevent &kev );
 
 		void	_free();
-		void	_exit( const string &errmsg );
+		void	_exit( const char *errmsg );
 
 	public:
 		Server( int port, std::string password );

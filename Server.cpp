@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/18 11:17:28 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/18 11:25:57 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ Server::Server( const Server &s )
 }
 
 Server::Server( int port, std::string password )
-	: _port(port), _password(password)
+	: _port(port), _serverSoc(FD_DEFAULT), _password(password), _kq(FD_DEFAULT)
 {
 	(void)_port;
 	(void)_password;
@@ -52,8 +52,6 @@ void	Server::_kqueue()
 		close(this->_serverSoc);
 		throw kqueueException();
 	}
-
-	struct kevent	kev;
 
 	this->_setEvent(this->_serverSoc, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
 	/*
@@ -121,9 +119,9 @@ void	Server::_free()
 	// for loop to delete all channal
 }
 
-void	Server::_exit( const string &errmsg )
+void	Server::_exit( const char *errmsg )
 {
-	this->_free(errmsg);
+	this->_free();
 	std::cerr << errmsg << std::endl;
 	exit(FAILURE);
 }
@@ -133,7 +131,6 @@ void	Server::run()
 	this->_init();
 
 	int				newEv;
-	struct kevent	*kev;
 
 	while (1)
 	{
@@ -142,7 +139,7 @@ void	Server::run()
 				this->_eventList, 100, NULL);
 
 		if (newEv == -1)
-			this->_exit();
+			this->_exit("Exception: kevent error");
 
 		this->_changeList.clear();
 
@@ -156,31 +153,31 @@ void	Server::_handleEvent( struct kevent &kev )
 	if (kev.flags & EV_ERROR)
 	{
 		// Server Error
-		if (kev->ident == this->_serverSoc)
+		if (kev.ident == (uintptr_t)this->_serverSoc)
 		{
 			this->_free();
-			throw std::runtime_error("Error: Server");
+			throw std::runtime_error("Exception: Server error");
 		}
 		// Client Error
 		else
 		{
-			std::cerr << "Error: Client" << std::endl;
-			this->_disconnectClient(kev.ident);
+			std::cerr << "Exception: Client error" << std::endl;
+			// this->_disconnectClient(kev.ident);
 		}
 	}
 	// Able to read
-	else if (kev.filter == EVFILT_READ)
-	{
-		// New Client connects to server
-		if (kev.ident == this->_serverSoc)
-			this->_acceptNewClient();
-		// Connected Client sends message
-		else
-			this->_receiveDataFromClient(kev.ident);
-	}
-	// Able to write
-	else if (kev.filter == EVFILT_WRITE)
-		this->_sendDataToClient(kev.ident);
+	// else if (kev.filter == EVFILT_READ)
+	// {
+	// 	// // New Client connects to server
+	// 	// if (kev.ident == this->_serverSoc)
+	// 	// 	this->_acceptNewClient();
+	// 	// // Connected Client sends message
+	// 	// else
+	// 	// 	this->_receiveDataFromClient(kev.ident);
+	// }
+	// // Able to write
+	// else if (kev.filter == EVFILT_WRITE)
+	// 	this->_sendDataToClient(kev.ident);
 }
 
 const char	*Server::socketException::what() const throw()
