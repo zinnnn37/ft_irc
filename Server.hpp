@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/18 11:25:30 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/18 11:29:22 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ class Server
 		std::string							_password;
 
 		int									_kq;				// kqueue fd
-		struct kevent						_eventList[100];	// 발생한 이벤트 배열
+		struct kevent						_eventList[128];	// 발생한 이벤트 배열
 		std::vector<struct kevent>			_changeList;		// kqueue에 등록할 이벤트 리스트
 
 		// std::map<int, Client *>				_clients;
 		// std::map<std::string, Channal *>	_channals;
-		// Command								_command;	
+		// Command								_command; //?
 
 		Server();
 		Server( const Server &s );

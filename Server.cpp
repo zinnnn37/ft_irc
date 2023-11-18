@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/18 11:25:57 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/18 11:30:15 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	Server::_init()
 	}
 
 	// 연결 요청 대기
-	if (listen(this->_serverSoc, 128))
+	if (listen(this->_serverSoc, 10))
 	{
 		close(this->_serverSoc);
 		throw listenException();
@@ -136,7 +136,7 @@ void	Server::run()
 	{
 		newEv = kevent(this->_kq,
 				&this->_changeList[0], this->_changeList.size(),
-				this->_eventList, 100, NULL);
+				this->_eventList, 128, NULL);
 
 		if (newEv == -1)
 			this->_exit("Exception: kevent error");
