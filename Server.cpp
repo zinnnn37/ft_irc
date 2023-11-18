@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/18 11:30:15 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/18 14:53:22 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,28 +156,55 @@ void	Server::_handleEvent( struct kevent &kev )
 		if (kev.ident == (uintptr_t)this->_serverSoc)
 		{
 			this->_free();
-			throw std::runtime_error("Exception: Server error");
+			throw serverException();
 		}
 		// Client Error
 		else
 		{
 			std::cerr << "Exception: Client error" << std::endl;
-			// this->_disconnectClient(kev.ident);
+			this->_disconnectClient(kev.ident);
 		}
 	}
-	// Able to read
-	// else if (kev.filter == EVFILT_READ)
-	// {
-	// 	// // New Client connects to server
-	// 	// if (kev.ident == this->_serverSoc)
-	// 	// 	this->_acceptNewClient();
-	// 	// // Connected Client sends message
-	// 	// else
-	// 	// 	this->_receiveDataFromClient(kev.ident);
-	// }
-	// // Able to write
-	// else if (kev.filter == EVFILT_WRITE)
-	// 	this->_sendDataToClient(kev.ident);
+	//Able to read
+	else if (kev.filter == EVFILT_READ)
+	{
+		// New Client connects to server
+		if (kev.ident == this->_serverSoc)
+			this->_acceptNewClient();
+		// Connected Client sends message
+		else
+			this->_readDataFromClient(kev.ident);
+	}
+	// Able to write
+	else if (kev.filter == EVFILT_WRITE)
+		this->_sendDataToClient(kev.ident);
+}
+
+void	Server::_acceptNewClient()
+{
+	int					clientSoc;
+	struct sockaddr_in	clientAddr;
+	socklen_t			clientAddrSize = sizeof(clientAddr);
+
+	bzero(&clientAddr, sizeof(clientAddr));
+
+	clientSoc = accept(this->_serverSoc, (struct sockaddr *)&clientAddr, &clientAddrSize);
+
+	if (clientSoc == RET_ERROR)
+		throw acceptException();
+	if (clientSoc >= MAX_CLIENT)
+	{
+		std::cout << "[ SERVER ] Has max Client" << std::endl;
+		close(clientSoc);
+		return ;
+	}
+
+	std::cout << "[ SERVER ] New Client connected" << std::endl;
+
+	// set non-blocking
+	fcntl(clientSoc, F_SETFL, O_NONBLOCK);
+
+	
 }
 
 const char	*Server::socketException::what() const throw()
@@ -203,4 +230,14 @@ const char	*Server::kqueueException::what() const throw()
 const char	*Server::keventException::what() const throw()
 {
 	return ("Exception: kevent error");
+}
+
+const char	*Server::serverException::what() const throw()
+{
+	return ("Exception: Server error");
+}
+
+const char	*Server::acceptException::what() const throw()
+{
+	return ("Exception: accept error");
 }

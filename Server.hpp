@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/18 11:29:22 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/18 14:53:18 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define SERVER_HPP
 
 #include <iostream>
+#include <cstdint>
 #include <string>
 #include <list>
 #include <vector>
@@ -59,6 +60,11 @@ class Server
 
 		void	_handleEvent( struct kevent &kev );
 
+		void	_acceptNewClient();
+		void	_readDataFromClient( uintptr_t ident );
+		void	_sendDataToClient( uintptr_t ident );
+		void	_disconnectClient( uintptr_t ident );
+
 		void	_free();
 		void	_exit( const char *errmsg );
 
@@ -93,6 +99,18 @@ class Server
 		};
 
 		class	keventException : std::exception
+		{
+			public:
+				const char*	what() const throw();
+		};
+
+		class	serverException : std::exception
+		{
+			public:
+				const char*	what() const throw();
+		};
+
+		class	acceptException : std::exception
 		{
 			public:
 				const char*	what() const throw();
