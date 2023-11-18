@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/15 16:56:02 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/18 11:17:28 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,15 @@ Server	&Server::operator=( const Server &s )
 	return (*this);
 }
 
+void	Server::_setEvent( int socket, int16_t filter, uint16_t flags, uint32_t fflags, intptr_t data, void *udata )
+{
+	struct kevent	kev;
+
+	// EV_SET: 이벤트를 설정하는 매크로
+	EV_SET(&kev, socket, filter, flags, fflags, data, udata);
+	this->_changeList.push_back(kev);
+}
+
 void	Server::_kqueue()
 {
 	// 커널에 새로운 이벤트 대기열 생성 후 fd 반환
@@ -46,8 +55,7 @@ void	Server::_kqueue()
 
 	struct kevent	kev;
 
-	// EV_SET: 이벤트를 설정하는 매크로
-	EV_SET(&kev, this->_serverSoc, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
+	this->_setEvent(this->_serverSoc, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
 	/*
 	EVFILT_READ: ident의 fd를 모니터링하고
 				 data를 읽을 수 있는 경우 event return
@@ -56,7 +64,6 @@ void	Server::_kqueue()
 			등록된 event는 자동으로 활성화
 	EV_ENABLE: kevent()가 event를 return할 수 있도록 활성화
 	*/
-	this->_changeList.push_back(kev);
 }
 
 void	Server::_init()
@@ -104,6 +111,23 @@ void	Server::_init()
 	this->_kqueue();
 }
 
+void	Server::_free()
+{
+	if (this->_serverSoc != FD_ERROR)
+		close(this->_serverSoc);
+	if (this->_kq != FD_ERROR)
+		close(this->_kq);
+	// for loop to delete all client socket
+	// for loop to delete all channal
+}
+
+void	Server::_exit( const string &errmsg )
+{
+	this->_free(errmsg);
+	std::cerr << errmsg << std::endl;
+	exit(FAILURE);
+}
+
 void	Server::run()
 {
 	this->_init();
@@ -115,31 +139,48 @@ void	Server::run()
 	{
 		newEv = kevent(this->_kq,
 				&this->_changeList[0], this->_changeList.size(),
-				this->_eventList, 1024, NULL);
+				this->_eventList, 100, NULL);
 
 		if (newEv == -1)
-		{
-			// client 처리
-			close(this->_serverSoc);
-			throw keventException();
-		}
+			this->_exit();
 
 		this->_changeList.clear();
 
 		for (int i = 0; i < newEv; i++)
+			this->_handleEvent(this->_eventList[i]);
+	}
+}
+
+void	Server::_handleEvent( struct kevent &kev )
+{
+	if (kev.flags & EV_ERROR)
+	{
+		// Server Error
+		if (kev->ident == this->_serverSoc)
 		{
-			kev = &this->_changeList[i];
-
-			// deal error
-
-			// if read is available
-
-			// if write is available
+			this->_free();
+			throw std::runtime_error("Error: Server");
+		}
+		// Client Error
+		else
+		{
+			std::cerr << "Error: Client" << std::endl;
+			this->_disconnectClient(kev.ident);
 		}
 	}
-
-	// close socket
-	// std::cout << close(this->_serverSoc) << std::endl;
+	// Able to read
+	else if (kev.filter == EVFILT_READ)
+	{
+		// New Client connects to server
+		if (kev.ident == this->_serverSoc)
+			this->_acceptNewClient();
+		// Connected Client sends message
+		else
+			this->_receiveDataFromClient(kev.ident);
+	}
+	// Able to write
+	else if (kev.filter == EVFILT_WRITE)
+		this->_sendDataToClient(kev.ident);
 }
 
 const char	*Server::socketException::what() const throw()
