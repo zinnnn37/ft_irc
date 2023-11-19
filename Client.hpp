@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:46 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/11 13:45:57 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/19 12:33:35 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ class	Client
 		std::string	_userName;
 		std::string	_realName;
 
-		std::set< std::string >	_joinedChannels;
-		std::set< std::string >	_invited;
+		std::set<Channal *>	_joinedChannels;
+		std::set<Channal *>	_invited;
 
 		Client();
 		Client( const Client &c );

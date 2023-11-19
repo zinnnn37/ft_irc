@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/19 12:14:44 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/19 12:32:22 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,12 +169,13 @@ void	Server::_disconnectClient( uintptr_t ident )
 	
 	// this->_clients.erase(ident);
 
-	// ChannalVec	&joinedChannals = client->getJoinedChannals();
+	// ChannalSet	&joinedChannals = client->getJoinedChannals();
 	// for (ChannalVec::iterator it = joinedChannals.begin(); it != joinedChannals.end(); it++)
 	// {
 	// 	(*it)->removeClient(client);
 	// 	// 클라이언트가 채널에 남아있는 유일한 클라이언트였다면 채널 삭제
 	// }
+	// -> Client 멤버함수로 옮기는 게 깔끔할 듯
 
 	// delete client;	// 소멸자에서 멤버변수 정리
 
