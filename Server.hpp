@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/18 14:53:18 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/19 11:39:37 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <sys/socket.h>
 #include <sys/event.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <exception>
@@ -55,7 +56,6 @@ class Server
 		Server &operator=( const Server &s );
 
 		void	_init();
-		void	_kqueue();
 		void	_setEvent( int socket, int16_t filter, uint16_t flags, uint32_t fflags, intptr_t data, void *udata );
 
 		void	_handleEvent( struct kevent &kev );
@@ -65,6 +65,7 @@ class Server
 		void	_sendDataToClient( uintptr_t ident );
 		void	_disconnectClient( uintptr_t ident );
 
+		void	_setNonBlock( int fd );
 		void	_free();
 		void	_exit( const char *errmsg );
 
@@ -73,48 +74,6 @@ class Server
 		~Server();
 
 		void	run();
-
-		class	socketException : std::exception
-		{
-			public:
-				const char*	what() const throw();
-		};
-
-		class	bindException : std::exception
-		{
-			public:
-				const char*	what() const throw();
-		};
-
-		class	listenException : std::exception
-		{
-			public:
-				const char*	what() const throw();
-		};
-
-		class	kqueueException : std::exception
-		{
-			public:
-				const char*	what() const throw();
-		};
-
-		class	keventException : std::exception
-		{
-			public:
-				const char*	what() const throw();
-		};
-
-		class	serverException : std::exception
-		{
-			public:
-				const char*	what() const throw();
-		};
-
-		class	acceptException : std::exception
-		{
-			public:
-				const char*	what() const throw();
-		};
 };
 
 #endif
