@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/19 11:39:46 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/19 12:14:44 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,11 +152,33 @@ void	Server::_handleEvent( struct kevent &kev )
 			this->_acceptNewClient();
 		// Connected Client sends message
 		else
-			this->_readDataFromClient(kev.ident);
+			this->_readDataFromClient(kev);
 	}
 	// Able to write
 	else if (kev.filter == EVFILT_WRITE)
 		this->_sendDataToClient(kev.ident);
+}
+
+void	Server::_disconnectClient( uintptr_t ident )
+{
+	// ClientMap::iterator	it = this->_clients.find(ident);
+	// Client	*client = it->second;
+
+	// if (it == this->_clients.end())
+	// 	return ;
+	
+	// this->_clients.erase(ident);
+
+	// ChannalVec	&joinedChannals = client->getJoinedChannals();
+	// for (ChannalVec::iterator it = joinedChannals.begin(); it != joinedChannals.end(); it++)
+	// {
+	// 	(*it)->removeClient(client);
+	// 	// 클라이언트가 채널에 남아있는 유일한 클라이언트였다면 채널 삭제
+	// }
+
+	// delete client;	// 소멸자에서 멤버변수 정리
+
+	// std::cout << "[ SERVER ] Client disconnected" << std::endl;
 }
 
 void	Server::_acceptNewClient()
@@ -168,15 +190,18 @@ void	Server::_acceptNewClient()
 	bzero(&clientAddr, sizeof(clientAddr));
 
 	clientSoc = accept(this->_serverSoc, (struct sockaddr *)&clientAddr, &clientAddrSize);
-
 	if (clientSoc == RET_ERROR)
-		throw std::runtime_error("Exception: accept error");
-	if (clientSoc >= MAX_CLIENT)
 	{
-		std::cout << "[ SERVER ] Has max Client" << std::endl;
-		close(clientSoc);
+		std::cerr << "Error: accept error" << std::endl;
 		return ;
 	}
+
+	// if (clientSoc >= MAX_CLIENT)
+	// {
+	// 	std::cout << "[ SERVER ] Has max Client" << std::endl;
+	// 	close(clientSoc);
+	// 	return ;
+	// }
 	
 	std::string	addr(inet_ntoa(clientAddr.sin_addr));
 	// Client *newClient = new Client(clientSoc, addr);
@@ -187,4 +212,25 @@ void	Server::_acceptNewClient()
 	// set non-blocking
 	this->_setNonBlock(clientSoc);
 	this->_setEvent(clientSoc, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
+}
+
+void	Server::_readDataFromClient( struct kevent &kev )
+{
+	char	buf[1024];
+	// Client *client = this->_clients[kev.ident];
+	ssize_t	byte;
+
+	bzero(buf, sizeof(buf));
+
+	byte = recv(kev.ident, buf, sizeof(buf), 0);
+	if (byte <= 0)
+	{
+		if (byte < ERROR && errno == EAGAIN)
+			return ;
+		std::cerr << "Error: recv error" << std::endl;
+		// broadcast to all client
+		this->_disconnectClient(kev.ident);
+		return ;
+	}
+	
 }

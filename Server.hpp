@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/19 11:39:37 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/19 12:08:06 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ class Server
 		void	_handleEvent( struct kevent &kev );
 
 		void	_acceptNewClient();
-		void	_readDataFromClient( uintptr_t ident );
+		void	_readDataFromClient( struct kevent &kev );
 		void	_sendDataToClient( uintptr_t ident );
 		void	_disconnectClient( uintptr_t ident );
 
