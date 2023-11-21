@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:46 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/19 12:33:35 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/21 13:23:37 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
+#include <string>
 #include <set>
+#include "Channal.hpp"
 
 class	Channel;
 class	Server;
@@ -26,6 +28,9 @@ class	Client
 		std::string	_nick;
 		std::string	_userName;
 		std::string	_realName;
+
+		std::string	_cmdBuf;
+		std::string _rplBuf;
 
 		std::set<Channal *>	_joinedChannels;
 		std::set<Channal *>	_invited;

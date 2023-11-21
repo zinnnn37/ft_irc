@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/19 12:32:22 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/21 13:32:41 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,7 +218,7 @@ void	Server::_acceptNewClient()
 void	Server::_readDataFromClient( struct kevent &kev )
 {
 	char	buf[1024];
-	// Client *client = this->_clients[kev.ident];
+	// Client *client = this->_clients[kev.ident]; // find로 찾기
 	ssize_t	byte;
 
 	bzero(buf, sizeof(buf));
@@ -233,5 +233,61 @@ void	Server::_readDataFromClient( struct kevent &kev )
 		this->_disconnectClient(kev.ident);
 		return ;
 	}
-	
+	buf[byte] = '\0';
+	client->addBuffer(buf);
+	this->_handleInput(client);
+}
+
+void	Server::_handleInput( Client *client )
+{
+	size_t		crlf;
+	std::string	buf;
+	std::string	line;
+
+	while (true)
+	{
+		if (client->isClosed())
+			break ;
+
+		buf = client->getBuffer();
+		crlf = buf.find(CRLF);
+
+		if (crlf != std::string::npos)
+		{
+			line = buf.substr(0, crlf + 1);
+			std::cout << "[ SERVER ] " << line << std::endl;
+		}
+		else
+		{
+			Message	msg(buf.substr(0, crlf));
+			client->setBuffer(buf.substr(crlf + 1));
+		}
+	}
+}
+
+void	Server::_sendDataToClient( uintptr_t ident )
+{
+	int					byte;
+	std::string			rplbuf;
+	ClientMap::iterator	it = this->_clients.find(ident);
+	Client				*client = it->second;
+
+	if (it == this->_clients.end()) return ;
+
+	rplbuf = client->getRplBuf();
+	if (rplbuf) return ;
+
+	byte = send(ident, rplbuf.c_str(), rplbuf.length(), 0);
+	if (byte == ERROR)
+	{
+		std::cout << "[ SERVER ] Client send error" << std::endl;
+		// broadcast
+		this->_disconnectClient(ident);
+	}
+	else
+	{
+		client->setRplBuf(rplbuf.substr(byte));
+		if (client->getRplBuf().empty())
+			this->_disconnectClient(ident);
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/19 12:08:06 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/21 13:19:13 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ class Server
 		void	_readDataFromClient( struct kevent &kev );
 		void	_sendDataToClient( uintptr_t ident );
 		void	_disconnectClient( uintptr_t ident );
+
+		void	_handleInput( Client *client );
 
 		void	_setNonBlock( int fd );
 		void	_free();
