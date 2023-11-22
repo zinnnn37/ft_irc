@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/21 13:19:13 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 11:11:49 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 #include <fcntl.h>
 #include <exception>
 
-// #include "Client.hpp"
+#include "Client.hpp"
 // #include "Channal.hpp"
 // #include "Command.hpp"
 #include "Define.hpp"
@@ -46,8 +46,8 @@ class Server
 		struct kevent						_eventList[128];	// 발생한 이벤트 배열
 		std::vector<struct kevent>			_changeList;		// kqueue에 등록할 이벤트 리스트
 
-		// std::map<int, Client *>				_clients;
-		// std::map<std::string, Channal *>	_channals;
+		std::map<int, Client *>				_clients;
+		std::map<std::string, Channal *>	_channals;
 		// Command								_command; //?
 
 		Server();
@@ -65,7 +65,8 @@ class Server
 		void	_sendDataToClient( uintptr_t ident );
 		void	_disconnectClient( uintptr_t ident );
 
-		void	_handleInput( Client *client );
+		void	_handleMsg( Client *client );
+		void	_handleCommand( Client *client, std::string line );
 
 		void	_setNonBlock( int fd );
 		void	_free();

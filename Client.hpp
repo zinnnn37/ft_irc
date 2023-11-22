@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:46 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/21 13:23:37 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 11:06:56 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,17 @@ class	Server;
 class	Client
 {
 	private:
-		Server	&_server;
+		static int	_clientNum;
+		bool		_isRegistered;
+		bool		_isClosed;
+		int			_clientSoc;
+		std::string	_addr;
 
 		std::string	_nick;
 		std::string	_userName;
-		std::string	_realName;
 
-		std::string	_cmdBuf;
-		std::string _rplBuf;
+		std::string	_prefix;
+		std::string	_buf;
 
 		std::set<Channal *>	_joinedChannels;
 		std::set<Channal *>	_invited;
@@ -41,12 +44,22 @@ class	Client
 		Client	&operator=( const Client &c );
 
 	public:
-		Client( Server &server );
+		Client( int socket, std::string addr );
 		~Client();
 
-		int	init( int serverfd );
+		bool	isRegistered() const;
+		bool	isClosed() const;
+		void	setRegistered( bool isRegistered );
+		void	setClosed( bool isClosed );
 
-		int	sendMessage( const std::string &message );
-
-		void	addInvited( Channal &channal );
+		int			getSocket() const;
+		std::string	getAddr() const;
+		std::string	getNick() const;
+		void		setNick( const std::string &nick );
+		std::string	getUserName() const;
+		void		setUserName( const std::string &userName );
+		std::string	getBuf() const;
+		void		setBuf( const std::string &buf );
+		void		clearBuf();
+		void		appendBuf( const std::string &buf );
 };

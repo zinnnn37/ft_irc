@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/21 13:32:41 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 11:13:56 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,29 +197,33 @@ void	Server::_acceptNewClient()
 		return ;
 	}
 
-	// if (clientSoc >= MAX_CLIENT)
-	// {
-	// 	std::cout << "[ SERVER ] Has max Client" << std::endl;
-	// 	close(clientSoc);
-	// 	return ;
-	// }
-	
-	std::string	addr(inet_ntoa(clientAddr.sin_addr));
-	// Client *newClient = new Client(clientSoc, addr);
-	// this->_clients.insert(std::make_pair(clientSoc, newClient));
-
-	std::cout << "[ SERVER ] New Client connected" << std::endl;
+	if (clientSoc >= MAX_CLIENT)
+	{
+		std::cout << "[ SERVER ] Has max Client" << std::endl;
+		close(clientSoc);
+		return ;
+	}
 
 	// set non-blocking
 	this->_setNonBlock(clientSoc);
 	this->_setEvent(clientSoc, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
+	this->_setEvent(clientSoc, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
+	
+	std::string	addr(inet_ntoa(clientAddr.sin_addr));
+	Client *newClient = new Client(clientSoc, addr);
+	this->_clients.insert(std::make_pair(clientSoc, newClient));
+
+	std::cout << "[ SERVER ] New Client connected" << std::endl;
 }
 
 void	Server::_readDataFromClient( struct kevent &kev )
 {
-	char	buf[1024];
-	// Client *client = this->_clients[kev.ident]; // find로 찾기
-	ssize_t	byte;
+	char				buf[1024];
+	ssize_t				byte;
+	ClientMap::iterator	it = this->_clients.find(kev.ident);
+	Client				*client = it->second;
+
+	if (it == this->_clients.end()) return ;
 
 	bzero(buf, sizeof(buf));
 
@@ -234,11 +238,11 @@ void	Server::_readDataFromClient( struct kevent &kev )
 		return ;
 	}
 	buf[byte] = '\0';
-	client->addBuffer(buf);
-	this->_handleInput(client);
+	client->addBuf(buf);
+	this->_handleMsg(client);
 }
 
-void	Server::_handleInput( Client *client )
+void	Server::_handleMsg( Client *client )
 {
 	size_t		crlf;
 	std::string	buf;
@@ -255,14 +259,30 @@ void	Server::_handleInput( Client *client )
 		if (crlf != std::string::npos)
 		{
 			line = buf.substr(0, crlf + 1);
-			std::cout << "[ SERVER ] " << line << std::endl;
+			std::cout << "[ SERVER ] message recieved: " << line << std::endl;
+
+			// command 처리
+			this->_dealCommand(client, line);
 		}
 		else
 		{
-			Message	msg(buf.substr(0, crlf));
-			client->setBuffer(buf.substr(crlf + 1));
+			std::string	left = buf;
+
+			if (!left.empty())
+				client->appendRplBuf(left);
+			break ;
 		}
 	}
+}
+
+void	Server::_handleCommand( Client *client, std::string line )
+{
+	std::string			cmd;
+	std::string			pre;
+	std::string			msg;
+	std::string			rpl;
+	std::istringstream	ss(line);
+	std::istringstream	pss;
 }
 
 void	Server::_sendDataToClient( uintptr_t ident )
