@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 11:27:47 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 14:09:08 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ class Server
 
 		std::map<int, Client *>				_clients;
 		std::map<std::string, Channal *>	_channals;
-		// Command								_command; //?
+		Command								_command;
 
 		Server();
 		Server( const Server &s );

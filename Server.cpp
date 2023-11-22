@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 13:39:37 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 14:08:39 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,10 +280,55 @@ void	Server::_handleCommand( Client *client, std::string line )
 {
 	std::string			cmd;
 	std::string			msg;
-	std::string			rpl;
 	std::istringstream	ss(line);	// space 단위로 문자열 읽기
 
 	ss >> cmd;
+
+	for (std::string::iterator it = cmd.begin(); it != cmd.end(); it++)
+		*it = toupper(*it);
+
+	switch (cmd)
+	{
+		case "PASS":
+			this->_command.pass(client, ss);
+			break ;
+		
+		case "NICK":
+			this->_command.nick(client, ss);
+			break ;
+		
+		case "USER":
+			this->_command.user(client, ss);
+			break ;
+		
+		case "JOIN":
+			this->_command.join(client, ss);
+			break ;
+		
+		case "PRIVMSG":
+			this->_command.privmsg(client, ss);
+			break ;
+		
+		case "KICK":
+			this->_command.kick(client, ss);
+			break ;
+
+		case "INVITE":
+			this->_command.invite(client, ss);
+			break ;
+		
+		case "TOPIC":
+			this->_command.topic(client, ss);
+			break ;
+		
+		case "MODE":
+			this->_command.mode(client, ss);
+			break ;
+		
+		case "PART":
+			this->_command.part(client, ss);
+			break ;
+	}
 }
 
 void	Server::_sendDataToClient( uintptr_t ident )
