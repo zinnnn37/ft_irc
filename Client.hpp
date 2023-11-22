@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:46 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 15:34:08 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 19:03:47 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include <string>
 #include <set>
-#include "Channal.hpp"
+#include "Channel.hpp"
 
 class	Channel;
 class	Server;
@@ -35,8 +35,8 @@ class	Client
 		std::string	_preCmd;
 		std::string	_buf;
 
-		std::set<Channal *>	_joinedChannels;
-		std::set<Channal *>	_invited;
+		std::set<Channel *>	_joinedChannels;
+		std::set<Channel *>	_invited;
 
 		Client();
 		Client( const Client &c );
@@ -64,7 +64,7 @@ class	Client
 		void		clearBuf();
 		void		appendBuf( std::string buf );
 
-		void		disconnectClientFromChannal();
+		void		disconnectClientFromChannel();
 };
 
 #endif

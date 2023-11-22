@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 15:34:58 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 19:04:32 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ Server::Server( const Server &s )
 }
 
 Server::Server( int port, std::string password )
-	: _port(port), _serverSoc(FD_DEFAULT), _password(password), _kq(FD_DEFAULT)
+	: _serverName("ircserv"), _port(port), _serverSoc(FD_DEFAULT), _password(password), _kq(FD_DEFAULT)
 {
 	(void)_port;
 	(void)_password;
@@ -169,7 +169,7 @@ void	Server::_disconnectClient( uintptr_t ident )
 	
 	this->_clients.erase(ident);
 
-	client->disconnectClientFromChannal();
+	client->disconnectClientFromChannel();
 
 	delete client;
 

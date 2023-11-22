@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 12:42:34 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 19:04:52 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@
 #include <vector>
 
 class	Client;
-class	Channal;
+class	Channel;
 
 typedef std::map<int, Client *>				ClientMap;
-typedef std::map<std::string, Channal *>	ChannalMap;
+typedef std::map<std::string, Channel *>	ChannelMap;
 typedef std::vector<struct kevent>			EventVec;
-typedef std::set<Channal *>					ChannalSet;
-typedef std::set<Channal *>					InvitedSet;
+typedef std::set<Channel *>					ChannelSet;
+typedef std::set<Channel *>					InvitedSet;
 
 #define SUCCESS 0
 #define FAILURE -1
@@ -55,20 +55,21 @@ typedef std::set<Channal *>					InvitedSet;
 /*
  * Server messages
  */
-#define WELLCOM(user)														"001 " + user ":Welcome to our ircserv " + user + ". Enjoy your stay!"
+#define RPL_WELCOME(user)													"001 " + user ":Welcome to our ircserv " + user + ". Enjoy your stay!"
+#define RPL_YOURHOST(serverName)											"002 " + serverName + " :Your host is " + serverName + ", running version 1.0"
 
 /*
  * Error Replies
  */
-#define ERR_NOSUCHNICK(user, nick)											"401 " + user + " " + nick + " :No such nick"
-#define ERR_NOSUCHSERVER(user, server)										"402 " + user + " " + server + " :No such server"
-#define ERR_NOSUCHCHANNEL(user, channel)									"403 " + user + " " + channel + " :No such channel"
-#define ERR_CANNOTSENDTOCHAN(user, channel)									"404 " + user + " " + channel + " :Cannot send to channel (no external messages)"
-#define ERR_TOOMANYCHANNELS(user, channel)									"405 " + user + " " + channel + " :You have joined too many channels"
-#define ERR_NONICKNAMEGIVEN(user)											"431 " + user + " :Nickname not given"
-#define ERR_NICKNAMEINUSE(user)												"433 " + user + " " + user + " :Nickname is already in use"
-#define ERR_USERNOTINCHANNEL(user, nick, channel)							"441 " + user + " " + nick + " " + channel + " :They are not on that channel"
-#define ERR_NOTONCHANNEL(user, channel)										"442 " + user + " " + channel + " :You're not on that channel!"
+#define ERR_NOSUCHNICK(nick)												"401 :No such nick named " + nick
+#define ERR_NOSUCHSERVER(server)											"402 :No such server named " + server
+#define ERR_NOSUCHCHANNEL(channel)											"403 :No such channel named " + channel
+#define ERR_CANNOTSENDTOCHAN(channel)										"404 :Cannot send to channel " + channel
+#define ERR_TOOMANYCHANNELS()												"405 :You have joined too many channels"
+#define ERR_NONICKNAMEGIVEN()												"431 :Nickname not given"
+#define ERR_NICKNAMEINUSE(nick)												"433 " + nick + " :is already in use"
+#define ERR_USERNOTINCHANNEL(nick, channel)									"441 " + nick + " " + channel + " :They are not on that channel"
+#define ERR_NOTONCHANNEL(channel)											"442 " + channel + " :You're not in the channel"
 #define ERR_USERONCHANNEL(user, nick, channel)								"443 " + user + " " + nick + " " + channel + " :is already on channel"
 #define ERR_NEEDMOREPARAMS(source, command)									"461 " + source + " " + command + " :Not enough parameters"
 #define ERR_ALREADYREGISTRED(source)										"462 " + source + " :You may not register"

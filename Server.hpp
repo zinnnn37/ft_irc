@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 14:55:11 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 19:04:01 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,18 @@
 #include <exception>
 
 #include "Client.hpp"
-// #include "Channal.hpp"
+// #include "Channel.hpp"
 // #include "Command.hpp"
 #include "Define.hpp"
 
-class	Channal;
+class	Channel;
 class	Client;
 
 class Server
 {
 	private:
+		std::string							_serverName;
+
 		int									_port;
 		int									_serverSoc;
 		std::string							_password;
@@ -48,7 +50,7 @@ class Server
 		std::vector<struct kevent>			_changeList;		// kqueue에 등록할 이벤트 리스트
 
 		std::map<int, Client *>				_clients;
-		std::map<std::string, Channal *>	_channals;
+		std::map<std::string, Channel *>	_channels;
 		// Command								_command;
 
 		Server();

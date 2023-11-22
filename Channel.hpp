@@ -1,44 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Channal.hpp                                        :+:      :+:    :+:   */
+/*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:41 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 12:35:24 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 19:03:25 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CHANNAL_HPP
-#define CHANNAL_HPP
+#ifndef CHANNEL_HPP
+#define CHANNEL_HPP
 
 #include "Server.hpp"
 #include "Client.hpp"
 
 class	Client;
 
-class	Channal
+class	Channel
 {
 	private:
 		bool	_isInviteOnly;
 		bool	_isTopicRestricted;
 
-		std::string			_channalName;
+		std::string			_channelName;
 		std::string			_topic;
 		std::string			_password;
 
 		std::set<Client *>	_clients;
 		std::set<Client *>	_operators;
 
-		Channal();
-		Channal( const Channal &c );
+		Channel();
+		Channel( const Channel &c );
 
-		Channal	&operator=( const Channal &c );
+		Channel	&operator=( const Channel &c );
 
 	public:
-		Channal( const std::string &channalName, Client &client );
-		~Channal();
+		Channel( const std::string &channelName, Client &client );
+		~Channel();
 
 		int	addClient( Client &client );
 		int	removeClient( Client &client );
