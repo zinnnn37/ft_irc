@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 19:04:52 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 19:13:46 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,20 @@ typedef std::set<Channel *>					InvitedSet;
 #define ERR_NOSUCHCHANNEL(channel)											"403 :No such channel named " + channel
 #define ERR_CANNOTSENDTOCHAN(channel)										"404 :Cannot send to channel " + channel
 #define ERR_TOOMANYCHANNELS()												"405 :You have joined too many channels"
+// #define ERR_NOORIGIN()														"409 :missing the originator parameter"
 #define ERR_NONICKNAMEGIVEN()												"431 :Nickname not given"
 #define ERR_NICKNAMEINUSE(nick)												"433 " + nick + " :is already in use"
 #define ERR_USERNOTINCHANNEL(nick, channel)									"441 " + nick + " " + channel + " :They are not on that channel"
-#define ERR_NOTONCHANNEL(channel)											"442 " + channel + " :You're not in the channel"
-#define ERR_USERONCHANNEL(user, nick, channel)								"443 " + user + " " + nick + " " + channel + " :is already on channel"
-#define ERR_NEEDMOREPARAMS(source, command)									"461 " + source + " " + command + " :Not enough parameters"
-#define ERR_ALREADYREGISTRED(source)										"462 " + source + " :You may not register"
-#define ERR_PASSWDMISMATCH(user)											"464 " + user + " :Password incorrect"
-#define ERR_NOORIGIN(user)													"465 " + user + " :No origin specified"
-#define ERR_CHANNELISFULL(user, channel)									"471 " + user + " " + channel + " :Cannot join channel (+1)"
-#define ERR_UNKNOWNMODE(user, mode)											"472 " + user + " " + mode + " :is unknown mode char to me"
-#define ERR_INVITEONLYCHAN(user, channel)									"473 " + user + " " + channel + " :Cannot join channel (+i)"
-#define ERR_BANNEDFROMCHAN(user, channel)									"474 " + user + " " + channel + " :Cannot join channel (+b)"
+#define ERR_NOTONCHANNEL(channel)											"442 " + channel + " :You are not in the channel"
+#define ERR_USERONCHANNEL(user, nick, channel)								"443 " + nick + " " + channel + " :is already on channel"
+#define ERR_NEEDMOREPARAMS(command)											"461 " + command + " :Need more parameters"
+#define ERR_ALREADYREGISTRED()												"462 :You have already registered"
+#define ERR_PASSWDMISMATCH()												"464 :Password incorrect"
+#define ERR_YOUREBANNEDCREEP()												"465 :You are banned from this server"
+#define ERR_CHANNELISFULL(channel)											"471 " + channel + " :Channel is full"
+#define ERR_UNKNOWNMODE(mode)												"472 " + mode + " :unknown mode"
+#define ERR_INVITEONLYCHAN(channel)											"473 " + channel + " :You are not invited"
+#define ERR_BANNEDFROMCHAN(channel)											"474 " + channel + " :You are banned from this channel"
 #define ERR_BADCHANNELKEY(user, channel)									"475 " + user + " " + channel + " :Cannot join channel (+k)"
 #define ERR_CHANOPRIVSNEEDED(user, channel)									"482 " + user + " " + channel + " :You must be a channel operator"
 #define ERR_CHANOPRIVSNEEDED2(user, channel)								"482 " + user + " " + channel + " :You must be a channel half-operator"
