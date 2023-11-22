@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 11:28:16 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:39:37 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ void	Server::_handleEvent( struct kevent &kev )
 
 void	Server::_disconnectClient( uintptr_t ident )
 {
+	(void)ident;
 	// ClientMap::iterator	it = this->_clients.find(ident);
 	// Client	*client = it->second;
 
@@ -238,7 +239,7 @@ void	Server::_readDataFromClient( struct kevent &kev )
 		return ;
 	}
 	buf[byte] = '\0';
-	client->addBuf(buf);
+	client->appendBuf(buf);
 	this->_handleMsg(client);
 }
 
@@ -253,7 +254,7 @@ void	Server::_handleMsg( Client *client )
 		if (client->isClosed())
 			break ;
 
-		buf = client->getBuffer();
+		buf = client->getBuf();
 		crlf = buf.find(CRLF);
 
 		if (crlf != std::string::npos)
@@ -262,14 +263,14 @@ void	Server::_handleMsg( Client *client )
 			std::cout << "[ SERVER ] message recieved: " << line << std::endl;
 
 			// command 처리
-			this->_dealCommand(client, line);
+			this->_handleCommand(client, line);
 		}
 		else
 		{
 			std::string	left = buf;
 
 			if (!left.empty())
-				client->appendRplBuf(left);
+				client->appendBuf(left);
 			break ;
 		}
 	}
@@ -278,46 +279,37 @@ void	Server::_handleMsg( Client *client )
 void	Server::_handleCommand( Client *client, std::string line )
 {
 	std::string			cmd;
-	std::string			pre;
 	std::string			msg;
 	std::string			rpl;
 	std::istringstream	ss(line);	// space 단위로 문자열 읽기
-	std::istringstream	preSs;
 
 	ss >> cmd;
-
-	if (!client->_isRegistered())
-	{
-		pre.str(client.getPreCmd());
-		pre >> preSs;
-	}
-
-	if (cmd != )
 }
 
 void	Server::_sendDataToClient( uintptr_t ident )
 {
-	int					byte;
-	std::string			rplbuf;
-	ClientMap::iterator	it = this->_clients.find(ident);
-	Client				*client = it->second;
+	(void)ident;
+	// int					byte;
+	// std::string			rplbuf;
+	// ClientMap::iterator	it = this->_clients.find(ident);
+	// Client				*client = it->second;
 
-	if (it == this->_clients.end()) return ;
+	// if (it == this->_clients.end()) return ;
 
-	rplbuf = client->getRplBuf();
-	if (rplbuf) return ;
+	// rplbuf = client->getBuf();
+	// if (rplbuf) return ;
 
-	byte = send(ident, rplbuf.c_str(), rplbuf.length(), 0);
-	if (byte == ERROR)
-	{
-		std::cout << "[ SERVER ] Client send error" << std::endl;
-		// broadcast
-		this->_disconnectClient(ident);
-	}
-	else
-	{
-		client->setRplBuf(rplbuf.substr(byte));
-		if (client->getRplBuf().empty())
-			this->_disconnectClient(ident);
-	}
+	// byte = send(ident, rplbuf.c_str(), rplbuf.length(), 0);
+	// if (byte == ERROR)
+	// {
+	// 	std::cout << "[ SERVER ] Client send error" << std::endl;
+	// 	// broadcast
+	// 	this->_disconnectClient(ident);
+	// }
+	// else
+	// {
+	// 	client->setRplBuf(rplbuf.substr(byte));
+	// 	if (client->getBuf().empty())
+	// 		this->_disconnectClient(ident);
+	// }
 }

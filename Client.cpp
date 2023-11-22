@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 11:23:33 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:45:36 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ int	Client::_clientNum = 1;
 
 Client::Client() {}
 
-Client::Client( const Clinet &c ) {}
+Client::Client( const Client &c )
+{
+	(void)c;
+}
 
 Client::Client( int socket, std::string addr )
 	: _isRegistered(false), _isClosed(false), _clientSoc(socket), _addr(addr)
@@ -25,12 +28,12 @@ Client::Client( int socket, std::string addr )
 	Client::_clientNum++;
 }
 
-Client:~Client()
+Client::~Client()
 {
 	close(this->_clientSoc);
 }
 
-Clinet	&Client::operator=( const Clinet &c )
+Client	&Client::operator=( const Client &c )
 {
 	(void)c;
 	return (*this);
@@ -106,7 +109,7 @@ void	Client::clearBuf()
 	this->_buf.clear();
 }
 
-void	Client::appendBuf( const std::string &buf )
+void	Client::appendBuf( std::string buf )
 {
-	this=->_buf.append(buf);
+	this->_buf.append(buf);
 }

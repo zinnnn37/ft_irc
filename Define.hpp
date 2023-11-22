@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Define.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/21 13:20:47 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:42:34 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 #include <map>
 #include <set>
 #include <vector>
+
+class	Client;
+class	Channal;
 
 typedef std::map<int, Client *>				ClientMap;
 typedef std::map<std::string, Channal *>	ChannalMap;

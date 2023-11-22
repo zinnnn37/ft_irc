@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:41 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/11 13:42:46 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:35:24 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,6 @@ class	Channal
 		int	setMode( Client &client, const std::string &mode );
 
 		int	sendMessage( Client &client, const std::string &message );
-}
+};
 
 #endif
