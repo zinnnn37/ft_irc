@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 11:11:49 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 11:27:47 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define SERVER_HPP
 
 #include <iostream>
+#include <sstream>
 #include <cstdint>
 #include <string>
 #include <list>

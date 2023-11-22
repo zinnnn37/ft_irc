@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 11:13:56 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 11:28:16 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,8 +281,18 @@ void	Server::_handleCommand( Client *client, std::string line )
 	std::string			pre;
 	std::string			msg;
 	std::string			rpl;
-	std::istringstream	ss(line);
-	std::istringstream	pss;
+	std::istringstream	ss(line);	// space 단위로 문자열 읽기
+	std::istringstream	preSs;
+
+	ss >> cmd;
+
+	if (!client->_isRegistered())
+	{
+		pre.str(client.getPreCmd());
+		pre >> preSs;
+	}
+
+	if (cmd != )
 }
 
 void	Server::_sendDataToClient( uintptr_t ident )

@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:46 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 11:06:56 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 11:23:16 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ class	Client
 		std::string	_nick;
 		std::string	_userName;
 
-		std::string	_prefix;
+		std::string	_preCmd;
 		std::string	_buf;
 
 		std::set<Channal *>	_joinedChannels;
@@ -60,6 +60,7 @@ class	Client
 		void		setUserName( const std::string &userName );
 		std::string	getBuf() const;
 		void		setBuf( const std::string &buf );
+		std::string	getPreCmd() const;
 		void		clearBuf();
 		void		appendBuf( const std::string &buf );
 };

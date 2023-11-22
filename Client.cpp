@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 11:07:31 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 11:23:33 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,11 @@ std::string	Client::getUserName() const
 std::string	Client::getBuf() const
 {
 	return (this->_buf);
+}
+
+std::string	Client::getPreCmd() const
+{
+	return (this->_preCmd);
 }
 
 void	Client::setNick( const std::string &nick )
