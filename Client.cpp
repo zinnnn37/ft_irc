@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 12:45:36 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:34:12 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,20 @@ void	Client::clearBuf()
 void	Client::appendBuf( std::string buf )
 {
 	this->_buf.append(buf);
+}
+
+void	Client::disconnectClientFromChannal()
+{
+	size_t	size;
+
+	for (ChannalVec::iterator it = this->_joinedChannals.begin();
+			it != this->_joinedChannals.end(); it++)
+	{
+		size = (*it)->getClients().size();
+		(*it)->removeClient(client);
+
+		// 클라이언트가 채널에 남아있는 유일한 클라이언트였다면 채널 삭제
+		if (size == 1)
+			this->_server->removeChannal(*it);
+	}
 }

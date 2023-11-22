@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 15:08:05 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:34:58 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,26 +161,19 @@ void	Server::_handleEvent( struct kevent &kev )
 
 void	Server::_disconnectClient( uintptr_t ident )
 {
-	(void)ident;
-	// ClientMap::iterator	it = this->_clients.find(ident);
-	// Client	*client = it->second;
+	ClientMap::iterator	it = this->_clients.find(ident);
+	Client	*client = it->second;
 
-	// if (it == this->_clients.end())
-	// 	return ;
+	if (it == this->_clients.end())
+		return ;
 	
-	// this->_clients.erase(ident);
+	this->_clients.erase(ident);
 
-	// ChannalSet	&joinedChannals = client->getJoinedChannals();
-	// for (ChannalVec::iterator it = joinedChannals.begin(); it != joinedChannals.end(); it++)
-	// {
-	// 	(*it)->removeClient(client);
-	// 	// 클라이언트가 채널에 남아있는 유일한 클라이언트였다면 채널 삭제
-	// }
-	// -> Client 멤버함수로 옮기는 게 깔끔할 듯
+	client->disconnectClientFromChannal();
 
-	// delete client;	// 소멸자에서 멤버변수 정리
+	delete client;
 
-	// std::cout << "[ SERVER ] Client disconnected" << std::endl;
+	std::cout << "[ SERVER ] Client disconnected" << std::endl;
 }
 
 void	Server::_acceptNewClient()
@@ -291,52 +284,52 @@ void	Server::_handleCommand( Client *client, std::string line )
 
 	(void)client;
 
-	// switch (cmd)
-	// {
-	// 	case "PASS":
-	// 		this->_command.pass(client, ss);
-	// 		break ;
+	switch (cmd)
+	{
+		case "PASS":
+			this->_command.pass(client, ss);
+			break ;
 		
-	// 	case "NICK":
-	// 		this->_command.nick(client, ss);
-	// 		break ;
+		case "NICK":
+			this->_command.nick(client, ss);
+			break ;
 		
-	// 	case "USER":
-	// 		this->_command.user(client, ss);
-	// 		break ;
+		case "USER":
+			this->_command.user(client, ss);
+			break ;
 		
-	// 	case "JOIN":
-	// 		this->_command.join(client, ss);
-	// 		break ;
+		case "JOIN":
+			this->_command.join(client, ss);
+			break ;
 		
-	// 	case "PRIVMSG":
-	// 		this->_command.privmsg(client, ss);
-	// 		break ;
+		case "PRIVMSG":
+			this->_command.privmsg(client, ss);
+			break ;
 		
-	// 	case "KICK":
-	// 		this->_command.kick(client, ss);
-	// 		break ;
+		case "KICK":
+			this->_command.kick(client, ss);
+			break ;
 
-	// 	case "INVITE":
-	// 		this->_command.invite(client, ss);
-	// 		break ;
+		case "INVITE":
+			this->_command.invite(client, ss);
+			break ;
 		
-	// 	case "TOPIC":
-	// 		this->_command.topic(client, ss);
-	// 		break ;
+		case "TOPIC":
+			this->_command.topic(client, ss);
+			break ;
 		
-	// 	case "MODE":
-	// 		this->_command.mode(client, ss);
-	// 		break ;
+		case "MODE":
+			this->_command.mode(client, ss);
+			break ;
 		
-	// 	case "PART":
-	// 		this->_command.part(client, ss);
-	// 		break ;
+		case "PART":
+			this->_command.part(client, ss);
+			break ;
 		
-	// 	case "EXIT"
-	// 		this->_command.exit(client, ss);
-	// 		break ;
-	// }
+		case "EXIT"
+			this->_command.exit(client, ss);
+			break ;
+	}
 }
 
 void	Server::_sendDataToClient( uintptr_t ident )

@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:46 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 12:43:04 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:34:08 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ class	Client
 		std::string	getPreCmd() const;
 		void		clearBuf();
 		void		appendBuf( std::string buf );
+
+		void		disconnectClientFromChannal();
 };
 
 #endif
