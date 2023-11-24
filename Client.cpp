@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 19:04:25 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/24 16:48:25 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,9 @@ std::string	Client::getBuf() const
 	return (this->_buf);
 }
 
-std::string	Client::getPreCmd() const
+std::string	Client::getSendData() const
 {
-	return (this->_preCmd);
+	return (this->_sendData);
 }
 
 void	Client::setNick( const std::string &nick )
@@ -107,6 +107,11 @@ void	Client::setBuf( std::string &buf )
 void	Client::clearBuf()
 {
 	this->_buf.clear();
+}
+
+void	Client::clearSendData()
+{
+	this->_sendData.clear();
 }
 
 void	Client::appendBuf( std::string buf )

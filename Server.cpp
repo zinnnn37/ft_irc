@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 19:04:32 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/24 16:49:59 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,6 +257,7 @@ void	Server::_handleMsg( Client *client )
 
 			// command 처리
 			this->_handleCommand(client, line);
+			buf = buf.substr(crlf + 2);	// crlf 이후 문자열
 			// client->clearBuf();
 			// break ;
 		}
@@ -266,6 +267,8 @@ void	Server::_handleMsg( Client *client )
 
 			if (!left.empty())
 				client->appendBuf(left);
+				// 이거 뭔가 이상한 거 같은데..
+				// ^D 중간에 눌러본 거 확인해보기
 			break ;
 		}
 	}
@@ -330,32 +333,35 @@ void	Server::_handleCommand( Client *client, std::string line )
 			this->_command.exit(client, ss);
 			break ;
 	}
+	client->appendSend();	// response 받아서 crlf 붙여서 append. 이거를 _sendData에서 Clinet로 보냄
 }
 
 void	Server::_sendDataToClient( uintptr_t ident )
 {
 	(void)ident;
-	// int					byte;
-	// std::string			rplbuf;
-	// ClientMap::iterator	it = this->_clients.find(ident);
-	// Client				*client = it->second;
+	int					byte;
+	const char			*data;
+	ClientMap::iterator	it = this->_clients.find(ident);
+	Client					*client = it->second;
 
-	// if (it == this->_clients.end()) return ;
+	if (it == this->_clients.end()) return ;
 
-	// rplbuf = client->getBuf();
-	// if (rplbuf) return ;
+	if (client->getSendData().empty()) return ;
 
-	// byte = send(ident, rplbuf.c_str(), rplbuf.length(), 0);
-	// if (byte == ERROR)
-	// {
-	// 	std::cout << "[ SERVER ] Client send error" << std::endl;
-	// 	// broadcast
-	// 	this->_disconnectClient(ident);
-	// }
-	// else
-	// {
-	// 	client->setRplBuf(rplbuf.substr(byte));
-	// 	if (client->getBuf().empty())
-	// 		this->_disconnectClient(ident);
-	// }
+	std::cout << "[ SERVER ] message sent: " << client->getSendData() << "from: " << client->getNick() << std::endl;
+
+	data = client->getSendData().c_str();
+	byte = send(ident, data, data.length(), 0);
+	if (byte == RET_ERROR)
+	{
+		std::cerr << "[ SERVER ] Error: send error" << std::endl;
+		this->_disconnectClient(ident);
+	}
+	else
+	{
+		client->clearSendData();
+		if (client->isClosed())
+			this->_disconnectClient(ident);
+		continue ;
+	}
 }

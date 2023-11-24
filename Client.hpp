@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:46 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 19:03:47 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/24 16:48:13 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ class	Client
 		std::string	_nick;
 		std::string	_userName;
 
-		std::string	_preCmd;
 		std::string	_buf;
+		std::string	_sendData;
 
 		std::set<Channel *>	_joinedChannels;
 		std::set<Channel *>	_invited;
@@ -63,6 +63,8 @@ class	Client
 		std::string	getPreCmd() const;
 		void		clearBuf();
 		void		appendBuf( std::string buf );
+		std::string	getSendData() const;
+		void		clearSendData();
 
 		void		disconnectClientFromChannel();
 };
