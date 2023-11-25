@@ -22,6 +22,7 @@ Channel &Channel::operator=(const Channel &c)
         _password = c._password;
         _clients = c._clients;
         _operators = c._operators;
+        // _mode.insert("+i");
     }
     return *this;
 }
@@ -116,8 +117,27 @@ int Channel::removeClient(Client &client)
     return 0; // 성공을 나타내는 값, 실패 시 적절한 값으로 변경
 }
 
+std::string Channel::getPassword(){
+    return this->_password;
+}
 
-// std::map<std::string, Client> Channel::getUsers(){
-//     // return this->getUsers;
-//     return ;
-// }
+std::set<std::string> Channel::getMode(){
+    return this->_mode;
+}
+
+bool Channel::getInviteMode() const {
+	if (this->_mode.find("i") != this->_mode.end())
+		return true;
+	return false;
+}
+
+bool Channel::checkInvite(std::string nickname)
+{
+    if (this->_inviteName.find(nickname) == this->_inviteName.end()){
+        return false;
+    }
+    else{
+        this->_inviteName.erase(nickname);
+        return true;
+    }
+}

@@ -87,6 +87,12 @@ class Server
 		std::string	getPassword() const;
 		void 		changeChannelNick(Client& client, const std::string& before, const std::string& before_prefix);
 		bool 		isClient(const std::string& nickname);
+		std::string handleJoin(Client &client, std::stringstream &_bufferStream);
+		std::string processJoinChannels(Client &client, const std::string &channelName, const std::string &accessKey, std::string &result);
+		std::string clientJoinChannel(Client &client, std::string &ch_name, std::string &key);
+		Channel 	*createChannel(std::string ch_name, std::string key, Client &client);
+		void 		broadcast(std::string &channel_name, const std::string &msg);
+		void 		changeEvent(std::vector<struct kevent> &change_list, uintptr_t ident, int16_t filter, uint16_t flags, uint32_t fflags, intptr_t data, void *udata);
+		std::string makeCRLF(std::string buffer);
 };
-
 #endif

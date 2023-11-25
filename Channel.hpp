@@ -35,6 +35,8 @@ private:
     std::set<Client *> _clients;
     std::set<Client *> _operators;
 
+    std::set<std::string> _mode;
+    std::set<std::string> _inviteName;
     // Private copy constructor and copy assignment operator
 
 public:
@@ -56,13 +58,17 @@ public:
     int setTopic(Client &client, const std::string &topic);
     int setMode(Client &client, const std::string &mode);
     int sendMessage(Client &client, const std::string &message);
-
+    
+    std::string getPassword();
+    bool getInviteMode() const;
+    bool checkInvite(std::string nickname);
+    
     // Public member functions to access private members
     void getAuth();
     std::set<Client *> getClients();
     std::string getName();
     std::map<std::string, Client> getUsers();
+    std::set<std::string> getMode();
 };
-
 
 #endif

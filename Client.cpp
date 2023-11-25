@@ -150,6 +150,10 @@ std::string Client::getPrefix()
 }
 
 
+void Client::joinChannel(Channel *channel){
+	this->_joinedChannels[channel->getName()] = *channel;	
+}
+
 void	Client::disconnectClientFromChannel()
 {
 	// size_t	size;

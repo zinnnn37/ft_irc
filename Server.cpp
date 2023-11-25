@@ -408,3 +408,207 @@ std::string	Server::getPassword() const
 {
 	return (this->_password);
 }
+
+
+// 채널 참가 처리 함수
+std::string Server::processJoinChannels(Client &client, const std::string &channelName, const std::string &accessKey, std::string &result)
+{
+    std::vector<std::string> channels;
+    std::stringstream channelStream(channelName);
+    std::string currentChannel;
+
+    // 채널 이름에서 ','를 기준으로 분리하여 벡터에 추가
+    while (std::getline(channelStream, currentChannel, ','))
+    {
+        currentChannel.erase(std::remove(currentChannel.begin(), currentChannel.end(), '\r'));
+        currentChannel.erase(std::remove(currentChannel.begin(), currentChannel.end(), '\n'));
+        channels.push_back(currentChannel);
+    }
+
+    std::vector<std::string> accessKeys;
+    std::stringstream keyStream(accessKey);
+    std::string currentKey;
+    // 액세스 키에서 ','를 기준으로 분리하여 벡터에 추가
+    while (std::getline(keyStream, currentKey, ','))
+    {
+        currentKey.erase(std::remove(currentKey.begin(), currentKey.end(), '\r'));
+        currentKey.erase(std::remove(currentKey.begin(), currentKey.end(), '\n'));
+        accessKeys.push_back(currentKey);
+    }
+
+    unsigned int index = 0;
+
+    // 채널과 액세스 키에 대한 루프
+    for (std::vector<std::string>::iterator it = channels.begin(); it != channels.end(); it++)
+    {
+        if (index < accessKeys.size()){
+			std::string key = accessKeys[index];
+            result += clientJoinChannel(client, *it, accessKeys[index]);
+		}
+        else{
+			std::string key = "";
+            result += clientJoinChannel(client, *it, key);
+
+		}
+        index++;
+    }
+	return result;
+}
+
+
+// JOIN 명령어 처리
+std::string Server::handleJoin(Client &client, std::stringstream &_bufferStream)
+{
+    // 클라이언트가 특정 채널에 참가하려는 경우를 처리하는 함수
+    // 채널에 참가하는 동작을 수행하고, 결과를 반환
+    // 결과는 문자열로 반환되어 클라이언트에게 전달
+
+    std::string result; // 결과를 담을 문자열
+
+    std::string channelName;
+    std::string accessKey;
+
+    _bufferStream >> channelName; // 버퍼에서 채널 이름 읽기
+    _bufferStream >> accessKey;    // 버퍼에서 액세스 키 읽기
+
+    // JOIN 명령에 필요한 매개변수가 충분하지 않을 경우 에러 메시지 생성
+    if (channelName.empty())
+    {
+        result += "461 " + client.getNick() + " JOIN :Not enough parameters";
+        return result;
+    }
+
+    // 클라이언트가 최대 채널 수에 가입했을 경우 에러 메시지 생성
+    if (client.getChannels().size() > 10)
+    {
+        result += "405 " + client.getNick() + " " + channelName + " :You have joined too many channels";
+        return result;
+    }
+
+    // 채널 이름이 '#'로 시작하지 않으면 '#'을 추가
+    if (channelName[0] != '#')
+        channelName = "#" + channelName;
+
+    // 채널과 액세스 키에 대한 처리를 담당하는 새로운 함수 호출
+	result = processJoinChannels(client, channelName, accessKey, result);
+    return result; // 최종 결과 반환
+}
+
+Channel *Server::createChannel(std::string ch_name, std::string key, Client &client){
+	Channel *newchannel = new Channel(key, client);
+	this->_channels[ch_name] = newchannel;
+	return newchannel;
+}
+
+// ### /**MODE (-i, -t, -k, -o, -l) :**  op권한이 있으면, +-로 각종 설정 기능 사용 가능
+
+//  /mode #채널명 +i (초대한 사람만 들어올수 있게함)
+//  /mode #채널명 +t (op만 TOPIC을 변경할 수 있게 함)
+//  /mode #채널명 +k 비밀번호 (채널에 비밀번호를 설정)
+//  /mode #채널명 +o 닉네임 (op권한을 줌)
+//  /mode #채널명 +l number (number 만큼 입장가능 인원을 제한함)
+
+// std::
+
+std::string Server::clientJoinChannel(Client &client, std::string &ch_name, std::string &key)
+{
+	std::string 	response;
+	Channel 		*p_channel;
+
+
+	if (this->_channels.find(ch_name) != this->_channels.end())
+		p_channel = this->_channels[ch_name]; // 체널이 있는 경우
+	else
+		p_channel = createChannel(ch_name, key, client); // 체널이 없는 경우
+
+	if ((!p_channel->getPassword().empty() && key.empty())  // 비밀 번호 존재하는데 client 쪽의 비밀번호가 없는 경우
+		|| (!p_channel->getPassword().empty() && key != p_channel->getPassword()) // 비밀 번호가 다른 경우
+		|| (p_channel->getPassword().empty() && !key.empty())) // 비밀 번호가 없는데 client가 비밀번호를 보낸 경우 
+	{
+		std::string response;
+		response += "475 " + client.getNick() + " " + ch_name + " :Cannot join channel (+k)";
+		return response;
+	}
+	if (p_channel->getInviteMode() && !p_channel->checkInvite(client.getNick()))
+	{
+		std::string response;
+		response += "473 " + client.getNick() + " " + ch_name + " :Cannot join channel (+i)";
+		return response;
+	}
+
+	try
+	{
+		// 사용자 목록을 담을 빈 문자열 초기화
+		// 채널의 사용자 목록을 얻어옴
+		std::string s_users = "";
+		std::set<Client *> users = p_channel->getClients();
+
+		// 클라이언트가 사용자 목록에 없으면 채널에 가입
+		if (users.find(&client) == users.end()) {
+			// p_channel->joinClient(client, COMMON);
+		}
+
+		// 클라이언트를 채널에 가입시킴
+		client.joinChannel(p_channel);
+
+		// 채널의 모든 사용자에 대한 루프
+		for (std::set<Client *>::iterator it = users.begin(); it != users.end(); ++it)
+			s_users.append((*it)->getNick() + " "); // 사용자 목록에 사용자 이름을 추가
+
+		// 채널 가입 메시지를 브로드캐스트
+		broadcast(ch_name, RPL_JOIN(client.getPrefix(), ch_name));
+
+
+		// 채널의 토픽이 비어있지 않으면 토픽과 관련된 응답을 추가
+		// if (!p_channel->getTopic().empty())
+		// {
+			// "332 " + user + " " + channel + " " + topic
+			// "333 " + user + " " + channel + " " + nick + " " + setat
+			// response += makeCRLF(RPL_TOPIC(client.getUsername(), ch_name, p_channel->getTopic()));
+			// response += makeCRLF(RPL_TOPICWHOTIME(client.getUsername(), ch_name, p_channel->getTopicUser(), p_channel->getTopicTime()));
+		// }
+
+		// 사용자 목록에 대한 응답을 추가
+		// response += makeCRLF(RPL_NAMREPLY(client.getNickname(), '=', ch_name, s_users));
+
+		// 사용자 목록의 끝에 대한 응답을 추가
+		// response += makeCRLF(RPL_ENDOFNAMES(client.getNickname(), ch_name));
+	}
+	catch (const std::exception &e)
+	{
+		// 예외가 발생한 경우 (예: 채널에서 사용자가 차단된 경우)
+		// 차단된 채널에 대한 에러 메시지를 응답에 추가
+		// response += makeCRLF(ERR_BANNEDFROMCHAN(client.getNickname(), ch_name));
+	}
+
+	return response;
+}
+
+std::string Server::makeCRLF(std::string buffer){
+	return buffer += "\r\n";
+}
+
+// change_list 에 새 이벤트 추가
+void Server::changeEvent(std::vector<struct kevent> &change_list, uintptr_t ident, int16_t filter, uint16_t flags, uint32_t fflags, intptr_t data, void *udata)
+{
+	(void)change_list;
+	struct kevent temp_event;
+
+	// kevent 구조체인 temp_event를 인자들로 설정
+	EV_SET(&temp_event, ident, filter, flags, fflags, data, udata);
+	// 설정한 이벤트를 kevent 배열에 추가
+	this->_changeList.push_back(temp_event);
+}
+
+void Server::broadcast(std::string &channel_name, const std::string &msg)
+{
+	Channel *channel = this->_channels[channel_name];
+
+	std::set<Client *> users = channel->getClients();
+	for (std::set<Client *>::iterator u_it = users.begin(); u_it != users.end(); ++u_it)
+	{
+		int c_socket = (*u_it)->getSocket();
+		(*u_it)->appendSendData(makeCRLF(msg));
+		changeEvent(_changeList, c_socket, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
+	}
+}

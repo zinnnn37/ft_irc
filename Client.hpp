@@ -38,8 +38,8 @@ class	Client
 		std::string	_nick;
 		std::string	_userName;
 
-		std::string	_buf;
-		std::string	_sendData;
+		std::string	_buf; 		// server -> client;
+		std::string	_sendData;  // client -> server
 
 		std::map<std::string, Channel>	_joinedChannels;
 		std::set<Channel *>	_invited;
@@ -78,6 +78,7 @@ class	Client
 		
 		std::string getPrefix();
 		std::map<std::string, Channel> getChannels();
+		void 		joinChannel(Channel *channel);
 };
 
 #endif
