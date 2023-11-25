@@ -15,12 +15,16 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
+#include "Channel.hpp"
+
 #include <iostream>
 #include <unistd.h>
 #include <string>
 #include <set>
+#include <map>
 
-class	Channel;
+class Channel;
+
 
 class	Client
 {
@@ -37,16 +41,16 @@ class	Client
 		std::string	_buf;
 		std::string	_sendData;
 
-		std::set<Channel *>	_joinedChannels;
+		std::map<std::string, Channel>	_joinedChannels;
 		std::set<Channel *>	_invited;
 
+
+	public:
+		Client( int socket, std::string addr );
 		Client();
 		Client( const Client &c );
 
 		Client	&operator=( const Client &c );
-
-	public:
-		Client( int socket, std::string addr );
 		~Client();
 
 		bool	isRegistered() const;
@@ -71,6 +75,9 @@ class	Client
 		void		clearSendData();
 
 		void		disconnectClientFromChannel();
+		
+		std::string getPrefix();
+		std::map<std::string, Channel> getChannels();
 };
 
 #endif

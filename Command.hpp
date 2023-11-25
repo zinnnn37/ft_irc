@@ -26,20 +26,22 @@ class	Server;
 
 class	Command
 {
-	private:
-		Server	*_server;
+private:
+	Server	*_server;
 
-		Command( const Command &c );
+	Command( const Command &c );
 
-		Server	*_getServer() const;
+	Server	*_getServer() const;
 
-	public:
-		Command();
-		Command( Server *server );
-		~Command();
+public:
+	Command();
+	Command( Server *server );
+	~Command();
 
-		// commands
-		void	pass( Client *client, std::istringstream &iss );
+	// commands
+	void		pass(Client *client, std::istringstream &iss);
+	std::string	nick(Client *client, std::istringstream &buffer_stream);
+
 };
 
 #endif

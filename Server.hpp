@@ -77,6 +77,7 @@ class Server
 		void		_free();
 		void		_exit( const char *errmsg );
 
+
 	public:
 		Server( int port, std::string password );
 		~Server();
@@ -84,6 +85,8 @@ class Server
 		void		run();
 
 		std::string	getPassword() const;
+		void 		changeChannelNick(Client& client, const std::string& before, const std::string& before_prefix);
+		bool 		isClient(const std::string& nickname);
 };
 
 #endif

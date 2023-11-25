@@ -288,10 +288,9 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 
 	if (cmd == "PASS")
 		this->_command->pass(client, ss);
-	// 	case "NICK":
-	// 		this->_command.nick(client, ss);
-	// 		break ;
-		
+	if (cmd == "NICK")
+		this->_command->nick(client, ss);
+
 	// 	case "USER":
 	// 		this->_command.user(client, ss);
 	// 		break ;
@@ -331,6 +330,51 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 	// client->appendSend();	// response 받아서 crlf 붙여서 append. 이거를 _sendData에서 Clinet로 보냄
 	std::cout << "deal with cmd" << std::endl;
 	client->setBuf(buf.substr(crlf + 2));	// crlf 이후 문자열
+}
+
+
+bool Server::isClient(const std::string& nickname)
+{
+    ClientMap::iterator it = this->_clients.begin();
+
+	for (; it != this->_clients.end(); it++){
+		if (it->second->getNick() == nickname)
+			return true;
+	}
+	return false;
+}
+
+void Server::changeChannelNick(Client& client, const std::string& before, const std::string& before_prefix)
+{
+	(void)before;
+	std::string ch_name;
+	std::map<std::string, Channel> channels = client.getChannels();
+	std::set<int> c_sockets;
+	// int auth;
+
+	for (std::map<std::string, Channel>::iterator m_it = channels.begin(); m_it != channels.end(); m_it++)
+	{
+				// 서버에 있는 channels 
+		ch_name = m_it->second.getName();
+		// auth = (this->_channels[ch_name])->getAuth()[before];
+		// (this->channels[ch_name])->deleteClient(before);
+		// (this->channels[ch_name])->joinClient(client, auth);
+
+		// std::map<std::string, Client> users = (this->_channels[ch_name])->getUsers();
+		// for (std::map<std::string, Client>::iterator u_it = users.begin(); u_it != users.end(); u_it++)
+		// {
+		// 	c_sockets.insert(u_it->second.getSocket());
+		// }
+	}
+
+	for (std::set<int>::iterator s_it = c_sockets.begin(); s_it != c_sockets.end(); s_it++)
+	{
+		std::string response;
+		response += ":" + before_prefix + " NICK :" + client.getNick();
+		std::cout << response << "\n";
+		// this->send_data[*s_it] += makeCRLF(response);
+		// changeEvent(change_list, *s_it, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
+	}
 }
 
 void	Server::_sendDataToClient( uintptr_t ident )

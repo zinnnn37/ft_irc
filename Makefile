@@ -17,7 +17,8 @@ SRC_FILES	=	main\
 				Utils\
 				Client\
 				Command\
-				PASS
+				PASS\
+				Channel
 
 SRCS		=	$(addsuffix .cpp, $(SRC_FILES))
 

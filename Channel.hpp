@@ -16,41 +16,53 @@
 #define CHANNEL_HPP
 
 #include <string>
+#include <set>
+#include <map>
+#include "Client.hpp"
 
-class	Channel
+class Client;
+
+class Channel
 {
-	private:
-		bool	_isInviteOnly;
-		bool	_isTopicRestricted;
+private:
+    bool _isInviteOnly;
+    bool _isTopicRestricted;
 
-		std::string			_channelName;
-		std::string			_topic;
-		std::string			_password;
+    std::string _channelName;
+    std::string _topic;
+    std::string _password;
 
-		std::set<Client *>	_clients;
-		std::set<Client *>	_operators;
+    std::set<Client *> _clients;
+    std::set<Client *> _operators;
 
-		Channel();
-		Channel( const Channel &c );
+    // Private copy constructor and copy assignment operator
 
-		Channel	&operator=( const Channel &c );
+public:
+    // Public default constructor and parameterized constructor
+    Channel();
+    Channel(const std::string &channelName, Client &client);
+    Channel(const Channel &c);
+    Channel &operator=(const Channel &c);
 
-	public:
-		Channel( const std::string &channelName, Client &client );
-		~Channel();
+    // Public destructor
+    ~Channel();
 
-		int	addClient( Client &client );
-		int	removeClient( Client &client );
-		int	addOperator( Client &client );
-		int	removeOperator( Client &client );
+    // Member functions
+    int addClient(Client &client);
+    int removeClient(Client &client);
+    int addOperator(Client &client);
+    int removeOperator(Client &client);
+    int kickClient(Client &client);
+    int setTopic(Client &client, const std::string &topic);
+    int setMode(Client &client, const std::string &mode);
+    int sendMessage(Client &client, const std::string &message);
 
-		int	kickClient( Client &client );
-
-		int	setTopic( Client &client, const std::string &topic );
-
-		int	setMode( Client &client, const std::string &mode );
-
-		int	sendMessage( Client &client, const std::string &message );
+    // Public member functions to access private members
+    void getAuth();
+    std::set<Client *> getClients();
+    std::string getName();
+    std::map<std::string, Client> getUsers();
 };
+
 
 #endif

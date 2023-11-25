@@ -134,6 +134,22 @@ void	Client::appendSendData( std::string sendData )
 	this->_sendData.append(sendData);
 }
 
+
+std::map<std::string, Channel> Client::getChannels()
+{
+	return this->_joinedChannels;
+}
+
+
+std::string Client::getPrefix()
+{
+    std::string username = "!" + this->_userName;
+    // std::string hostname = "@" + this->_;
+
+    return this->_nick + username;
+}
+
+
 void	Client::disconnectClientFromChannel()
 {
 	// size_t	size;

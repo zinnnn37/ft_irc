@@ -34,3 +34,28 @@ Server	*Command::_getServer() const
 {
 	return (this->_server);
 }
+
+
+// NICK 명령어 처리
+std::string Command::nick(Client *client, std::istringstream &buffer_stream)
+{
+	std::string 		name;
+	std::string 		pre_nick;
+	std::string			pre_prefix;
+	std::string 		response;
+
+	if (!(buffer_stream >> name)){
+		response += "431 "+ client->getNick() + " :Nickname not given";
+	}
+	else{
+		if (this->_server->isClient(name))
+			response += "433 "+name +" "+name+" :Nickname is already in use";
+		else{
+			pre_nick = client->getNick();
+			pre_prefix = client->getPrefix();
+			client->setNick(name);
+			this->_server->changeChannelNick(*client, pre_nick, pre_prefix);
+		}
+	}
+	return response;
+}
