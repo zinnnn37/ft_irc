@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 12:29:37 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 14:55:52 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,8 +262,6 @@ void	Server::_handleMsg( Client *client )
 			std::cout << "[ SERVER ] message recieved from " << client->getSocket() << ": " << line << std::endl;
 
 			// command 처리
-			std::cout << "buf : " << buf << std::endl;
-			std::cout << "line: " << line << std::endl;
 			this->_handleCommand(client, line, buf, crlf);
 			// client->clearBuf();
 			// break ;
@@ -328,7 +326,6 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 	// 		break ;
 	// }
 	// client->appendSend();	// response 받아서 crlf 붙여서 append. 이거를 _sendData에서 Clinet로 보냄
-	std::cout << "deal with cmd" << std::endl;
 	client->setBuf(buf.substr(crlf + 2));	// crlf 이후 문자열
 }
 

@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 10:51:45 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 12:22:38 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 14:55:35 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void	Command::pass( Client *client, std::istringstream &iss )
 		return ;
 	}
 
+	client->setSendData("Password accepted\n\r\n");
 	client->setRegistered(true);
 
-	std::cout << "< Client " << client->getSocket() << " > command success" << std::endl;
+	std::cout << "< Client " << client->getSocket() << " > PASS success" << std::endl;
 }
