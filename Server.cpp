@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 12:08:56 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 12:11:07 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -359,7 +359,7 @@ void	Server::_sendDataToClient( uintptr_t ident )
 	}
 }
 
-std::string	Server::_getPassword() const
+std::string	Server::getPassword() const
 {
 	return (this->_password);
 }

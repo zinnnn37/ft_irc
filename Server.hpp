@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 12:09:58 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 12:12:09 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ class Server
 		void		_init();
 		void		_setEvent( int socket, int16_t filter, uint16_t flags, uint32_t fflags, intptr_t data, void *udata );
 
-		std::string	_getPassword() const;
 
 		void		_handleEvent( struct kevent &kev );
 
@@ -78,7 +77,9 @@ class Server
 		Server( int port, std::string password );
 		~Server();
 
-		void	run();
+		void		run();
+
+		std::string	getPassword() const;
 };
 
 #endif
