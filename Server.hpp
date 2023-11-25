@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 12:18:13 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 17:08:57 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ class Server
 		std::string	getPassword() const;
 		void 		changeChannelNick(Client& client, const std::string& before, const std::string& before_prefix);
 		bool 		isClient(const std::string& nickname);
-		std::string handleJoin(Client &client, std::stringstream &_bufferStream);
+		std::string handleJoin(Client &client, std::istringstream &_bufferStream);
 		std::string processJoinChannels(Client &client, const std::string &channelName, const std::string &accessKey, std::string &result);
 		std::string clientJoinChannel(Client &client, std::string &ch_name, std::string &key);
 		Channel 	*createChannel(std::string ch_name, std::string key, Client &client);

@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 14:55:52 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 17:08:59 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,9 +286,10 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 
 	if (cmd == "PASS")
 		this->_command->pass(client, ss);
-	if (cmd == "NICK")
+	else if (cmd == "NICK")
 		this->_command->nick(client, ss);
-
+	else if (cmd == "JOIN")
+		this->handleJoin(*client, ss);
 	// 	case "USER":
 	// 		this->_command.user(client, ss);
 	// 		break ;
@@ -457,7 +458,7 @@ std::string Server::processJoinChannels(Client &client, const std::string &chann
 
 
 // JOIN 명령어 처리
-std::string Server::handleJoin(Client &client, std::stringstream &_bufferStream)
+std::string Server::handleJoin(Client &client, std::istringstream &_bufferStream)
 {
     // 클라이언트가 특정 채널에 참가하려는 경우를 처리하는 함수
     // 채널에 참가하는 동작을 수행하고, 결과를 반환
@@ -576,6 +577,7 @@ std::string Server::clientJoinChannel(Client &client, std::string &ch_name, std:
 	}
 	catch (const std::exception &e)
 	{
+		std::cout << "EXCEPTION!!" << std::endl;
 		// 예외가 발생한 경우 (예: 채널에서 사용자가 차단된 경우)
 		// 차단된 채널에 대한 에러 메시지를 응답에 추가
 		// response += makeCRLF(ERR_BANNEDFROMCHAN(client.getNickname(), ch_name));
@@ -610,5 +612,6 @@ void Server::broadcast(std::string &channel_name, const std::string &msg)
 		int c_socket = (*u_it)->getSocket();
 		(*u_it)->appendSendData(makeCRLF(msg));
 		changeEvent(_changeList, c_socket, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
+		std::cout << "< Client " << c_socket << " > joined " << channel_name << std::endl;
 	}
 }
