@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 10:04:30 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 10:53:26 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,11 @@ void	Client::setBuf( std::string &buf )
 void	Client::setBuf( std::string buf )
 {
 	this->_buf = buf;
+}
+
+void	Client::setSendData( std::string sendData )
+{
+	this->_sendData = sendData;
 }
 
 void	Client::clearBuf()

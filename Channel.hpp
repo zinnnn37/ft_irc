@@ -6,17 +6,16 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:41 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 19:03:25 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 11:39:46 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#pragma once
 
 #ifndef CHANNEL_HPP
 #define CHANNEL_HPP
 
-#include "Server.hpp"
-#include "Client.hpp"
-
-class	Client;
+#include <string>
 
 class	Channel
 {

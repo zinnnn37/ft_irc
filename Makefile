@@ -6,7 +6,7 @@
 #    By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/15 11:51:53 by minjinki          #+#    #+#              #
-#    Updated: 2023/11/22 12:39:59 by minjinki         ###   ########.fr        #
+#    Updated: 2023/11/25 12:08:24 by minjinki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,9 @@ NAME		=	ircserv
 SRC_FILES	=	main\
 				Server\
 				Utils\
-				Client
+				Client\
+				Command\
+				PASS
 
 SRCS		=	$(addsuffix .cpp, $(SRC_FILES))
 

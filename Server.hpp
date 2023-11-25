@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 10:02:12 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 12:09:58 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,10 @@
 #include <fcntl.h>
 #include <exception>
 
+#include "Command.hpp"
 #include "Client.hpp"
-// #include "Channel.hpp"
-// #include "Command.hpp"
+#include "Channel.hpp"
 #include "Define.hpp"
-
-class	Channel;
-class	Client;
 
 class Server
 {
@@ -51,29 +48,31 @@ class Server
 
 		std::map<int, Client *>				_clients;
 		std::map<std::string, Channel *>	_channels;
-		// Command								_command;
+		Command								_command;
 
 		Server();
 		Server( const Server &s );
 
 		Server &operator=( const Server &s );
 
-		void	_init();
-		void	_setEvent( int socket, int16_t filter, uint16_t flags, uint32_t fflags, intptr_t data, void *udata );
+		void		_init();
+		void		_setEvent( int socket, int16_t filter, uint16_t flags, uint32_t fflags, intptr_t data, void *udata );
 
-		void	_handleEvent( struct kevent &kev );
+		std::string	_getPassword() const;
 
-		void	_acceptNewClient();
-		void	_readDataFromClient( struct kevent &kev );
-		void	_sendDataToClient( uintptr_t ident );
-		void	_disconnectClient( uintptr_t ident );
+		void		_handleEvent( struct kevent &kev );
 
-		void	_handleMsg( Client *client );
-		void	_handleCommand( Client *client, std::string line, std::string buf, size_t crlf );
+		void		_acceptNewClient();
+		void		_readDataFromClient( struct kevent &kev );
+		void		_sendDataToClient( uintptr_t ident );
+		void		_disconnectClient( uintptr_t ident );
 
-		void	_setNonBlock( int fd );
-		void	_free();
-		void	_exit( const char *errmsg );
+		void		_handleMsg( Client *client );
+		void		_handleCommand( Client *client, std::string line, std::string buf, size_t crlf );
+
+		void		_setNonBlock( int fd );
+		void		_free();
+		void		_exit( const char *errmsg );
 
 	public:
 		Server( int port, std::string password );

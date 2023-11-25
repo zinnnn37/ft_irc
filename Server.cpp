@@ -6,11 +6,12 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 10:24:50 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 12:08:56 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+#include "Client.hpp"
 
 Server::Server() {}
 
@@ -20,7 +21,7 @@ Server::Server( const Server &s )
 }
 
 Server::Server( int port, std::string password )
-	: _serverName("ircserv"), _port(port), _serverSoc(FD_DEFAULT), _password(password), _kq(FD_DEFAULT)
+	: _serverName("ircserv"), _port(port), _serverSoc(FD_DEFAULT), _password(password), _kq(FD_DEFAULT), _command(this)
 {
 	(void)_port;
 	(void)_password;
@@ -282,12 +283,8 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 
 	(void)client;
 
-	// switch (cmd)
-	// {
-	// 	case "PASS":
-	// 		this->_command.pass(client, ss);
-	// 		break ;
-		
+	if (cmd == "PASS")
+		this->_command.pass(client, ss);
 	// 	case "NICK":
 	// 		this->_command.nick(client, ss);
 	// 		break ;
@@ -360,4 +357,9 @@ void	Server::_sendDataToClient( uintptr_t ident )
 		if (client->isClosed())
 			this->_disconnectClient(ident);
 	}
+}
+
+std::string	Server::_getPassword() const
+{
+	return (this->_password);
 }

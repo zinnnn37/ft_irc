@@ -6,9 +6,11 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 19:13:46 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 11:39:43 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#pragma once
 
 #ifndef DEFINE_HPP
 #define DEFINE_HPP
@@ -16,9 +18,6 @@
 #include <map>
 #include <set>
 #include <vector>
-
-class	Client;
-class	Channel;
 
 typedef std::map<int, Client *>				ClientMap;
 typedef std::map<std::string, Channel *>	ChannelMap;

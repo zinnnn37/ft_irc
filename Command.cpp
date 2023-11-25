@@ -1,44 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Command.hpp                                        :+:      :+:    :+:   */
+/*   Command.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/11 12:53:48 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 12:10:16 by minjinki         ###   ########.fr       */
+/*   Created: 2023/11/25 10:51:07 by minjinki          #+#    #+#             */
+/*   Updated: 2023/11/25 11:57:19 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#include "Command.hpp"
+#include "Client.hpp"
+#include "Define.hpp"
 
-#ifndef COMMAND_HPP
-#define COMMAND_HPP
+class	Server;
 
-#include <iostream>
-#include <sstream>
-#include <string>
+Command::Command() {}
 
-#include "Server.hpp"
-
-class	Client;
-
-class	Command
+Command::Command( const Command &c )
 {
-	private:
-		Server	*_server;
+	(void)c;
+}
 
-		Command( const Command &c );
+Command::Command( Server *server )
+	: _server(server)
+{
+}
 
-		Server	*_getServer() const;
+Command::~Command() {}
 
-	public:
-		Command();
-		Command( Server *server );
-		~Command();
-
-		// commands
-		void	pass( Client *client, std::istringstream &iss );
-};
-
-#endif
+Server	*Command::_getServer() const
+{
+	return (this->_server);
+}

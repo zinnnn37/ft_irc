@@ -6,19 +6,19 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:46 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 10:04:22 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 11:45:19 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#pragma once
 
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
 #include <string>
 #include <set>
-#include "Channel.hpp"
 
 class	Channel;
-class	Server;
 
 class	Client
 {
@@ -61,10 +61,9 @@ class	Client
 		std::string	getBuf() const;
 		void		setBuf( std::string &buf );
 		void		setBuf( std::string buf );
-		void		setCharBuf( char *buf );
-		std::string	getPreCmd() const;
 		void		clearBuf();
 		void		appendBuf( std::string buf );
+		void		setSendData( std::string sendData );
 		std::string	getSendData() const;
 		void		clearSendData();
 
