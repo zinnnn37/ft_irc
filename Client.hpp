@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:46 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/24 16:48:13 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 10:04:22 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ class	Client
 		void		setUserName( const std::string &userName );
 		std::string	getBuf() const;
 		void		setBuf( std::string &buf );
+		void		setBuf( std::string buf );
+		void		setCharBuf( char *buf );
 		std::string	getPreCmd() const;
 		void		clearBuf();
 		void		appendBuf( std::string buf );

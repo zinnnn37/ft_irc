@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/24 16:48:25 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 10:04:30 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,11 @@ void	Client::setBuf( std::string &buf )
 	this->_buf = buf;
 }
 
+void	Client::setBuf( std::string buf )
+{
+	this->_buf = buf;
+}
+
 void	Client::clearBuf()
 {
 	this->_buf.clear();
@@ -121,16 +126,16 @@ void	Client::appendBuf( std::string buf )
 
 void	Client::disconnectClientFromChannel()
 {
-	size_t	size;
+	// size_t	size;
 
-	for (ChannelVec::iterator it = this->_joinedChannels.begin();
-			it != this->_joinedChannels.end(); it++)
-	{
-		size = (*it)->getClients().size();
-		(*it)->removeClient(client);
+	// for (ChannelVec::iterator it = this->_joinedChannels.begin();
+	// 		it != this->_joinedChannels.end(); it++)
+	// {
+	// 	size = (*it)->getClients().size();
+	// 	(*it)->removeClient(client);
 
-		// 클라이언트가 채널에 남아있는 유일한 클라이언트였다면 채널 삭제
-		if (size == 1)
-			this->_server->removeChannel(*it);
-	}
+	// 	// 클라이언트가 채널에 남아있는 유일한 클라이언트였다면 채널 삭제
+	// 	if (size == 1)
+	// 		this->_server->removeChannel(*it);
+	// }
 }

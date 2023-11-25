@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/24 16:49:59 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 10:20:13 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,16 +224,18 @@ void	Server::_readDataFromClient( struct kevent &kev )
 	byte = recv(kev.ident, buf, sizeof(buf), 0);
 	if (byte <= 0)
 	{
-		if (byte < ERROR && errno == EAGAIN)
+		if (byte <= ERROR && errno == EAGAIN)
 			return ;
 		std::cerr << "Error: recv error" << std::endl;
 		// broadcast to all client
 		this->_disconnectClient(kev.ident);
-		return ;
 	}
-	buf[byte] = '\0';
-	client->appendBuf(buf);
-	this->_handleMsg(client);
+	else
+	{
+		buf[byte] = '\0';
+		client->appendBuf(buf);
+		this->_handleMsg(client);
+	}
 }
 
 void	Server::_handleMsg( Client *client )
@@ -252,29 +254,22 @@ void	Server::_handleMsg( Client *client )
 
 		if (crlf != std::string::npos)
 		{
-			line = buf.substr(0, crlf + 1);
+			line = buf.substr(0, crlf + 2);
 			std::cout << "[ SERVER ] message recieved: " << line << std::endl;
 
 			// command 처리
-			this->_handleCommand(client, line);
-			buf = buf.substr(crlf + 2);	// crlf 이후 문자열
+			std::cout << "buf : " << buf << std::endl;
+			std::cout << "line: " << line << std::endl;
+			this->_handleCommand(client, line, buf, crlf);
 			// client->clearBuf();
 			// break ;
 		}
 		else
-		{
-			std::string	left = buf;
-
-			if (!left.empty())
-				client->appendBuf(left);
-				// 이거 뭔가 이상한 거 같은데..
-				// ^D 중간에 눌러본 거 확인해보기
 			break ;
-		}
 	}
 }
 
-void	Server::_handleCommand( Client *client, std::string line )
+void	Server::_handleCommand( Client *client, std::string line, std::string buf, size_t crlf )
 {
 	std::string			cmd;
 	std::string			msg;
@@ -287,60 +282,62 @@ void	Server::_handleCommand( Client *client, std::string line )
 
 	(void)client;
 
-	switch (cmd)
-	{
-		case "PASS":
-			this->_command.pass(client, ss);
-			break ;
+	// switch (cmd)
+	// {
+	// 	case "PASS":
+	// 		this->_command.pass(client, ss);
+	// 		break ;
 		
-		case "NICK":
-			this->_command.nick(client, ss);
-			break ;
+	// 	case "NICK":
+	// 		this->_command.nick(client, ss);
+	// 		break ;
 		
-		case "USER":
-			this->_command.user(client, ss);
-			break ;
+	// 	case "USER":
+	// 		this->_command.user(client, ss);
+	// 		break ;
 		
-		case "JOIN":
-			this->_command.join(client, ss);
-			break ;
+	// 	case "JOIN":
+	// 		this->_command.join(client, ss);
+	// 		break ;
 		
-		case "PRIVMSG":
-			this->_command.privmsg(client, ss);
-			break ;
+	// 	case "PRIVMSG":
+	// 		this->_command.privmsg(client, ss);
+	// 		break ;
 		
-		case "KICK":
-			this->_command.kick(client, ss);
-			break ;
+	// 	case "KICK":
+	// 		this->_command.kick(client, ss);
+	// 		break ;
 
-		case "INVITE":
-			this->_command.invite(client, ss);
-			break ;
+	// 	case "INVITE":
+	// 		this->_command.invite(client, ss);
+	// 		break ;
 		
-		case "TOPIC":
-			this->_command.topic(client, ss);
-			break ;
+	// 	case "TOPIC":
+	// 		this->_command.topic(client, ss);
+	// 		break ;
 		
-		case "MODE":
-			this->_command.mode(client, ss);
-			break ;
+	// 	case "MODE":
+	// 		this->_command.mode(client, ss);
+	// 		break ;
 		
-		case "PART":
-			this->_command.part(client, ss);
-			break ;
+	// 	case "PART":
+	// 		this->_command.part(client, ss);
+	// 		break ;
 		
-		case "EXIT"
-			this->_command.exit(client, ss);
-			break ;
-	}
-	client->appendSend();	// response 받아서 crlf 붙여서 append. 이거를 _sendData에서 Clinet로 보냄
+	// 	case "EXIT"
+	// 		this->_command.exit(client, ss);
+	// 		break ;
+	// }
+	// client->appendSend();	// response 받아서 crlf 붙여서 append. 이거를 _sendData에서 Clinet로 보냄
+	std::cout << "deal with cmd" << std::endl;
+	client->setBuf(buf.substr(crlf + 2));	// crlf 이후 문자열
 }
 
 void	Server::_sendDataToClient( uintptr_t ident )
 {
 	(void)ident;
 	int					byte;
-	const char			*data;
+	std::string			data;
 	ClientMap::iterator	it = this->_clients.find(ident);
 	Client					*client = it->second;
 
@@ -350,8 +347,8 @@ void	Server::_sendDataToClient( uintptr_t ident )
 
 	std::cout << "[ SERVER ] message sent: " << client->getSendData() << "from: " << client->getNick() << std::endl;
 
-	data = client->getSendData().c_str();
-	byte = send(ident, data, data.length(), 0);
+	data = client->getSendData();
+	byte = send(ident, data.c_str(), data.length(), 0);
 	if (byte == RET_ERROR)
 	{
 		std::cerr << "[ SERVER ] Error: send error" << std::endl;
@@ -362,6 +359,5 @@ void	Server::_sendDataToClient( uintptr_t ident )
 		client->clearSendData();
 		if (client->isClosed())
 			this->_disconnectClient(ident);
-		continue ;
 	}
 }

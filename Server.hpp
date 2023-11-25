@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/22 19:04:01 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 10:02:12 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ class Server
 		void	_disconnectClient( uintptr_t ident );
 
 		void	_handleMsg( Client *client );
-		void	_handleCommand( Client *client, std::string line );
+		void	_handleCommand( Client *client, std::string line, std::string buf, size_t crlf );
 
 		void	_setNonBlock( int fd );
 		void	_free();
