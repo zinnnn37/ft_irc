@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 10:20:13 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 10:24:50 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ void	Server::_acceptNewClient()
 	Client *newClient = new Client(clientSoc, addr);
 	this->_clients.insert(std::make_pair(clientSoc, newClient));
 
-	std::cout << "[ SERVER ] New Client connected" << std::endl;
+	std::cout << "[ SERVER ] New Client connected: " << newClient->getSocket() << std::endl;
 }
 
 void	Server::_readDataFromClient( struct kevent &kev )
@@ -226,7 +226,7 @@ void	Server::_readDataFromClient( struct kevent &kev )
 	{
 		if (byte <= ERROR && errno == EAGAIN)
 			return ;
-		std::cerr << "Error: recv error" << std::endl;
+		std::cerr << "< Client " << kev.ident << " > Error: recv error" << std::endl;
 		// broadcast to all client
 		this->_disconnectClient(kev.ident);
 	}
@@ -255,7 +255,7 @@ void	Server::_handleMsg( Client *client )
 		if (crlf != std::string::npos)
 		{
 			line = buf.substr(0, crlf + 2);
-			std::cout << "[ SERVER ] message recieved: " << line << std::endl;
+			std::cout << "[ SERVER ] message recieved from " << client->getSocket() << ": " << line << std::endl;
 
 			// command 처리
 			std::cout << "buf : " << buf << std::endl;
