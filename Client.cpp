@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 10:53:26 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 12:24:33 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,11 @@ void	Client::clearSendData()
 void	Client::appendBuf( std::string buf )
 {
 	this->_buf.append(buf);
+}
+
+void	Client::appendSendData( std::string sendData )
+{
+	this->_sendData.append(sendData);
 }
 
 void	Client::disconnectClientFromChannel()

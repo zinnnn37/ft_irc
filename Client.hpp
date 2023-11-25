@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:46 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 11:45:19 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 12:23:59 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
+#include <iostream>
+#include <unistd.h>
 #include <string>
 #include <set>
 
@@ -65,6 +67,7 @@ class	Client
 		void		appendBuf( std::string buf );
 		void		setSendData( std::string sendData );
 		std::string	getSendData() const;
+		void		appendSendData( std::string sendData );
 		void		clearSendData();
 
 		void		disconnectClientFromChannel();

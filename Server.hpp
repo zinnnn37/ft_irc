@@ -6,9 +6,11 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 12:12:09 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 12:18:13 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#pragma once
 
 #ifndef SERVER_HPP
 #define SERVER_HPP
@@ -33,6 +35,8 @@
 #include "Channel.hpp"
 #include "Define.hpp"
 
+class	Command;
+
 class Server
 {
 	private:
@@ -48,7 +52,7 @@ class Server
 
 		std::map<int, Client *>				_clients;
 		std::map<std::string, Channel *>	_channels;
-		Command								_command;
+		Command								*_command;
 
 		Server();
 		Server( const Server &s );

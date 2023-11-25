@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 11:39:43 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/25 12:20:28 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ typedef std::set<Channel *>					InvitedSet;
 #define ERR_USERONCHANNEL(user, nick, channel)								"443 " + nick + " " + channel + " :is already on channel"
 #define ERR_NEEDMOREPARAMS(command)											"461 " + command + " :Need more parameters"
 #define ERR_ALREADYREGISTRED()												"462 :You have already registered"
-#define ERR_PASSWDMISMATCH()												"464 :Password incorrect"
+#define ERR_PASSWDMISMATCH()												"464 :Password incorrect "
 #define ERR_YOUREBANNEDCREEP()												"465 :You are banned from this server"
 #define ERR_CHANNELISFULL(channel)											"471 " + channel + " :Channel is full"
 #define ERR_UNKNOWNMODE(mode)												"472 " + mode + " :unknown mode"
@@ -93,7 +93,7 @@ typedef std::set<Channel *>					InvitedSet;
 #define RPL_ENDOFWHO(user, name)											"315 " + user + " " + name + " :End of /WHO list"
 #define RPL_LISTSTART(user)													"321 " + user + " Channel :Users Name"
 #define RPL_LIST(user, channel, visible, mode, topic)						"322 " + user + " " + channel + " " + visible + " :" + mode + " " + topic
-#define RPL_LISTEND(user)														"323 " + user + ":End of /LIST"
+#define RPL_LISTEND(user)													"323 " + user + ":End of /LIST"
 #define RPL_CHANNELMODEIS(user, channel, modes, params)						"324 " + user + " " + channel + " " + modes + params
 #define RPL_CHANNELCREATETIME(user, channel, date)							"329 " + user + " " + channel + " :" + date
 #define RPL_NOTOPIC(user, channel)											"331 " + user + " " + channel + " :No topic is set"
