@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:41 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 11:39:46 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:09:24 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ public:
     Channel(const Channel &c);
     Channel &operator=(const Channel &c);
 
+    bool    operator<( const Channel &c ) const;
+
     // Public destructor
     ~Channel();
 
@@ -69,6 +71,8 @@ public:
     std::string getName();
     std::map<std::string, Client> getUsers();
     std::set<std::string> getMode();
+
+
 };
 
 #endif

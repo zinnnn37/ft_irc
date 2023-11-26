@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 10:51:07 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 15:25:32 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:18:45 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void Command::nick( Server *server, Client *client, std::istringstream &buffer_s
 	else
 	{
 		if (server->isClient(name))
-			client->setSendData(ERR_NICKNAMEINUSE(name));
+			client->setSendData(ERR_NICKNAMEINUSE(name) + CRLF);
 		else
 		{
 			pre_nick = client->getNick();

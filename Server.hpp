@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 15:19:43 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 16:55:57 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ class Server
 		struct kevent						_eventList[128];	// 발생한 이벤트 배열
 		std::vector<struct kevent>			_changeList;		// kqueue에 등록할 이벤트 리스트
 
-		std::map<int, Client *>				_clients;
-		std::map<std::string, Channel *>	_channels;
+		std::map<int, Client *>				_clients;	// Server에 존재하는 모든 클라이언트, int는 소켓 번호
+		std::map<std::string, Channel *>	_channels;	// Server에 존재하는 모든 채널, string은 채널 이름
 
 		Server();
 		Server( const Server &s );
@@ -94,5 +94,7 @@ class Server
 		void 		broadcast(std::string &channel_name, const std::string &msg);
 		void 		changeEvent(std::vector<struct kevent> &change_list, uintptr_t ident, int16_t filter, uint16_t flags, uint32_t fflags, intptr_t data, void *udata);
 		std::string makeCRLF(std::string buffer);
+
+		Channel		*getChannel( std::string channelName );
 };
 #endif

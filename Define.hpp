@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 11:25:56 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:02:42 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,14 @@ typedef std::map<std::string, Channel *>	ChannelMap;
 typedef std::vector<struct kevent>			EventVec;
 typedef std::set<Channel *>					ChannelSet;
 typedef std::set<Channel *>					InvitedSet;
+typedef std::set<Client *>					ClientSet;
 
 #define SUCCESS 0
 #define FAILURE -1
 
 #define ERROR -1
+#define CHANNEL 1
+#define NICKNAME 2
 
 #define RET_SUCCESS 0
 #define RET_ERROR -1

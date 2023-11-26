@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 15:26:00 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:20:14 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,7 +295,7 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 	else if (cmd == "USER")
 		command.user(client, ss);
 	else if (cmd == "PRIVMSG")
-		command.privmsg(client, ss);
+		command.privmsg(this, client, ss);
 	// 	case "USER":
 	// 		this->_command.user(client, ss);
 	// 		break ;
@@ -620,4 +620,23 @@ void Server::broadcast(std::string &channel_name, const std::string &msg)
 		changeEvent(_changeList, c_socket, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
 		std::cout << "< Client " << c_socket << " > joined " << channel_name << std::endl;
 	}
+}
+
+
+/**********************************************************
+ * minjinki ***********************************************
+ **********************************************************/
+
+Channel	*Server::getChannel( std::string channelName )
+{
+	ChannelMap::iterator	it;
+
+	for (it = this->_channels.begin(); it != this->_channels.end(); it++)
+	{
+		std::cout << "\nchannelName: " << channelName << std::endl;
+		std::cout << "it->second->getName(): " << it->second->getName() << std::endl;
+		if (it->second->getName() == channelName)
+			return (it->second);
+	}
+	return (NULL);
 }

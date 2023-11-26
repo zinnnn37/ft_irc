@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:48 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 16:05:07 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 16:50:34 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ class	Command
 		Command	&operator=( const Command &c );
 
 		void	_split( Client *client, std::istringstream &iss, std::string *split );
+		void	_sendToChannel( Server *server, Client *client, std::string &target, std::string &message );
+		void	_sendToClient( Server *server, Client *client, std::string &target, std::string &message );
 
 	public:
 		// singleton
@@ -43,7 +45,7 @@ class	Command
 		void	pass( Server *server, Client *client, std::istringstream &iss );
 		void	nick( Server *server, Client *client, std::istringstream &iss );
 		void	user( Client *client, std::istringstream &iss );
-		void	privmsg( Client *client, std::istringstream &iss );
+		void	privmsg( Server *server, Client *client, std::istringstream &iss );
 };
 
 #endif

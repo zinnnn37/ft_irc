@@ -27,6 +27,11 @@ Channel &Channel::operator=(const Channel &c)
     return *this;
 }
 
+bool    Channel::operator<( const Channel &c ) const
+{
+    return (this->_channelName < c._channelName);
+}
+
 // 생성자
 Channel::Channel(const std::string &ChannelName, Client &client)
     : _isInviteOnly(false), _isTopicRestricted(false), _channelName(ChannelName)
