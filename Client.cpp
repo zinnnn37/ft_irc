@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 12:24:33 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 11:30:28 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,21 @@ std::string	Client::getUserName() const
 	return (this->_userName);
 }
 
+std::string	Client::getRealName() const
+{
+	return (this->_realName);
+}
+
+std::string	Client::getHostName() const
+{
+	return (this->_hostName);
+}
+
+std::string	Client::getServerName() const
+{
+	return (this->_serverName);
+}
+
 std::string	Client::getBuf() const
 {
 	return (this->_buf);
@@ -97,6 +112,21 @@ void	Client::setNick( const std::string &nick )
 void	Client::setUserName( const std::string &userName )
 {
 	this->_userName = userName;
+}
+
+void	Client::setRealName( const std::string &realName )
+{
+	this->_realName = realName;
+}
+
+void	Client::setHostName( const std::string &hostName )
+{
+	this->_hostName = hostName;
+}
+
+void	Client::setServerName( const std::string &serverName )
+{
+	this->_serverName = serverName;
 }
 
 void	Client::setBuf( std::string &buf )

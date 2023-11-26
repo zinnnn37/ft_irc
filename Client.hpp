@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:46 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 12:23:59 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 11:29:44 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ class	Client
 
 		std::string	_nick;
 		std::string	_userName;
+		std::string	_realName;
+		std::string	_hostName;
+		std::string	_serverName;
 
 		std::string	_buf; 		// server -> client;
 		std::string	_sendData;  // client -> server
@@ -64,6 +67,12 @@ class	Client
 		void		setNick( const std::string &nick );
 		std::string	getUserName() const;
 		void		setUserName( const std::string &userName );
+		std::string	getRealName() const;
+		void		setRealName( const std::string &realName );
+		std::string	getHostName() const;
+		void		setHostName( const std::string &hostName );
+		std::string	getServerName() const;
+		void		setServerName( const std::string &serverName );
 		std::string	getBuf() const;
 		void		setBuf( std::string &buf );
 		void		setBuf( std::string buf );

@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 10:53:45 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 11:25:56 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef std::set<Channel *>					InvitedSet;
 /*
  * Server messages
  */
-#define RPL_WELCOME(nick)											"001 " + nick ":Welcome to our ircserv " + nick + ". Enjoy your stay!"
+#define RPL_WELCOME(nick)											"001 " + nick + ":Welcome to our ircserv " + nick + ". Enjoy your stay!"
 #define RPL_YOURHOST(serverName)									"002 " + serverName + " :Your host is " + serverName + ", running version 1.0"
 // -> Server.hpp에 hostname 변수 추가
 
@@ -71,6 +71,7 @@ typedef std::set<Channel *>					InvitedSet;
 #define ERR_USERNOTINCHANNEL(nick, channel)							"441 " + nick + " " + channel + " :They are not on that channel"
 #define ERR_NOTONCHANNEL(channel)									"442 " + channel + " :You are not in the channel"
 #define ERR_USERONCHANNEL(nick, channel)							"443 " + nick + " " + channel + " :is already on channel"
+#define ERR_NOTREGISTERED()											"451 :You have not registered"
 #define ERR_NEEDMOREPARAMS(command)									"461 " + command + " :Need more parameters"
 #define ERR_ALREADYREGISTRED()										"462 :You have already registered"
 #define ERR_PASSWDMISMATCH()										"464 :Password incorrect "
