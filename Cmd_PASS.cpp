@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   PASS.cpp                                           :+:      :+:    :+:   */
+/*   Cmd_PASS.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 10:51:45 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 14:55:35 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 15:26:17 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "Client.hpp"
 #include "Define.hpp"
 
-void	Command::pass( Client *client, std::istringstream &iss )
+void	Command::pass( Server *server, Client *client, std::istringstream &iss )
 {
 	std::string		password;
 
@@ -34,7 +34,7 @@ void	Command::pass( Client *client, std::istringstream &iss )
 		return ;
 	}
 
-	if (password != this->_getServer()->getPassword())
+	if (password != server->getPassword())
 	{
 		client->setSendData(ERR_PASSWDMISMATCH());
 		client->appendSendData(CRLF);

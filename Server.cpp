@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 15:10:37 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 15:26:00 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Server::Server( const Server &s )
 }
 
 Server::Server( int port, std::string password )
-	: _serverName("ircserv"), _port(port), _serverSoc(FD_DEFAULT), _password(password), _kq(FD_DEFAULT), _command(new Command(this))
+	: _serverName("ircserv"), _port(port), _serverSoc(FD_DEFAULT), _password(password), _kq(FD_DEFAULT)
 {
 	(void)_port;
 	(void)_password;
@@ -29,7 +29,6 @@ Server::Server( int port, std::string password )
 
 Server::~Server()
 {
-	delete this->_command;
 }
 
 Server	&Server::operator=( const Server &s )
@@ -276,6 +275,7 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 	std::string			cmd;
 	std::string			msg;
 	std::istringstream	ss(line);	// space 단위로 문자열 읽기
+	Command				&command = Command::getInstance();
 
 	ss >> cmd;
 
@@ -285,17 +285,17 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 	(void)client;
 
 	if (cmd == "PASS")
-		this->_command->pass(client, ss);
+		command.pass(this, client, ss);
 	else if (client->isRegistered() == false)
 		client->setSendData(ERR_NOTREGISTERED() + std::string(CRLF));
 	else if (cmd == "NICK")
-		this->_command->nick(client, ss);
+		command.nick(this, client, ss);
 	else if (cmd == "JOIN")
 		this->handleJoin(*client, ss);
 	else if (cmd == "USER")
-		this->_command->user(client, ss);
+		command.user(client, ss);
 	else if (cmd == "PRIVMSG")
-		this->_command->privmsg(client, ss);
+		command.privmsg(client, ss);
 	// 	case "USER":
 	// 		this->_command.user(client, ss);
 	// 		break ;
