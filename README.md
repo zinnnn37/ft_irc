@@ -23,7 +23,7 @@
 => irssi로 접속 가능
 
 ### doing
-* PRIVMSG 작성 중
+* PRIVMSG 작성 중<br />
 => JOIN 시 channel에 client가 제대로 추가 안 됨 + joinedChannel에 channel이 제대로 추가 안 됨 이슈로 client가 channel에 없는 것으로 나와서 채널 전송 불가 <br />
 => 개인에게 보내는 건 아직 손 안 댐<br /><br />
 
