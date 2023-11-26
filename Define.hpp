@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 12:20:28 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 10:39:04 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,9 @@ typedef std::set<Channel *>					InvitedSet;
 /*
  * Server messages
  */
-#define RPL_WELCOME(user)													"001 " + user ":Welcome to our ircserv " + user + ". Enjoy your stay!"
+#define RPL_WELCOME(nick)													"001 " + nick ":Welcome to our ircserv " + nick + ". Enjoy your stay!"
 #define RPL_YOURHOST(serverName)											"002 " + serverName + " :Your host is " + serverName + ", running version 1.0"
+// -> Server.hpp에 hostname 변수 추가
 
 /*
  * Error Replies
@@ -65,12 +66,11 @@ typedef std::set<Channel *>					InvitedSet;
 #define ERR_NOSUCHCHANNEL(channel)											"403 :No such channel named " + channel
 #define ERR_CANNOTSENDTOCHAN(channel)										"404 :Cannot send to channel " + channel
 #define ERR_TOOMANYCHANNELS()												"405 :You have joined too many channels"
-// #define ERR_NOORIGIN()														"409 :missing the originator parameter"
 #define ERR_NONICKNAMEGIVEN()												"431 :Nickname not given"
 #define ERR_NICKNAMEINUSE(nick)												"433 " + nick + " :is already in use"
 #define ERR_USERNOTINCHANNEL(nick, channel)									"441 " + nick + " " + channel + " :They are not on that channel"
 #define ERR_NOTONCHANNEL(channel)											"442 " + channel + " :You are not in the channel"
-#define ERR_USERONCHANNEL(user, nick, channel)								"443 " + nick + " " + channel + " :is already on channel"
+#define ERR_USERONCHANNEL(nick, channel)									"443 " + nick + " " + channel + " :is already on channel"
 #define ERR_NEEDMOREPARAMS(command)											"461 " + command + " :Need more parameters"
 #define ERR_ALREADYREGISTRED()												"462 :You have already registered"
 #define ERR_PASSWDMISMATCH()												"464 :Password incorrect "
@@ -79,44 +79,44 @@ typedef std::set<Channel *>					InvitedSet;
 #define ERR_UNKNOWNMODE(mode)												"472 " + mode + " :unknown mode"
 #define ERR_INVITEONLYCHAN(channel)											"473 " + channel + " :You are not invited"
 #define ERR_BANNEDFROMCHAN(channel)											"474 " + channel + " :You are banned from this channel"
-#define ERR_BADCHANNELKEY(user, channel)									"475 " + user + " " + channel + " :Cannot join channel (+k)"
-#define ERR_CHANOPRIVSNEEDED(user, channel)									"482 " + user + " " + channel + " :You must be a channel operator"
-#define ERR_CHANOPRIVSNEEDED2(user, channel)								"482 " + user + " " + channel + " :You must be a channel half-operator"
-#define ERR_CHANOPRIVSNEEDEDMODE(user, channel, mode)						"482 " + user + " " + channel + " :You must have channel op access or above to set channel mode " + mode
-#define ERR_NOOPPARAM(user, channel, mode, modename, param)					"696 " + user + " " + channel + " " + mode + " * :You must specify a parameter for the " + modename + " mode. Syntax: <" + param + ">." 
-#define ERR_LONGPWD(user, channel)											":" + user + " " + channel + " :Too long password"
-#define ERR_QUIT(user, message)												"ERROR :Closing link: (" + user + ") [Quit: " + message + "]"
+#define ERR_BADCHANNELKEY(channel)											"475 " + channel + " :Wrong channel key"
+#define ERR_CHANOPRIVSNEEDED(channel)										"482 " + channel + " :You are not channel operator"
+// #define ERR_NOOPPARAM(nick, channel, mode, modename, param)					"696 " + nick + " " + channel + " " + mode + " * :You must specify a parameter for the " + modename + " mode. Syntax: <" + param + ">." 
+// #define ERR_LONGPWD(nick, channel)											":" + nick + " " + channel + " :Too long password"
+// #define ERR_QUIT(nick, message)												"ERROR :Closing link: (" + nick + ") [Quit: " + message + "]"
 
 /*
  * Command Responses
  */
-#define RPL_ENDOFWHO(user, name)											"315 " + user + " " + name + " :End of /WHO list"
-#define RPL_LISTSTART(user)													"321 " + user + " Channel :Users Name"
-#define RPL_LIST(user, channel, visible, mode, topic)						"322 " + user + " " + channel + " " + visible + " :" + mode + " " + topic
-#define RPL_LISTEND(user)													"323 " + user + ":End of /LIST"
-#define RPL_CHANNELMODEIS(user, channel, modes, params)						"324 " + user + " " + channel + " " + modes + params
-#define RPL_CHANNELCREATETIME(user, channel, date)							"329 " + user + " " + channel + " :" + date
-#define RPL_NOTOPIC(user, channel)											"331 " + user + " " + channel + " :No topic is set"
-#define RPL_TOPIC(user, channel, topic)										"332 " + user + " " + channel + " " + topic
-#define RPL_TOPICWHOTIME(user, channel, nick, setat)						"333 " + user + " " + channel + " " + nick + " " + setat
-#define RPL_INVITING(user, nick, channel)									"341 " + user + " " + nick + " :" + channel
-#define RPL_WHOREPLY(client, channel, user, host, server, nick, opt, real)	"352 " + client + " " + channel + " " + user + " " + host + " " + server + " " + nick + " " + opt + " " + ":0 " + real
-#define RPL_NAMREPLY(user, symbol, channel, users)							"353 " + user + " " + symbol + " " + channel + " :" + users
-#define RPL_ENDOFNAMES(user, channel)										"366 " + user + " " + channel + " :End of /NAMES list."
-#define RPL_ENDOFBANLIST(user, channel)										"368 " + user + " " + channel + " :End of channel ban list"
+#define RPL_ENDOFWHO(name)													"315 " + name + " :End of /WHO list"
+#define RPL_LISTSTART()														"321 Channels :Users Name"
+#define RPL_LIST(channel, visible, topic)									"322 " + channel + " " + visible + " :" + topic
+#define RPL_LISTEND()														"323 :End of /LIST"
+#define RPL_CHANNELMODEIS(channel, mode, mode_params)						"324 " + channel + " " + mode + " " + mode_params
+#define RPL_CHANNELCREATETIME(channel, date)								"329 " + channel + " :created at " + date
+#define RPL_NOTOPIC(channel)												"331 " + channel + " :Topic not set"
+#define RPL_TOPIC(channel, topic)											"332 " + channel + " :" + topic
+#define RPL_TOPICWHOTIME(channel, nick, setat)								"333 " + channel + " " + nick + " " + setat
+// topic이 마지막으로 변경된 시간과 변경한 사용자
+#define RPL_INVITING(nick, channel)											"341 " + nick + " " + channel
+#define RPL_WHOREPLY(channel, user, host, server, nick, opt, real)			"352 " + channel + " " + user + " " + host + " " + server + " " + nick + " " + opt + " " + ":0 " + real
+// :0은 hopcount, 서버와 사용자 사이의 거리
+#define RPL_NAMREPLY(nick, channel, users)									"353 " + nick + " " + channel + " :" + users
+#define RPL_ENDOFNAMES(channel)												"366 " + channel + " :End of /NAMES list."
+#define RPL_ENDOFBANLIST(channel)											"368 " + channel + " :End of Ban list"
 
 /*
  * Commands
  */
-#define RPL_QUIT(user, message)												":" + user + " QUIT :Quit: " + message
-#define RPL_PONG(user, ping)												":" + user + " PONG :" + ping
-#define RPL_JOIN(user, channel)												":" + user + " JOIN :" + channel
-#define RPL_PRIVMSG(user, target, msg)										":" + user + " PRIVMSG " + target + msg
-#define RPL_MY_TOPIC(user, channel, topic)									":" + user + " TOPIC " + channel + " " + topic
-#define RPL_PART(user, channel)												":" + user + " PART " + " :" + channel
-#define RPL_KICK(user, channel, nick)										":" + user + " KICK " + channel + " " + nick + " :"
-#define RPL_INVITE(user, nick, channel)										":" + user + " INVITE " + nick + " :" + channel
-#define RPL_MODE(user, channel, modes, params)								":" + user + " MODE " + channel + " " + modes + params
+#define RPL_QUIT(nick, message)												":" + nick + " QUIT :Quit: " + message
+#define RPL_PONG(nick, ping)												":" + nick + " PONG :" + ping
+#define RPL_JOIN(nick, channel)												":" + nick + " JOIN :" + channel
+#define RPL_PRIVMSG(nick, target, msg)										":" + nick + " PRIVMSG " + target + msg
+#define RPL_MY_TOPIC(nick, channel, topic)									":" + nick + " TOPIC " + channel + " " + topic
+#define RPL_PART(nick, channel)												":" + nick + " PART " + " :" + channel
+#define RPL_KICK(nick, channel, nick2)										":" + nick + " KICK " + channel + " " + nick2 + " :"
+#define RPL_INVITE(nick, nick, channel)										":" + nick + " INVITE " + nick + " :" + channel
+#define RPL_MODE(nick, channel, modes, params)								":" + nick + " MODE " + channel + " " + modes + params
 #define RPL_NICK(before, after)												":" + before + " NICK :" + after
 
 #endif
