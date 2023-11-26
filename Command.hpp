@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:48 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 12:18:02 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 09:52:52 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ public:
 	~Command();
 
 	// commands
-	void		pass(Client *client, std::istringstream &iss);
-	std::string	nick(Client *client, std::istringstream &buffer_stream);
+	void	pass(Client *client, std::istringstream &iss);
+	void	nick(Client *client, std::istringstream &buffer_stream);
 
 };
 
