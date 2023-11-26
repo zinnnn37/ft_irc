@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 10:51:07 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 10:55:37 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 15:25:32 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,23 @@ Command::Command( const Command &c )
 	(void)c;
 }
 
-Command::Command( Server *server )
-	: _server(server)
-{
-}
-
 Command::~Command() {}
 
-Server	*Command::_getServer() const
+Command	&Command::operator=( const Command &c )
 {
-	return (this->_server);
+	(void)c;
+	return (*this);
 }
 
+Command	&Command::getInstance()
+{
+	static Command	instance;
+
+	return (instance);
+}
 
 // NICK 명령어 처리
-void Command::nick(Client *client, std::istringstream &buffer_stream)
+void Command::nick( Server *server, Client *client, std::istringstream &buffer_stream )
 {
 	std::string 		name;
 	std::string 		pre_nick;
@@ -47,14 +49,14 @@ void Command::nick(Client *client, std::istringstream &buffer_stream)
 		client->setSendData(ERR_NONICKNAMEGIVEN());
 	else
 	{
-		if (this->_server->isClient(name))
+		if (server->isClient(name))
 			client->setSendData(ERR_NICKNAMEINUSE(name));
 		else
 		{
 			pre_nick = client->getNick();
 			pre_prefix = client->getPrefix();
 			client->setNick(name);
-			this->_server->changeChannelNick(*client, pre_nick, pre_prefix);
+			server->changeChannelNick(*client, pre_nick, pre_prefix);
 			
 			client->setSendData("NICK :" + name + "\n\r\n");
 			std::cout << "< Client " << client->getSocket() << " > nickname setted: " << name << std::endl;
