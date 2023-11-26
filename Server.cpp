@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 17:24:00 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 18:11:08 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -352,14 +352,14 @@ void Server::changeChannelNick(Client& client, const std::string& before, const 
 {
 	(void)before;
 	std::string ch_name;
-	std::map<std::string, Channel> channels = client.getChannels();
+	std::map<std::string, Channel *> channels = client.getChannels();
 	std::set<int> c_sockets;
 	// int auth;
 
-	for (std::map<std::string, Channel>::iterator m_it = channels.begin(); m_it != channels.end(); m_it++)
+	for (ChannelMap::iterator m_it = channels.begin(); m_it != channels.end(); m_it++)
 	{
 				// 서버에 있는 channels 
-		ch_name = m_it->second.getName();
+		ch_name = m_it->second->getName();
 		// auth = (this->_channels[ch_name])->getAuth()[before];
 		// (this->channels[ch_name])->deleteClient(before);
 		// (this->channels[ch_name])->joinClient(client, auth);
