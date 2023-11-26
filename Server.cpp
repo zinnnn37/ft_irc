@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 17:20:14 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:24:00 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -504,6 +504,7 @@ std::string Server::handleJoin(Client &client, std::istringstream &_bufferStream
 Channel *Server::createChannel(std::string ch_name, std::string key, Client &client){
 	Channel *newchannel = new Channel(key, client);
 	this->_channels[ch_name] = newchannel;
+	std::cout << "create channel: " << ch_name << std::endl;
 	return newchannel;
 }
 
@@ -634,8 +635,8 @@ Channel	*Server::getChannel( std::string channelName )
 	for (it = this->_channels.begin(); it != this->_channels.end(); it++)
 	{
 		std::cout << "\nchannelName: " << channelName << std::endl;
-		std::cout << "it->second->getName(): " << it->second->getName() << std::endl;
-		if (it->second->getName() == channelName)
+		std::cout << "it->first: " << it->first << std::endl;
+		if (it->first == channelName)
 			return (it->second);
 	}
 	return (NULL);
