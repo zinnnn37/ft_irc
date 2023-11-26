@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:46 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 11:29:44 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:35:26 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #define CLIENT_HPP
 
 #include "Channel.hpp"
+#include "Define.hpp"
 
 #include <iostream>
 #include <unistd.h>
@@ -44,7 +45,7 @@ class	Client
 		std::string	_buf; 		// server -> client;
 		std::string	_sendData;  // client -> server
 
-		std::map<std::string, Channel>	_joinedChannels;
+		std::map<std::string, Channel *>	_joinedChannels;
 		std::set<Channel *>	_invited;
 
 
@@ -86,8 +87,11 @@ class	Client
 		void		disconnectClientFromChannel();
 		
 		std::string getPrefix();
-		std::map<std::string, Channel> getChannels();
+		ChannelMap	getChannels();
 		void 		joinChannel(Channel *channel);
+
+		ChannelMap				&getJoinedChannel();
+		ChannelMap::iterator	findJoinedChannel( std::string &channelName );
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:09:18 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 17:25:35 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:38:20 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	Command::_sendToChannel(
 	Server *server, Client *client,
 	std::string &target, std::string &message )
 {
+	(void)message;
+
 	Channel	*channel;
 	std::string	prefix;
 
@@ -51,9 +53,17 @@ void	Command::_sendToChannel(
 		return ;
 	}
 
-	ClientSet	clients = channel->getClients();
-	// not in the channel
-	if (clients.find(client) == clients.end())
+	ChannelMap::iterator	it = client->findJoinedChannel(target);
+
+	ChannelMap::iterator	ch = client->getJoinedChannel().begin();
+
+	for(; ch != client->getJoinedChannel().end(); ch++)
+	{
+		std::cout << "ch->first: " << ch->first << std::endl;
+		std::cout << "ch->second: " << ch->second->getName() << std::endl;
+	}
+
+	if (it == client->getJoinedChannel().end())
 	{
 		client->setSendData(ERR_CANNOTSENDTOCHAN(target));
 		client->appendSendData(CRLF);
@@ -61,13 +71,13 @@ void	Command::_sendToChannel(
 	}
 
 	// in the channel
-	ClientSet::iterator	it;
+	// ClientSet::iterator	it;
 
-	for (it = clients.begin(); it != clients.end(); it++)
-	{
-		(*it)->setSendData(RPL_PRIVMSG(client->getPrefix(), target, message));
-		(*it)->appendSendData(CRLF);
-	}
+	// for (it = clients.begin(); it != clients.end(); it++)
+	// {
+	// 	(*it)->setSendData(RPL_PRIVMSG(client->getPrefix(), target, message));
+	// 	(*it)->appendSendData(CRLF);
+	// }
 }
 
 void	Command::_sendToClient(

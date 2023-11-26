@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 17:02:42 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:36:29 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 #include <map>
 #include <set>
 #include <vector>
+
+class Client;
+class Channel;
 
 typedef std::map<int, Client *>				ClientMap;
 typedef std::map<std::string, Channel *>	ChannelMap;
