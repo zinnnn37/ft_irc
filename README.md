@@ -16,18 +16,18 @@
 => https://www.alien.net.au/irc/irc2numerics.html 이거 보니까 ERR는 user 이름 안넣어도 되는 것 같아서 전부 뺌 && 메시지 일부 수정
 
 ### done
-* Command 클래스 Singleton으로 변경함
+* Command 클래스 Singleton으로 변경함<br />
 => handleCommand()에서 command.cmd() 형식으로 호출하면 됨. 따로 신경 쓸 부분 X<br />
 => 명령어에서 server 변수 필요하면 명령어 호출할 때 this 같이 넘기면 됨
-* USER 완성
+* USER 완성<br />
 => irssi로 접속 가능
-
----
 
 ### doing
 * PRIVMSG 작성 중
-=> JOIN 시 channel에 client가 제대로 추가 안 됨 + joinedChannel에 channel이 제대로 추가 안 됨 이슈로 client가 channel에 없는 것으로 나와서 채널 전송 불가
-=> 개인에게 보내는 건 아직 손 안 댐
+=> JOIN 시 channel에 client가 제대로 추가 안 됨 + joinedChannel에 channel이 제대로 추가 안 됨 이슈로 client가 channel에 없는 것으로 나와서 채널 전송 불가 <br />
+=> 개인에게 보내는 건 아직 손 안 댐<br /><br />
 
-어제 작성하신 거 기반으로 코드 짜보려고 했는데 없는 함수도 있고 뭔가 제대로 안 돌아가서 따로 작성했어요
+어제 작성하신 거 기반으로 코드 짜보려고 했는데 없는 함수도 있고 뭔가 제대로 안 돌아가서 따로 작성했어요<br />
 나중에 완성하시면 알려주시든가 해주시길..
+
+---
