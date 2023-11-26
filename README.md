@@ -11,7 +11,7 @@
 3. std::map<std::string, Channel> 말고 std::map<std::string, Channel *>로 쓰기<br />
 => 전자는 복사본 저장 아닌가요??? 포인터로 넣어야 원본 수정할 때 같이 수정될 거 같은데<br />
 => 일단 현재 실행되는 코드는 전부 포인터로 고쳤음<br />
-=> 이거 Define.hpp에 **ChannelMap**으로 typedef 되어 있으니까 이거 쓰세요
+=> 이거 Define.hpp에 _**ChannelMap**_으로 typedef 되어 있으니까 이거 쓰세요
 4. Define.hpp에 ERR 메시지랑 매개변수 수정했으니까 레퍼런스 말고 이거 보고 해주세요
 => https://www.alien.net.au/irc/irc2numerics.html 이거 보니까 ERR는 user 이름 안넣어도 되는 것 같아서 전부 뺌 && 메시지 일부 수정
 
