@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 17:08:57 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 10:44:27 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ class Server
 {
 	private:
 		std::string							_serverName;
+		std::string							_hostname;
 
 		int									_port;
 		int									_serverSoc;

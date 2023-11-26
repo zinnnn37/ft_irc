@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/25 17:08:59 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/26 10:46:08 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,6 +290,8 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 		this->_command->nick(client, ss);
 	else if (cmd == "JOIN")
 		this->handleJoin(*client, ss);
+	else if (cmd == "USER")
+		this->_command->user(client, ss);
 	// 	case "USER":
 	// 		this->_command.user(client, ss);
 	// 		break ;
