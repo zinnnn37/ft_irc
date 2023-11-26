@@ -6,7 +6,7 @@
 #    By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/15 11:51:53 by minjinki          #+#    #+#              #
-#    Updated: 2023/11/25 12:08:24 by minjinki         ###   ########.fr        #
+#    Updated: 2023/11/26 09:27:54 by minjinki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRC_FILES	=	main\
 				Utils\
 				Client\
 				Command\
-				PASS\
+				Cmd_PASS\
 				Channel
 
 SRCS		=	$(addsuffix .cpp, $(SRC_FILES))
