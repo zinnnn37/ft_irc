@@ -568,19 +568,21 @@ std::string Server::clientJoinChannel(Client &client, std::string &ch_name, std:
 
 
 		// 채널의 토픽이 비어있지 않으면 토픽과 관련된 응답을 추가
-		// if (!p_channel->getTopic().empty())
-		// {
-			// "332 " + user + " " + channel + " " + topic
-			// "333 " + user + " " + channel + " " + nick + " " + setat
-			// response += makeCRLF(RPL_TOPIC(client.getUsername(), ch_name, p_channel->getTopic()));
-			// response += makeCRLF(RPL_TOPICWHOTIME(client.getUsername(), ch_name, p_channel->getTopicUser(), p_channel->getTopicTime()));
-		// }
+		if (!p_channel->getTopic().empty())
+		{
+			std::string msg1 = "332 " + client.getUserName() + " " + ch_name + " " + p_channel->getTopic();
+			std::string msg2 = "333 " + client.getUserName() + " " + ch_name + " " + p_channel->getWhoSetTopic() + " " + p_channel->getTopicSetTime();
+			response += makeCRLF(msg1);
+			response += makeCRLF(msg2);
+		}
 
 		// 사용자 목록에 대한 응답을 추가
-		// response += makeCRLF(RPL_NAMREPLY(client.getNickname(), '=', ch_name, s_users));
+		std::string msg3 = "353 " + client.getNick() + " = " + ch_name + " :" + s_users;
+		response += makeCRLF(msg3);
 
 		// 사용자 목록의 끝에 대한 응답을 추가
-		// response += makeCRLF(RPL_ENDOFNAMES(client.getNickname(), ch_name));
+		std::string msg4 = "366 " + client.getNick() + " " + ch_name + " :End of /NAMES list.";
+		response += makeCRLF(msg4);
 	}
 	catch (const std::exception &e)
 	{

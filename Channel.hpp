@@ -31,12 +31,15 @@ private:
     std::string _channelName;
     std::string _topic;
     std::string _password;
+    std::string _topicSetUser;
+    std::string _topicSetTime;
 
     std::set<Client *> _clients;
     std::set<Client *> _operators;
 
     std::set<std::string> _mode;
     std::set<std::string> _inviteName;
+
     // Private copy constructor and copy assignment operator
 
 public:
@@ -73,6 +76,9 @@ public:
     std::set<std::string> getMode();
 
 
+    std::string getTopic();
+    std::string getWhoSetTopic();
+    std::string getTopicSetTime();
 };
 
 #endif

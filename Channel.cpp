@@ -70,10 +70,25 @@ int Channel::kickClient(Client &client)
     return 0; // 성공을 나타내는 값, 실패 시 적절한 값으로 변경
 }
 
+std::string Channel::getWhoSetTopic(){
+    return this->_topicSetUser;
+}
+
+std::string Channel::getTopicSetTime(){
+    return this->_topicSetTime;
+}
+
 // 토픽 설정
 int Channel::setTopic(Client &client, const std::string &topic)
 {
-    (void)client;
+	time_t clock_timer;
+    struct tm* tm_struct;
+
+	clock_timer = time(NULL);
+	tm_struct = localtime(&clock_timer);
+    
+    _topicSetUser = client.getNick();
+    _topicSetTime = std::to_string(clock_timer);
     _topic = topic;
     return 0; // 성공을 나타내는 값, 실패 시 적절한 값으로 변경
 }
@@ -145,4 +160,9 @@ bool Channel::checkInvite(std::string nickname)
         this->_inviteName.erase(nickname);
         return true;
     }
+}
+
+
+std::string Channel::getTopic(){
+    return this->_topic;
 }
