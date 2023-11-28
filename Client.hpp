@@ -15,6 +15,8 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
+#include "Command.hpp"
+#include "Client.hpp"
 #include "Channel.hpp"
 #include "Define.hpp"
 

@@ -18,15 +18,18 @@
 #include <string>
 #include <set>
 #include <map>
-#include "Client.hpp"
 
-class Client;
+#include "Client.hpp"
+#include "Define.hpp"
+
 
 class Channel
 {
 private:
     bool _isInviteOnly;
     bool _isTopicRestricted;
+
+    Client      *_owner;
 
     std::string _channelName;
     std::string _topic;
@@ -35,10 +38,13 @@ private:
     std::string _topicSetTime;
 
     std::set<Client *> _clients;
+    std::set<Client *> _bannedClients;
     std::set<Client *> _operators;
 
     std::set<std::string> _mode;
     std::set<std::string> _inviteName;
+
+    std::map<std::string, std::string> _clientAuth;
 
     // Private copy constructor and copy assignment operator
 
@@ -56,27 +62,31 @@ public:
 
     // Member functions
     int addClient(Client &client);
-    int removeClient(Client &client);
-    int addOperator(Client &client);
-    int removeOperator(Client &client);
     int kickClient(Client &client);
-    int setTopic(Client &client, const std::string &topic);
+    int addOperator(Client &client);
+    int removeClient(Client &client);
+    int removeOperator(Client &client);
     int setMode(Client &client, const std::string &mode);
+    int setTopic(Client &client, const std::string &topic);
     int sendMessage(Client &client, const std::string &message);
     
-    std::string getPassword();
     bool getInviteMode() const;
+    bool checkBan(Client& client);
     bool checkInvite(std::string nickname);
-    
+
     // Public member functions to access private members
     void getAuth();
-    std::set<Client *> getClients();
-    std::string getName();
-    std::map<std::string, Client> getUsers();
-    std::set<std::string> getMode();
+    void addBan(Client& client);
+    void joinClient(Client& client, std::string auth);
+    void setOwner(Client& client);
 
+    std::string getName();
+    std::set<std::string> getMode();
+    std::set<Client *> getClients();
+    std::map<std::string, Client> getUsers();
 
     std::string getTopic();
+    std::string getPassword();
     std::string getWhoSetTopic();
     std::string getTopicSetTime();
 };

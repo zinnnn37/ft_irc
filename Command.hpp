@@ -36,7 +36,10 @@ class	Command
 		void	_split( Client *client, std::istringstream &iss, std::string *split );
 		void	_sendToChannel( Server *server, Client *client, std::string &target, std::string &message );
 		void	_sendToClient( Server *server, Client *client, std::string &target, std::string &message );
-
+		
+		std::string _processJoinChannels(Server *server, Client &client, const std::string &channelName, const std::string &accessKey, std::string &result);
+		std::string _clientJoinChannel(Server *server, Client &client, std::string &ch_name, std::string &key);
+	
 	public:
 		// singleton
 		static Command	&getInstance();
@@ -46,6 +49,7 @@ class	Command
 		void	nick( Server *server, Client *client, std::istringstream &iss );
 		void	user( Client *client, std::istringstream &iss );
 		void	privmsg( Server *server, Client *client, std::istringstream &iss );
+		void 	join(Server *server, Client *client, std::istringstream &iss);
 };
 
 #endif
