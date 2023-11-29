@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:09:18 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 10:34:15 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 11:03:57 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void	Command::_sendToClient(
 		client->appendSendData(CRLF);
 		return ;
 	}
+
+	std::cout << "\n[ SERVER ] PRIVMSG to " << target << " : " << message << std::endl;
 
 	targetClient = server->getClient(target);
 	targetClient->setSendData(
