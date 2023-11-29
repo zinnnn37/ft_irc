@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:48 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 12:54:56 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 13:33:03 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ class	Command
 		void	user( Client *client, std::istringstream &iss );
 		void	privmsg( Server *server, Client *client, std::istringstream &iss );
 		void 	join( Server *server, Client *client, std::istringstream &iss );
-		void	invite( Client *client, std::istringstream &iss );
+		void	invite( Server *server, Client *client, std::istringstream &iss );
 };
 
 #endif

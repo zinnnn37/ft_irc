@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 13:20:10 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 13:30:35 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ ChannelMap	&Client::getJoinedChannel()
 	return (this->_joinedChannels);
 }
 
-ChannelMap::iterator	Client::findJoinedChannel( std::string &channelName )
+Channel	*Client::findJoinedChannel( std::string &channelName )
 {
-	return (this->_joinedChannels.find(channelName));
+	return (this->_joinedChannels[channelName]);
 }

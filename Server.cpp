@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 13:19:09 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 13:33:08 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,6 +300,8 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 		command.user(client, ss);
 	else if (cmd == "PRIVMSG")
 		command.privmsg(this, client, ss);
+	else if (cmd == "INVITE")
+		command.invite(this, client, ss);
 	// 	case "USER":
 	// 		this->_command.user(client, ss);
 	// 		break ;
