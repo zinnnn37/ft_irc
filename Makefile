@@ -6,7 +6,7 @@
 #    By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/15 11:51:53 by minjinki          #+#    #+#              #
-#    Updated: 2023/11/26 15:26:30 by minjinki         ###   ########.fr        #
+#    Updated: 2023/11/29 11:54:24 by minjinki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,9 @@ all			:	$(NAME)
 
 $(NAME)		:	$(OBJS)
 	$(CXX) $(CPPFLAGS) $(OBJS) -o $(NAME)
+
+mclean		:	$(NAME)
+	$(MAKE)	clean
 
 clean		:
 	$(RM) $(OBJS)

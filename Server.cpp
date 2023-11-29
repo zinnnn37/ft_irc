@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 11:11:10 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 12:16:33 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ void	Server::_readDataFromClient( struct kevent &kev )
 	byte = recv(kev.ident, buf, sizeof(buf), 0);
 	if (byte <= 0)
 	{
-		if (byte <= ERROR && errno == EAGAIN)
+		if (byte < ERROR)
 			return ;
 		std::cerr << "< Client " << kev.ident << " > Error: recv error" << std::endl;
 		// broadcast to all client
@@ -383,7 +383,6 @@ void Server::changeChannelNick(Client& client, const std::string& before, const 
 
 void	Server::_sendDataToClient( uintptr_t ident )
 {
-	(void)ident;
 	int					byte;
 	std::string			data;
 	ClientMap::iterator	it = this->_clients.find(ident);
@@ -393,11 +392,10 @@ void	Server::_sendDataToClient( uintptr_t ident )
 
 	if (client->getSendData().empty()) return ;
 
-	std::cout << "[ SERVER ] message sent: " << client->getSendData()
-		<< "< Client " << client->getSocket() << " > " << client->getNick() << std::endl;
+	std::cout << "[ SERVER ] message sent: " << client->getSendData() << std::endl;
 
 	data = client->getSendData();
-	byte = send(ident, data.c_str(), data.length(), 0);
+	byte = send(ident, data.c_str(), data.size(), 0);
 	if (byte == RET_ERROR)
 	{
 		std::cerr << "[ SERVER ] Error: send error" << std::endl;
@@ -644,11 +642,10 @@ Channel	*Server::getChannel( std::string channelName )
 
 	for (it = this->_channels.begin(); it != this->_channels.end(); it++)
 	{
-		std::cout << "\nchannelName: " << channelName << std::endl;
-		std::cout << "it->first: " << it->first << std::endl;
 		if (it->first == channelName)
 			return (it->second);
 	}
+
 	return (NULL);
 }
 

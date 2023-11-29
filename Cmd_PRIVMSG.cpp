@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:09:18 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 11:03:57 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 12:25:56 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	Command::privmsg( Server *server, Client *client, std::istringstream &iss )
 	std::string	message;
 
 	iss >> target;
+
 	std::getline(iss, message);	// 공백 포함해서 읽어옴
 
 	if (target.empty())
@@ -38,7 +39,8 @@ void	Command::_sendToChannel(
 	Server *server, Client *client,
 	std::string &target, std::string &message )
 {
-	(void)message;
+	std::cout << "\n[ SERVER ] PRIVMSG to Channel " << message << std::endl;
+	std::cout << message << std::endl;
 
 	Channel	*channel;
 	std::string	prefix;
@@ -46,15 +48,13 @@ void	Command::_sendToChannel(
 	channel = server->getChannel(target);
 	if (!channel)
 	{
-		client->setSendData(ERR_NOSUCHCHANNEL(target));
-		client->appendSendData(CRLF);
+		client->setSendData(ERR_NOSUCHCHANNEL(target) + CRLF);
 		return ;
 	}
 
 	if (!channel->isClient(client->getNick()))
 	{
-		client->setSendData(ERR_CANNOTSENDTOCHAN(target));
-		client->appendSendData(CRLF);
+		client->setSendData(ERR_CANNOTSENDTOCHAN(target) + CRLF);
 		return ;
 	}
 
@@ -67,8 +67,7 @@ void	Command::_sendToChannel(
 		if ((*it)->getNick() == client->getNick())
 			continue ;
 
-		(*it)->setSendData(RPL_PRIVMSG(client->getPrefix(), target, message));
-		(*it)->appendSendData(CRLF);
+		(*it)->setSendData(RPL_PRIVMSG(client->getPrefix(), target, message) + "\n");
 	}
 }
 
@@ -76,19 +75,17 @@ void	Command::_sendToClient(
 	Server *server, Client *client,
 	std::string &target, std::string &message )
 {
+	std::cout << "\n[ SERVER ] PRIVMSG to Client" << message << std::endl;
+
 	Client	*targetClient;
 
 	if (!server->isClient(target))
 	{
-		client->setSendData(ERR_NOSUCHNICK(target));
-		client->appendSendData(CRLF);
+		client->setSendData(ERR_NOSUCHNICK(target) + CRLF);
 		return ;
 	}
 
-	std::cout << "\n[ SERVER ] PRIVMSG to " << target << " : " << message << std::endl;
-
 	targetClient = server->getClient(target);
 	targetClient->setSendData(
-		RPL_PRIVMSG(client->getPrefix(), target, message));
-	targetClient->appendSendData(CRLF);
+		RPL_PRIVMSG(client->getPrefix(), target, message) + "\n");
 }
