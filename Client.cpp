@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 11:46:48 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 13:20:10 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,8 +180,9 @@ std::string Client::getPrefix()
 }
 
 
-void Client::joinChannel(Channel *channel){
-	this->_joinedChannels[channel->getName()] = channel;	
+void Client::joinChannel( Channel *channel )
+{
+	this->_joinedChannels[channel->getName()] = channel;
 }
 
 void	Client::disconnectClientFromChannel()

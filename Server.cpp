@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 12:16:33 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 13:19:09 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ Server::Server( int port, std::string password )
 
 Server::~Server()
 {
+	ChannelMap::iterator	it = this->_channels.begin();
+
+	for (; it != this->_channels.end(); it++)
+		delete it->second;
 }
 
 Server	&Server::operator=( const Server &s )
@@ -507,9 +511,10 @@ bool Server::isChannel(std::string &ch_name){
 //     return result; // 최종 결과 반환
 // }
 
-Channel *Server::createChannel(std::string ch_name, std::string key, Client &client){
+Channel *Server::createChannel( std::string ch_name, std::string key, Client &client){
 	Channel *newchannel = new Channel(key, client);
 	this->_channels[ch_name] = newchannel;
+	newchannel->setName(ch_name);
 	std::cout << "create channel: " << ch_name << std::endl;
 	return newchannel;
 }

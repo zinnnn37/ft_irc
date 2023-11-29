@@ -158,6 +158,11 @@ int Channel::sendMessage(Client &client, const std::string &message)
     return 0;
 }
 
+void    Channel::setName( std::string name )
+{
+    this->_channelName = name;
+}
+
 // 채널에 속한 클라이언트들 반환
 std::set<Client *> Channel::getClients()
 {

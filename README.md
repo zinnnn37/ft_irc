@@ -36,6 +36,7 @@
 
 1. JOIN 맨 처음에 할 시 유저 수가 2로 출력되는 문제<br />
 => 두 번째 들어오는 client 부터는 정상적으로 출력되는 듯
+2. JOIN할 때 joinedChannel에 여전히 추가 안 됨
 
 ### done
 * PRIVMSG

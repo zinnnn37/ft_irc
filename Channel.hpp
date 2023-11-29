@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:41 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 10:20:44 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 13:18:08 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ public:
     void addBan(Client& client);
     void joinClient(Client& client, std::string auth);
     void setOwner(Client& client);
+
+    void    setName( std::string name );
 
     std::string getName();
     std::set<std::string> getMode();
