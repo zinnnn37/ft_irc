@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:41 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 13:18:08 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 17:02:57 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ public:
     Channel &operator=(const Channel &c);
 
     bool    operator<( const Channel &c ) const;
+	bool	operator<=( const Channel &c ) const;
+	bool	operator>( const Channel &c ) const;
+	bool	operator>=( const Channel &c ) const;
 
     // Public destructor
     ~Channel();
@@ -93,6 +96,9 @@ public:
     std::string getTopicSetTime();
 
     bool    isClient( std::string nick );
+
+    void    removeClient( std::string nick );
+	void	removeAuth( std::string nick );
 };
 
 #endif

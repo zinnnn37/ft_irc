@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:09:18 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 12:25:56 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 17:02:34 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	Command::_sendToChannel(
 	Channel	*channel;
 	std::string	prefix;
 
+	// channel이 존재하는지 확인
 	channel = server->getChannel(target);
 	if (!channel)
 	{
@@ -52,6 +53,7 @@ void	Command::_sendToChannel(
 		return ;
 	}
 
+	// client가 channel에 속해있는지 확인
 	if (!channel->isClient(client->getNick()))
 	{
 		client->setSendData(ERR_CANNOTSENDTOCHAN(target) + CRLF);

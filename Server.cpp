@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 15:51:13 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:56:46 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -644,6 +644,11 @@ void Server::broadcast(std::string &channel_name, const std::string &msg)
 /**********************************************************
  * minjinki ***********************************************
  **********************************************************/
+
+ChannelMap	&Server::getChannels()
+{
+	return (this->_channels);
+}
 
 Channel	*Server::getChannel( std::string channelName )
 {

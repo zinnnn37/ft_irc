@@ -73,7 +73,7 @@ void Command::join(Server *server, Client *client, std::istringstream &iss)
         result += "405 " + client->getNick() + " " + channelName + " :You have joined too many channels";
 
     // 채널 이름이 '#'로 시작하지 않으면 '#'을 추가
-    if (channelName[0] != '#')
+    if (channelName[0] != '#' && channelName[0] != '&')
         channelName = "#" + channelName;
 
     // 채널과 액세스 키에 대한 처리를 담당하는 새로운 함수 호출

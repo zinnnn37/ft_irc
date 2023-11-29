@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 12:01:06 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:56:49 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ class Server
 		// std::string clientJoinChannel(Client &client, std::string &ch_name, std::string &key);
 		std::string makeCRLF(std::string buffer);
 
-
+		ChannelMap	&getChannels();
 		Channel 	*createChannel(std::string ch_name, std::string key, Client &client);
 		Channel		*getChannel( std::string channelName );
 		Client		*getClient( std::string nick );

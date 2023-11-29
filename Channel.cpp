@@ -31,6 +31,22 @@ bool    Channel::operator<( const Channel &c ) const
 {
     return (this->_channelName < c._channelName);
 }
+
+bool	Channel::operator<=( const Channel &c ) const
+{
+	return (this->_channelName <= c._channelName);
+}
+
+bool	Channel::operator>( const Channel &c ) const
+{
+	return (this->_channelName > c._channelName);
+}
+
+bool	Channel::operator>=( const Channel &c ) const
+{
+	return (this->_channelName >= c._channelName);
+}
+
 // this->topic = "";
 // this->users[nick] = client;
 // this->auth[nick] = OWNER;
@@ -174,7 +190,7 @@ std::string Channel::getName(){
 }
 
 // 클라이언트 제거
-int Channel::removeClient(Client &client)
+int Channel::removeClient( Client &client )
 {
     // 클라이언트 제거 로직을 추가
     _clients.erase(&client);
@@ -229,4 +245,28 @@ bool    Channel::isClient( std::string nick )
 	}
 
 	return (false);
+}
+
+void	Channel::removeClient( std::string nick )
+{
+	ClientSet			clients = this->getClients();
+	ClientSet::iterator	it = clients.begin();
+
+	for (; it != clients.end(); it++)
+	{
+		std::cout << "client " << (*it)->getNick() << std::endl;
+
+		if (nick == (*it)->getNick())
+		{
+			std::cout << "remove client " << (*it)->getNick() << " from " << this->getName() << std::endl;
+			clients.erase(it);
+		}
+	}
+
+	this->_clients = clients;
+}
+
+void	Channel::removeAuth( std::string nick )
+{
+	this->_clientAuth.erase(nick);
 }

@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:46 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 15:42:08 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:49:20 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ class	Client
 
 		ChannelMap	&getJoinedChannel();
 		Channel		*findJoinedChannel( std::string &channelName );
+		void		removeJoinedChannel( std::string &channelName );
 
 		ChannelSet	&getInvited();
 		void		addInvited( Channel *channel );

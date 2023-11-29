@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 15:42:08 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:49:04 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,4 +223,9 @@ ChannelSet	&Client::getInvited()
 void	Client::addInvited( Channel *channel )
 {
 	this->_invited.insert(channel);
+}
+
+void	Client::removeJoinedChannel( std::string &channelName )
+{
+	this->_joinedChannels.erase(channelName);
 }
