@@ -259,7 +259,7 @@ void	Channel::removeClient( std::string nick )
 		if (nick == (*it)->getNick())
 		{
 			std::cout << "remove client " << (*it)->getNick() << " from " << this->getName() << std::endl;
-			clients.erase(it);
+			clients.erase(it);  // segfault
 		}
 	}
 

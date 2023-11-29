@@ -36,8 +36,14 @@
 
 1. JOIN 맨 처음에 할 시 유저 수가 2로 출력되는 문제<br />
 => 두 번째 들어오는 client 부터는 정상적으로 출력되는 듯
-2. JOIN할 때 joinedChannel에 여전히 추가 안 됨
+2. PART: segmentation fault..<br />
+=> 실제 나가기 부분은 새로 짜야할 수도 <br />
+=> 이거 set이 문제인가 ???? erase할 때 segfault..
+
+## doing
+* PART: 상황 보고 map으로 바꾸기
 
 ### done
 * PRIVMSG
 * JOIN시 Client들에 JOIN 메시지 출력하도록 함
+* INVITE

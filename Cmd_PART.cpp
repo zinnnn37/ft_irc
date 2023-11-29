@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:46:06 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 17:03:48 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 17:09:13 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,22 @@ void	Command::part( Server *server, Client *client, std::istringstream &iss )
 			continue ;
 		}
 
-		// channel에서 client를 제거
-		ch->removeClient(client->getNick());
-		ch->removeAuth(client->getNick());
+		// 새로 짜야 할 듯 .....
+		// // channel에서 client를 제거
+		// ch->removeClient(client->getNick());
+		// ch->removeAuth(client->getNick());
 
-		if (ch->getClients().size() == 0)
-		{
-			server->getChannels().erase(channelName);
-			delete ch;
-			ch = NULL;
-		}
+		// if (ch->getClients().size() == 0)
+		// {
+		// 	server->getChannels().erase(channelName);
+		// 	delete ch;
+		// 	ch = NULL;
+		// }
 
-		// client에서 channel을 제거
-		client->removeJoinedChannel(channelName);
+		// // client에서 channel을 제거
+		// client->removeJoinedChannel(channelName);
 
-		// broadcast
-		server->broadcast(channelName, RPL_QUIT(client->getNick(), channelName));
+		// // broadcast
+		// server->broadcast(channelName, RPL_QUIT(client->getNick(), channelName));
 	}
 }
