@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 18:11:08 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 10:32:57 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -649,5 +649,18 @@ Channel	*Server::getChannel( std::string channelName )
 		if (it->first == channelName)
 			return (it->second);
 	}
+	return (NULL);
+}
+
+Client	*Server::getClient( std::string nick )
+{
+	ClientMap::iterator	it = this->_clients.begin();
+
+	for (; it != this->_clients.end(); it++)
+	{
+		if (it->second->getNick() == nick)
+			return (it->second);
+	}
+
 	return (NULL);
 }

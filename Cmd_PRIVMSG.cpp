@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:09:18 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 10:26:29 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 10:34:15 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,17 @@ void	Command::_sendToClient(
 	Server *server, Client *client,
 	std::string &target, std::string &message )
 {
-	(void)server;
-	(void)client;
-	(void)target;
-	(void)message;
+	Client	*targetClient;
+
+	if (!server->isClient(target))
+	{
+		client->setSendData(ERR_NOSUCHNICK(target));
+		client->appendSendData(CRLF);
+		return ;
+	}
+
+	targetClient = server->getClient(target);
+	targetClient->setSendData(
+		RPL_PRIVMSG(client->getPrefix(), target, message));
+	targetClient->appendSendData(CRLF);
 }

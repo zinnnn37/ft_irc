@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 16:55:57 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 10:31:41 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,6 @@ class Server
 
 		Channel 	*createChannel(std::string ch_name, std::string key, Client &client);
 		Channel		*getChannel( std::string channelName );
+		Client		*getClient( std::string nick );
 };
 #endif
