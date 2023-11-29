@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 13:30:35 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 15:42:08 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,4 +213,14 @@ ChannelMap	&Client::getJoinedChannel()
 Channel	*Client::findJoinedChannel( std::string &channelName )
 {
 	return (this->_joinedChannels[channelName]);
+}
+
+ChannelSet	&Client::getInvited()
+{
+	return (this->_invited);
+}
+
+void	Client::addInvited( Channel *channel )
+{
+	this->_invited.insert(channel);
 }

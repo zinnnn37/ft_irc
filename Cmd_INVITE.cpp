@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 12:54:15 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 13:33:51 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 15:45:40 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,15 @@ void	Command::invite( Server *server, Client *client, std::istringstream &iss )
 		client->setSendData(ERR_NOSUCHNICK(target) + CRLF);
 		return ;
 	}
+	
+	// target이 이미 channel에 있는 경우
+	if (ch->isClient(cl->getNick()))
+	{
+		client->setSendData(ERR_USERONCHANNEL(channelName, target) + CRLF);
+		return ;
+	}
+
+	// 초대
+	cl->addInvited(ch);
+	cl->setSendData(RPL_INVITE(client->getNick(), target, channelName) + CRLF);
 }
