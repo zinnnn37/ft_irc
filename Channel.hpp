@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:41 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 17:09:24 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 10:20:44 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ public:
     std::string getPassword();
     std::string getWhoSetTopic();
     std::string getTopicSetTime();
+
+    bool    isClient( std::string nick );
 };
 
 #endif

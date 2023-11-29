@@ -209,7 +209,19 @@ bool Channel::checkInvite(std::string nickname)
     }
 }
 
-
 std::string Channel::getTopic(){
     return this->_topic;
+}
+
+bool    Channel::isClient( std::string nick )
+{
+	ClientSet	clients = this->getClients();
+
+	for (ClientSet::iterator it = clients.begin(); it != clients.end(); it++)
+	{
+		if (nick == (*it)->getNick())
+			return (true);
+	}
+
+	return (false);
 }

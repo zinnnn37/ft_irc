@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:09:18 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 17:38:20 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/11/29 10:26:29 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	Command::privmsg( Server *server, Client *client, std::istringstream &iss )
 		this->_sendToChannel(server, client, target, message);
 	else
 		this->_sendToClient(server, client, target, message);
-
-	std::cout << "privmsg" << std::endl;
 }
 
 void	Command::_sendToChannel(
@@ -53,17 +51,7 @@ void	Command::_sendToChannel(
 		return ;
 	}
 
-	ChannelMap::iterator	it = client->findJoinedChannel(target);
-
-	ChannelMap::iterator	ch = client->getJoinedChannel().begin();
-
-	for(; ch != client->getJoinedChannel().end(); ch++)
-	{
-		std::cout << "ch->first: " << ch->first << std::endl;
-		std::cout << "ch->second: " << ch->second->getName() << std::endl;
-	}
-
-	if (it == client->getJoinedChannel().end())
+	if (!channel->isClient(client->getNick()))
 	{
 		client->setSendData(ERR_CANNOTSENDTOCHAN(target));
 		client->appendSendData(CRLF);
@@ -71,13 +59,17 @@ void	Command::_sendToChannel(
 	}
 
 	// in the channel
-	// ClientSet::iterator	it;
+	ClientSet			clients = channel->getClients();
+	ClientSet::iterator	it = clients.begin();
 
-	// for (it = clients.begin(); it != clients.end(); it++)
-	// {
-	// 	(*it)->setSendData(RPL_PRIVMSG(client->getPrefix(), target, message));
-	// 	(*it)->appendSendData(CRLF);
-	// }
+	for (; it != clients.end(); it++)
+	{
+		if ((*it)->getNick() == client->getNick())
+			continue ;
+
+		(*it)->setSendData(RPL_PRIVMSG(client->getPrefix(), target, message));
+		(*it)->appendSendData(CRLF);
+	}
 }
 
 void	Command::_sendToClient(
