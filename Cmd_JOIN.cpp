@@ -79,6 +79,9 @@ void Command::join(Server *server, Client *client, std::istringstream &iss)
     // 채널과 액세스 키에 대한 처리를 담당하는 새로운 함수 호출
 	result = _processJoinChannels(server, *client, channelName, accessKey, result);
     std::cout << result << std::endl;
+
+	// 클라이언트에게 결과 전송
+	client->setSendData(result + CRLF);
 }
 
 std::string makeCRLF2(std::string buffer){
