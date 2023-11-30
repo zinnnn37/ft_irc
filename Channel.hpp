@@ -51,7 +51,7 @@ private:
 public:
     // Public default constructor and parameterized constructor
     Channel();
-    Channel(const std::string &channelName, Client &client);
+    Channel(const std::string &channelName, Client &client, std::string key);
     Channel(const Channel &c);
     Channel &operator=(const Channel &c);
 

@@ -92,9 +92,6 @@ class Server
 
 
 		std::string	getPassword() const;
-		// std::string handleJoin(Client &client, std::istringstream &_bufferStream);
-		// std::string processJoinChannels(Client &client, const std::string &channelName, const std::string &accessKey, std::string &result);
-		// std::string clientJoinChannel(Client &client, std::string &ch_name, std::string &key);
 		std::string makeCRLF(std::string buffer);
 
 		ChannelMap	&getChannels();

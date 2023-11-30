@@ -97,8 +97,7 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
         p_channel = server->getChannel(ch_name);
     else
         p_channel = server->createChannel(ch_name, key, client);
-	
-	if ((!p_channel->getPassword().empty() && key.empty())  // 비밀 번호 존재하는데 client 쪽의 비밀번호가 없는 경우
+		if ((!p_channel->getPassword().empty() && key.empty())  // 비밀 번호 존재하는데 client 쪽의 비밀번호가 없는 경우
 		|| (!p_channel->getPassword().empty() && key != p_channel->getPassword()) // 비밀 번호가 다른 경우
 		|| (p_channel->getPassword().empty() && !key.empty())) // 비밀 번호가 없는데 client가 비밀번호를 보낸 경우 
 	{
@@ -117,6 +116,7 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 	{
 		// 사용자 목록을 담을 빈 문자열 초기화
 		// 채널의 사용자 목록을 얻어옴
+		// server
 		std::string s_users = "";
 		std::set<Client *> users = p_channel->getClients();
 

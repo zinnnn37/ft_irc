@@ -52,6 +52,7 @@ class	Command
 		void 	join( Server *server, Client *client, std::istringstream &iss );
 		void	invite( Server *server, Client *client, std::istringstream &iss );
 		void	part( Server *server, Client *client, std::istringstream &iss );
+		void	mode( Server *server, Client *client, std::istringstream &iss );
 };
 
 #endif

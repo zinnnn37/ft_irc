@@ -54,9 +54,16 @@ bool	Channel::operator>=( const Channel &c ) const
 // this->modes.insert('t');
 // this->create_time = time(NULL);
 // 생성자
-Channel::Channel(const std::string &ChannelName, Client &client)
+
+Channel::Channel(const std::string &ChannelName, Client &client, std::string key)
     : _isInviteOnly(false), _isTopicRestricted(false), _channelName(ChannelName)
 {
+    if (key != "") {
+        this->_password = key;
+    }
+    else{
+        this->_password = "";
+    }
     this->_topic = "";
     _clients.insert(&client);
     this->_owner = &client;
@@ -255,14 +262,13 @@ void	Channel::removeClient( std::string nick )
 	for (; it != clients.end(); it++)
 	{
 		std::cout << "client " << (*it)->getNick() << std::endl;
-
 		if (nick == (*it)->getNick())
 		{
 			std::cout << "remove client " << (*it)->getNick() << " from " << this->getName() << std::endl;
 			clients.erase(it);  // segfault
+            break;
 		}
 	}
-
 	this->_clients = clients;
 }
 
@@ -270,3 +276,4 @@ void	Channel::removeAuth( std::string nick )
 {
 	this->_clientAuth.erase(nick);
 }
+
