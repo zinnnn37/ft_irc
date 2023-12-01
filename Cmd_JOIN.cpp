@@ -97,7 +97,9 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
         p_channel = server->getChannel(ch_name);
     else
         p_channel = server->createChannel(ch_name, key, client);
-		if ((!p_channel->getPassword().empty() && key.empty())  // 비밀 번호 존재하는데 client 쪽의 비밀번호가 없는 경우
+
+
+	if ((!p_channel->getPassword().empty() && key.empty())  // 비밀 번호 존재하는데 client 쪽의 비밀번호가 없는 경우
 		|| (!p_channel->getPassword().empty() && key != p_channel->getPassword()) // 비밀 번호가 다른 경우
 		|| (p_channel->getPassword().empty() && !key.empty())) // 비밀 번호가 없는데 client가 비밀번호를 보낸 경우 
 	{
@@ -111,7 +113,14 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 		response += "473 " + client.getNick() + " " + ch_name + " :Cannot join channel (+i)";
 		return response;
 	}
-
+	if (p_channel->getClients().size() + 1 > p_channel->getUserCountLimit())
+	{
+		std::cout << "channel client size: " << p_channel->getClients().size() + 1 <<  "\n";
+		std::cout << "channel user limit" << p_channel->getUserCountLimit() << "\n";
+		// 채널의 제한 인원이 꽉 찼을 경우
+		response += "471 " + ch_name+ " :Channel is full";
+		return response;
+	}
 	try
 	{
 		// 사용자 목록을 담을 빈 문자열 초기화
@@ -122,7 +131,7 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 
 		// 클라이언트가 사용자 목록에 없으면 채널에 가입
 		if (users.find(&client) == users.end()) {
-			p_channel->joinClient(client, "OWNER");
+			p_channel->joinClient(client, "NORMAL");
 		}
 
 		// 클라이언트를 채널에 가입시킴

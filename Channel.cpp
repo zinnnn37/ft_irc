@@ -1,13 +1,15 @@
 #include "Channel.hpp"
 
 // 기본 생성자
-Channel::Channel() : _isInviteOnly(false), _isTopicRestricted(false) {}
+Channel::Channel() : _isInviteOnly(false), _isTopicRestricted(false) {
+    this->_accessLimit = 1000000;
+}
 
 // 복사 생성자
 Channel::Channel(const Channel &c)
     : _isInviteOnly(c._isInviteOnly), _isTopicRestricted(c._isTopicRestricted),
       _channelName(c._channelName), _topic(c._topic), _password(c._password),
-      _clients(c._clients), _bannedClients(c._bannedClients){}
+      _clients(c._clients), _bannedClients(c._bannedClients) {}
 
 
 // 대입 연산자 오버로딩
@@ -22,7 +24,6 @@ Channel &Channel::operator=(const Channel &c)
         _password = c._password;
         _clients = c._clients;
         _operators = c._operators;
-        // _mode.insert("+i");
     }
     return *this;
 }
@@ -47,13 +48,25 @@ bool	Channel::operator>=( const Channel &c ) const
 	return (this->_channelName >= c._channelName);
 }
 
-// this->topic = "";
-// this->users[nick] = client;
-// this->auth[nick] = OWNER;
-// this->modes.insert('n');
-// this->modes.insert('t');
-// this->create_time = time(NULL);
-// 생성자
+
+bool Channel::isOwner(Client& client)
+{
+	if (this->_clientAuth[client.getNick()] == "OWNER")
+		return true;
+	return false;
+}
+
+bool Channel::isOperator(Client& client)
+{
+    return _operators.find(&client) != _operators.end();
+}
+
+bool Channel::checkmode(char mode){
+    std::string modeStr(1, mode);
+    if(this->_mode.find(modeStr) != this->_mode.end())
+		return true;
+	return false;
+}
 
 Channel::Channel(const std::string &ChannelName, Client &client, std::string key)
     : _isInviteOnly(false), _isTopicRestricted(false), _channelName(ChannelName)
@@ -68,7 +81,7 @@ Channel::Channel(const std::string &ChannelName, Client &client, std::string key
     _clients.insert(&client);
     this->_owner = &client;
     this->_clientAuth[client.getNick()] = "OWNER";
-    this->_mode.insert(""); 
+    this->_accessLimit = 1000000;
 }
 
 // 소멸자
@@ -82,10 +95,14 @@ int Channel::addClient(Client &client)
 }
 
 // 오퍼레이터 추가
-int Channel::addOperator(Client &client)
+void Channel::addOperator(Client &client)
 {
     _operators.insert(&client);
-    return 0;
+}
+
+void Channel::dismissOperator(Client &client)
+{
+    _operators.erase(&client);
 }
 
 // 오퍼레이터 제거
@@ -163,13 +180,22 @@ int Channel::setTopic(Client &client, const std::string &topic)
     return 0;
 }
 
+unsigned int Channel::getUserCountLimit(){
+    return this->_accessLimit;
+}
+
+void Channel::setPassword(std::string password){
+    this->_password = password;
+}
+
 // 모드 설정
-int Channel::setMode(Client &client, const std::string &mode)
+void Channel::setMode(std::string mode)
 {
-    (void)client;
-    (void)mode;
-    // 모드 설정 로직 추가
-    return 0;
+    this->_mode.insert(mode);
+}
+
+void Channel::delMode(std::string mode){
+    this->_mode.erase(mode);
 }
 
 // 메시지 전송
@@ -192,6 +218,22 @@ std::set<Client *> Channel::getClients()
     return _clients;
 }
 
+
+// 채널에 속한 클라이언트들 반환
+Client* Channel::getClient(std::string nickname)
+{
+    for (std::set<Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
+    {
+        Client* client = *it;
+        if (client->getNick() == nickname)
+        {
+            return client;
+        }
+    }
+    return nullptr;
+}
+
+
 std::string Channel::getName(){
     return this->_channelName;
 }
@@ -210,6 +252,11 @@ int Channel::removeClient( Client &client )
     }
 
     return 0;
+}
+
+
+void Channel::setUserNumberLimit(unsigned int limit){
+    this->_accessLimit = limit;
 }
 
 std::string Channel::getPassword(){

@@ -23,9 +23,12 @@
 #include "Define.hpp"
 
 
+
 class Channel
 {
 private:
+    unsigned int _accessLimit;
+
     bool _isInviteOnly;
     bool _isTopicRestricted;
 
@@ -66,29 +69,39 @@ public:
     // Member functions
     int addClient(Client &client);
     int kickClient(Client &client);
-    int addOperator(Client &client);
     int removeClient(Client &client);
     int removeOperator(Client &client);
-    int setMode(Client &client, const std::string &mode);
     int setTopic(Client &client, const std::string &topic);
     int sendMessage(Client &client, const std::string &message);
+    unsigned int getUserCountLimit();
     
     bool getInviteMode() const;
     bool checkBan(Client& client);
     bool checkInvite(std::string nickname);
+    bool isOwner(Client& client);
+    bool isOperator(Client& client);
+    bool checkmode(char mode);
 
     // Public member functions to access private members
     void getAuth();
     void addBan(Client& client);
     void joinClient(Client& client, std::string auth);
     void setOwner(Client& client);
+    void setMode(std::string mode);
+    void setPassword(std::string password);
+    void setUserNumberLimit(unsigned int limit);
+    void delMode(std::string mode);
+    void addOperator(Client &client);
+    void dismissOperator(Client &client);
 
     void    setName( std::string name );
+
+    Client *getClient(std::string nickname);
 
     std::string getName();
     std::set<std::string> getMode();
     std::set<Client *> getClients();
-    std::map<std::string, Client> getUsers();
+    // std::map<std::string, Client> getUsers();
 
     std::string getTopic();
     std::string getPassword();

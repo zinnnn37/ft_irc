@@ -23,6 +23,7 @@ SRC_FILES	=	main\
 				Cmd_PASS\
 				Cmd_PRIVMSG\
 				Cmd_USER\
+				Cmd_MODE\
 				Channel
 
 SRCS		=	$(addsuffix .cpp, $(SRC_FILES))

@@ -318,7 +318,7 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 	// 		break ;
 	// }
 	// client->appendSend();	// response 받아서 crlf 붙여서 append. 이거를 _sendData에서 Clinet로 보냄
-	std::cout << "000000000" << "\n";
+	// std::cout << "000000000" << "\n";
 	client->setBuf(buf.substr(crlf + 2));	// crlf 이후 문자열
 }
 
