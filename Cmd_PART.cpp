@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:46:06 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 17:09:13 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:05:56 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,17 @@ void	Command::part( Server *server, Client *client, std::istringstream &iss )
 	std::string	channelName;
 	Channel	*ch;
 
-	while (iss >> channelName)
+	while (std::getline(iss, channelName, ','))
 	{
-		// std::cout << "hello" << std::endl;
-		if (channelName[channelName.size() - 1] == ',')
-			channelName = channelName.substr(0, channelName.size() - 1);
+		if (channelName[0] == ' ')
+			channelName = channelName.substr(1, channelName.size() - 1);
+		std::cout << "channelName: " << channelName << std::endl;
 
 		// channel이 존재하지 않는 경우
 		ch = server->getChannel(channelName);
 		if (!ch)
 		{
-			client->setSendData(ERR_NOSUCHCHANNEL(channelName) + CRLF);
+			client->appendSendData(ERR_NOSUCHCHANNEL(channelName) + CRLF);
 			continue ;
 		}
 
