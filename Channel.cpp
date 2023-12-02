@@ -237,7 +237,7 @@ Client* Channel::getClient(std::string nickname)
             return client;
         }
     }
-    return nullptr;
+    return NULL;
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 12:27:12 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 18:57:14 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,9 +174,9 @@ std::map<std::string, Channel *> Client::getChannels()
 std::string Client::getPrefix()
 {
     std::string username = "!" + this->_userName;
-    // std::string hostname = "@" + this->_;
+    std::string hostname = "@" + this->_hostName;
 
-    return this->_nick + username;
+    return this->_nick + username + hostname;
 }
 
 

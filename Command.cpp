@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 10:51:07 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 17:18:45 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 18:43:37 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,16 @@ void Command::nick( Server *server, Client *client, std::istringstream &buffer_s
 			std::cout << "< Client " << client->getSocket() << " > nickname setted: " << name << std::endl;
 		}
 	}
+}
+
+void	Command::_removeCRLF( std::string &str )
+{
+	size_t	pos;
+
+	pos = str.find('\r');
+	if (pos != std::string::npos)
+		str.erase(pos, 1);
+	pos = str.find('\n');
+	if (pos != std::string::npos)
+		str.erase(pos, 1);
 }

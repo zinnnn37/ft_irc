@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:48 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 17:05:56 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 18:41:46 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,11 @@
 #include <string>
 
 #include "Server.hpp"
+#include "Define.hpp"
 
 class	Client;
 class	Server;
+class	Channel;
 
 class	Command
 {
@@ -37,6 +39,7 @@ class	Command
 		void	_sendToChannel( Server *server, Client *client, std::string &target, std::string &message );
 		void	_sendToClient( Server *server, Client *client, std::string &target, std::string &message );
 		void	_removeCRLF( std::string &str );
+		void	_clientLeaveChannel( Server *server, Client *client, Channel *channel );
 
 		std::string _processJoinChannels(Server *server, Client &client, const std::string &channelName, const std::string &accessKey, std::string &result);
 		std::string _clientJoinChannel(Server *server, Client &client, std::string &ch_name, std::string &key);
