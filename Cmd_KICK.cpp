@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 13:33:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 15:29:27 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 15:37:17 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,6 @@ void	Command::kick( Server *server, Client *client, std::istringstream &iss )
 		channel->removeAuth(targetClient->getNick());
 		targetClient->removeJoinedChannel(channelName);
 		server->broadcast(channelName, RPL_KICK(client->getNick(), channelName, target, message) + CRLF);
-		targetClient->setSendData("You are kicked from " + channelName + CRLF);
+		targetClient->setSendData(RPL_KICK(client->getNick(), channelName, target, message) + CRLF);
 	}
 }
