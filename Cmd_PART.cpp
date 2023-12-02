@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:46:06 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 13:26:23 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 15:06:01 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,11 @@ void	Command::part( Server *server, Client *client, std::istringstream &iss )
 	std::string	channelName;
 	Channel	*ch;
 
-	while (std::getline(iss, channelName, ','))
+	iss >> channelName;
+	std::istringstream	iss2(channelName);
+
+	while (getline(iss2, tmp, ','))
 	{
-		if (channelName[0] == ' ')
-			channelName = channelName.substr(1, channelName.size() - 1);
 		this->_removeCRLF(channelName);
 
 		std::cout << "channelName: " << channelName << std::endl;
@@ -81,7 +82,7 @@ void	Command::part( Server *server, Client *client, std::istringstream &iss )
 			continue ;
 		}
 
-		server->broadcast(channelName, RPL_PART(client->getNick(), channelName));
+		server->broadcast(channelName, RPL_PART(client->getNick(), channelName) + CRLF);
 
 		// client에서 channel을 제거
 		client->removeJoinedChannel(channelName);
@@ -89,7 +90,6 @@ void	Command::part( Server *server, Client *client, std::istringstream &iss )
 		// channel에서 client를 제거
 		ch->removeClient(client->getNick());
 		ch->removeAuth(client->getNick());
-		ch->removeOperator(*client);
 
 		if (ch->getClients().size() == 0)
 		{

@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 12:22:30 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 15:28:19 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ typedef std::set<Client *>					ClientSet;
 #define ERR_NEEDMOREPARAMS(command)									"461 " + command + " :Need more parameters"
 #define ERR_ALREADYREGISTRED()										"462 :You have already registered"
 #define ERR_PASSWDMISMATCH()										"464 :Password incorrect "
-#define ERR_YOUREBANNEDCREEP()										"465 :You are banned from this server"
+// #define ERR_YOUREBANNEDCREEP()										"465 :You are banned from this server"
 #define ERR_CHANNELISFULL(channel)									"471 " + channel + " :Channel is full"
 #define ERR_UNKNOWNMODE(mode)										"472 " + mode + " :unknown mode"
 #define ERR_INVITEONLYCHAN(channel)									"473 " + channel + " :You are not invited"
-#define ERR_BANNEDFROMCHAN(channel)									"474 " + channel + " :You are banned from this channel"
+// #define ERR_BANNEDFROMCHAN(channel)									"474 " + channel + " :You are banned from this channel"
 #define ERR_BADCHANNELKEY(channel)									"475 " + channel + " :Wrong channel key"
 #define ERR_CHANOPRIVSNEEDED(channel)								"482 " + channel + " :You are not channel operator"
 // #define ERR_NOOPPARAM(nick, channel, mode, modename, param)			"696 " + nick + " " + channel + " " + mode + " * :You must specify a parameter for the " + modename + " mode. Syntax: <" + param + ">." 
@@ -121,7 +121,7 @@ typedef std::set<Client *>					ClientSet;
 #define RPL_PRIVMSG(nick, target, msg)								":" + nick + " PRIVMSG " + target + msg
 #define RPL_MY_TOPIC(nick, channel, topic)							":" + nick + " TOPIC " + channel + " " + topic
 #define RPL_PART(nick, channel)										":" + nick + " PART :" + channel
-#define RPL_KICK(nick, channel, nick2)								":" + nick + " KICK " + channel + " " + nick2 + " :"
+#define RPL_KICK(nick, channel, nick2, msg)							":" + nick + " KICK " + channel + " " + nick2 + " :" + msg
 #define RPL_INVITE(nick, nick2, channel)							":" + nick + " INVITE " + nick2 + " :" + channel
 #define RPL_MODE(nick, channel, modes, params)						":" + nick + " MODE " + channel + " " + modes + params
 #define RPL_NICK(before, after)										":" + before + " NICK :" + after

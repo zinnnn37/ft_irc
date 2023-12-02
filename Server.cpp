@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 12:48:25 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 14:58:48 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,6 +306,8 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 		command.part(this, client, ss);
 	else if (cmd == "MODE")
 		command.mode(this, client, ss);
+	else if (cmd == "KICK")
+		command.kick(this, client, ss);
 	
 	// 	case "KICK":
 	// 		this->_command.kick(client, ss);

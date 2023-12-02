@@ -82,6 +82,7 @@ Channel::Channel(const std::string &ChannelName, Client &client, std::string key
     this->_owner = &client;
     this->_clientAuth[client.getNick()] = "OWNER";
     this->_accessLimit = 1000000;
+    this->addOperator(client);
 }
 
 // 소멸자
@@ -294,7 +295,10 @@ bool    Channel::isClient( std::string nick )
 	for (ClientSet::iterator it = clients.begin(); it != clients.end(); it++)
 	{
 		if (nick == (*it)->getNick())
-			return (true);
+		{
+			std::cout << "client " << (*it)->getNick() << " is in " << this->getName() << std::endl;
+            return (true);
+        }
 	}
 
 	return (false);
