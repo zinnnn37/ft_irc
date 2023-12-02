@@ -154,13 +154,13 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
             }
 
             if (plus_minus == 1) {
-                if (ch->isOwner(*new_operator) || ch->isOperator(*new_operator))
+                if (ch->isOperator(*new_operator))
                     continue;  // 이미 소유자거나 운영자인 경우
                 ch->addOperator(*new_operator);
                 mode_msg += channel_mode[i];
                 pre_plus_minu = 1;
             } else {
-                if (ch->isOwner(*new_operator) || !ch->isOperator(*new_operator))
+                if (!ch->isOperator(*new_operator))
                     continue;  // 소유자이거나 운영자가 아닌 경우
                 ch->dismissOperator(*new_operator);
                 mode_msg += channel_mode[i];

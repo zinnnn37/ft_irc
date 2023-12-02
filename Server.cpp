@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 14:58:48 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 17:03:24 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -416,6 +416,7 @@ Channel *Server::createChannel( std::string ch_name, std::string key, Client &cl
 	Channel *newchannel = new Channel(ch_name, client, key);
 	this->_channels[ch_name] = newchannel;
 	newchannel->setName(ch_name);
+	newchannel->addOperator(client);
 	std::cout << "create channel: " << ch_name << std::endl;
 	return newchannel;
 }
