@@ -101,9 +101,9 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 	if (p_channel->getClients().size() + 1 > p_channel->getUserCountLimit())
 	{
 		std::cout << "channel client size: " << p_channel->getClients().size() + 1 <<  "\n";
-		std::cout << "channel user limit" << p_channel->getUserCountLimit() << "\n";
+		std::cout << "channel user limit: " << p_channel->getUserCountLimit() << "\n";
 		// 채널의 제한 인원이 꽉 찼을 경우
-		response += "471 " + ch_name+ " :Channel is full";
+		response += ERR_CHANNELISFULL(p_channel->getName());
 		return response;
 	}
 

@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 18:48:12 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 21:50:34 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,6 +376,7 @@ void	Server::_sendDataToClient( uintptr_t ident )
 	byte = send(ident, data.c_str(), data.size(), 0);
 	if (byte == RET_ERROR)
 	{
+		client->clearSendData();
 		std::cerr << "[ SERVER ] Error: send error" << std::endl;
 		this->_disconnectClient(ident);
 	}
@@ -431,15 +432,12 @@ void Server::broadcast(std::string &channel_name, const std::string &msg)
 {
 	Channel *channel = this->_channels[channel_name];
 
-	std::cout << "broadcast: " << msg << std::endl;
-
 	std::set<Client *> users = channel->getClients();
 	for (std::set<Client *>::iterator u_it = users.begin(); u_it != users.end(); ++u_it)
 	{
-		std::cout << "broadcast: " << (*u_it)->getNick() << std::endl;
 		int c_socket = (*u_it)->getSocket();
-		(*u_it)->appendSendData(msg + CRLF);
-		// changeEvent(_changeList, c_socket, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
+		(*u_it)->setSendData(msg + CRLF);
+		changeEvent(_changeList, c_socket, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
 		std::cout << "< Client " << c_socket << " >" << std::endl;
 	}
 }

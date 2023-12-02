@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 18:42:46 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 21:35:32 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef std::set<Client *>					ClientSet;
 #define ERR_NOSUCHSERVER(server)									"402 :No such server named " + server
 #define ERR_NOSUCHCHANNEL(channel)									"403 :No such channel named " + channel
 #define ERR_NOSUCHCHANNEL2(user, channel)							"403 " + user + " " + channel + " :No such channel"
+#define ERR_NOSUCHCHANNEL3(user, channel)							"403 " + user + " " + channel + " :you left"
 #define ERR_NOTONCHANNEL2(user, channel)							"442 " + user + " " + channel + " :You're not on that channel!"
 #define ERR_CANNOTSENDTOCHAN(channel)								"404 :Cannot send to channel " + channel
 #define ERR_TOOMANYCHANNELS()										"405 :You have joined too many channels"
@@ -114,11 +115,11 @@ typedef std::set<Client *>					ClientSet;
 #define RPL_ENDOFNAMES(channel)										"366 " + channel + " :End of /NAMES list."
 #define RPL_ENDOFBANLIST(channel)									"368 " + channel + " :End of Ban list"
 
+
 /*
  * Commands
  */
 #define RPL_QUIT(nick, message)										":" + nick + " QUIT :Quit: " + message
-#define RPL_PONG(nick, ping)										":" + nick + " PONG :" + ping
 #define RPL_JOIN(nick, channel)										":" + nick + " JOIN :" + channel
 #define RPL_PRIVMSG(nick, target, msg)								":" + nick + " PRIVMSG " + target + msg
 #define RPL_TOPIC2(nick, channel, topic)							": TOPIC " + channel + " " + topic
@@ -127,5 +128,5 @@ typedef std::set<Client *>					ClientSet;
 #define RPL_INVITE(nick, nick2, channel)							":" + nick + " INVITE " + nick2 + " :" + channel
 #define RPL_MODE(nick, channel, modes, params)						":" + nick + " MODE " + channel + " " + modes + params
 #define RPL_NICK(before, after)										":" + before + " NICK :" + after
-
+#define RPL_PONG(nick, ping)										":" + nick + " PONG :" + ping
 #endif

@@ -47,3 +47,10 @@
 * PRIVMSG
 * JOIN시 Client들에 JOIN 메시지 출력하도록 함
 * INVITE
+
+---
+
+## 12.02. SAT
+
+## things to do
+1. MODE 맨 처음에 client가 channel에 있는지 확인 먼저 해야 함
