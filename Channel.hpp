@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:41 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 17:02:57 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:35:09 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ public:
 
     void    removeClient( std::string nick );
 	void	removeAuth( std::string nick );
+
+    ClientSet   &getOperators();
 };
 
 #endif

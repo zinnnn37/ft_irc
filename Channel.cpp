@@ -218,7 +218,6 @@ std::set<Client *> Channel::getClients()
     return _clients;
 }
 
-
 // 채널에 속한 클라이언트들 반환
 Client* Channel::getClient(std::string nickname)
 {
@@ -308,7 +307,7 @@ void	Channel::removeClient( std::string nick )
 
 	for (; it != clients.end(); it++)
 	{
-		std::cout << "client " << (*it)->getNick() << std::endl;
+		// std::cout << "client " << (*it)->getNick() << std::endl;
 		if (nick == (*it)->getNick())
 		{
 			std::cout << "remove client " << (*it)->getNick() << " from " << this->getName() << std::endl;
@@ -324,3 +323,7 @@ void	Channel::removeAuth( std::string nick )
 	this->_clientAuth.erase(nick);
 }
 
+ClientSet	&Channel::getOperators()
+{
+    return (this->_operators);
+}

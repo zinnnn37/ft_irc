@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:48 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 15:46:23 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:45:24 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,11 @@ class	Command
 		void	_split( Client *client, std::istringstream &iss, std::string *split );
 		void	_sendToChannel( Server *server, Client *client, std::string &target, std::string &message );
 		void	_sendToClient( Server *server, Client *client, std::string &target, std::string &message );
+		void	_removeCRLF( std::string &str );
 
 		std::string _processJoinChannels(Server *server, Client &client, const std::string &channelName, const std::string &accessKey, std::string &result);
 		std::string _clientJoinChannel(Server *server, Client &client, std::string &ch_name, std::string &key);
-	
+
 	public:
 		// singleton
 		static Command	&getInstance();

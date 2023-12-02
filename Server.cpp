@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 16:56:46 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:48:25 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -444,7 +444,7 @@ void Server::broadcast(std::string &channel_name, const std::string &msg)
 		int c_socket = (*u_it)->getSocket();
 		(*u_it)->appendSendData(makeCRLF(msg));
 		changeEvent(_changeList, c_socket, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
-		std::cout << "< Client " << c_socket << " > joined " << channel_name << std::endl;
+		// std::cout << "< Client " << c_socket << " > joined " << channel_name << std::endl;
 	}
 }
 
@@ -463,6 +463,8 @@ Channel	*Server::getChannel( std::string channelName )
 	ChannelMap::iterator	it;
 
 	for (it = this->_channels.begin(); it != this->_channels.end(); it++){
+		// std::cout << "channelName: " << channelName << std::endl;
+		// std::cout << "it->first: " << it->first << std::endl;
 		if (it->first == channelName)
 			return (it->second);
 	}

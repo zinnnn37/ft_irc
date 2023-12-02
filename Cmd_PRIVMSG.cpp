@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:09:18 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 17:02:34 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 12:50:11 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ void	Command::_sendToChannel(
 	Server *server, Client *client,
 	std::string &target, std::string &message )
 {
-	std::cout << "\n[ SERVER ] PRIVMSG to Channel " << message << std::endl;
-	std::cout << message << std::endl;
+	std::cout << "[ SERVER ] PRIVMSG to Channel " << message << std::endl;
 
 	Channel	*channel;
 	std::string	prefix;
