@@ -61,10 +61,15 @@ bool Channel::isOperator(Client& client)
     return _operators.find(&client) != _operators.end();
 }
 
-bool Channel::checkmode(char mode){
+bool Channel::checkmode(char mode)
+{
     std::string modeStr(1, mode);
-    if(this->_mode.find(modeStr) != this->_mode.end())
+
+    if (this->_mode.find(modeStr) != this->_mode.end())
+	{
 		return true;
+	}
+
 	return false;
 }
 
@@ -169,16 +174,18 @@ void Channel::joinClient(Client& client, std::string auth)
 // 토픽 설정
 int Channel::setTopic(Client &client, const std::string &topic)
 {
-	time_t clock_timer;
-    struct tm* tm_struct;
+    char		buf[100];
+	time_t		clock_timer;
+    struct tm*	tm_struct;
 
 	clock_timer = time(NULL);
 	tm_struct = localtime(&clock_timer);
     
     _topicSetUser = client.getNick();
-    _topicSetTime = std::to_string(clock_timer);
+	strftime(buf, 100, "%Y-%m-%d %H:%M:%S", tm_struct);
+	_topicSetTime = buf;
     _topic = topic;
-    return 0;
+    return (0);
 }
 
 unsigned int Channel::getUserCountLimit(){
@@ -285,7 +292,7 @@ bool Channel::checkInvite(std::string nickname)
 }
 
 std::string Channel::getTopic(){
-    return this->_topic;
+    return (this->_topic);
 }
 
 bool    Channel::isClient( std::string nick )
@@ -295,10 +302,7 @@ bool    Channel::isClient( std::string nick )
 	for (ClientSet::iterator it = clients.begin(); it != clients.end(); it++)
 	{
 		if (nick == (*it)->getNick())
-		{
-			std::cout << "client " << (*it)->getNick() << " is in " << this->getName() << std::endl;
             return (true);
-        }
 	}
 
 	return (false);

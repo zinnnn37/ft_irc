@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 15:28:19 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 18:26:34 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,8 @@ typedef std::set<Client *>					ClientSet;
 #define RPL_PONG(nick, ping)										":" + nick + " PONG :" + ping
 #define RPL_JOIN(nick, channel)										":" + nick + " JOIN :" + channel
 #define RPL_PRIVMSG(nick, target, msg)								":" + nick + " PRIVMSG " + target + msg
-#define RPL_MY_TOPIC(nick, channel, topic)							":" + nick + " TOPIC " + channel + " " + topic
-#define RPL_PART(nick, channel)										":" + nick + " PART :" + channel
+#define RPL_TOPIC2(nick, channel, topic)							": TOPIC " + channel + " " + topic
+#define RPL_PART(nick, channel)										":" + nick + " PART " + channel
 #define RPL_KICK(nick, channel, nick2, msg)							":" + nick + " KICK " + channel + " " + nick2 + " :" + msg
 #define RPL_INVITE(nick, nick2, channel)							":" + nick + " INVITE " + nick2 + " :" + channel
 #define RPL_MODE(nick, channel, modes, params)						":" + nick + " MODE " + channel + " " + modes + params

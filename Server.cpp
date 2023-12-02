@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 17:03:24 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/02 17:58:39 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,19 +308,9 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 		command.mode(this, client, ss);
 	else if (cmd == "KICK")
 		command.kick(this, client, ss);
-	
-	// 	case "KICK":
-	// 		this->_command.kick(client, ss);
-	// 		break ;
-	// 	case "TOPIC":
-	// 		this->_command.topic(client, ss);
-	// 		break ;		
-	// 	case "EXIT"
-	// 		this->_command.exit(client, ss);
-	// 		break ;
-	// }
-	// client->appendSend();	// response 받아서 crlf 붙여서 append. 이거를 _sendData에서 Clinet로 보냄
-	// std::cout << "000000000" << "\n";
+	else if (cmd == "TOPIC")
+		command.topic(this, client, ss);
+
 	client->setBuf(buf.substr(crlf + 2));	// crlf 이후 문자열
 }
 
@@ -441,13 +431,16 @@ void Server::broadcast(std::string &channel_name, const std::string &msg)
 {
 	Channel *channel = this->_channels[channel_name];
 
+	std::cout << "broadcast: " << msg << std::endl;
+
 	std::set<Client *> users = channel->getClients();
 	for (std::set<Client *>::iterator u_it = users.begin(); u_it != users.end(); ++u_it)
 	{
+		std::cout << "broadcast: " << (*u_it)->getNick() << std::endl;
 		int c_socket = (*u_it)->getSocket();
-		(*u_it)->appendSendData(makeCRLF(msg));
-		changeEvent(_changeList, c_socket, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
-		// std::cout << "< Client " << c_socket << " > joined " << channel_name << std::endl;
+		(*u_it)->appendSendData(msg + CRLF);
+		// changeEvent(_changeList, c_socket, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
+		std::cout << "< Client " << c_socket << " >" << std::endl;
 	}
 }
 

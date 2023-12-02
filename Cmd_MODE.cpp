@@ -48,14 +48,15 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
         plus_minus = 1;
     }
     else {
-        std::cout <<  "EROOR: client is not this Channel OWNER or OPERAToR\n";
+        std::cout <<  "ERROR: client is not this Channel OWNER or OPERATOR\n";
+        client->setSendData(ERR_CHANOPRIVSNEEDED(channel_name) + CRLF);
         return ;
     }
     for (unsigned long i = 0; i < channel_mode.length(); i++){
         if (channel_mode[i] == '+' || channel_mode[i] == '-'){
             if (channel_mode[i + 1] == '+' || channel_mode[i + 1] == '-' 
                 || channel_mode[i + 1] == ' '){
-                std::cout <<  "EROOR: The +- operator must be followed by the mode.\n";
+                std::cout <<  "ERROR: The +- operator must be followed by the mode.\n";
                 return ;
             }
             if (channel_mode[i] == '+') plus_minus = 1;
