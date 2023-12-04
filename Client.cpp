@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 18:57:14 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/04 23:26:00 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,18 +187,19 @@ void Client::joinChannel( Channel *channel )
 
 void	Client::disconnectClientFromChannel()
 {
-	// size_t	size;
+	 size_t	size;
 
-	// for (ChannelVec::iterator it = this->_joinedChannels.begin();
-	// 		it != this->_joinedChannels.end(); it++)
-	// {
-	// 	size = (*it)->getClients().size();
-	// 	(*it)->removeClient(client);
+	 for (ChannelVec::iterator it = this->_joinedChannels.begin();
+	 		it != this->_joinedChannels.end(); it++)
+	 {
+	 	size = (*it)->getClients().size();
+	 	(*it)->removeClient(client);
 
-	// 	// 클라이언트가 채널에 남아있는 유일한 클라이언트였다면 채널 삭제
-	// 	if (size == 1)
-	// 		this->_server->removeChannel(*it);
-	// }
+	 	// 클라이언트가 채널에 남아있는 유일한 클라이언트였다면 채널 삭제
+	 	//if (size == 1)
+	 	//	this->_server->removeChannel(*it);
+		// 이거 removeClient 안에 있어서.. 한번 테스트해보고 없앨지 결정
+	 }
 }
 
 /************************************************************/

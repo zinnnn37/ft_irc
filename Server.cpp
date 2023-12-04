@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 21:50:34 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/04 23:30:18 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,11 @@ void	Server::_init()
 	struct	sockaddr_in	sockAddr;
 	
 	bzero(&sockAddr, sizeof(sockAddr));
-	sockAddr.sin_family = AF_INET;	// IPv4
-	sockAddr.sin_port = htons(this->_port);	// port를 network byte order로 변환
-	sockAddr.sin_addr.s_addr = htonl(INADDR_ANY);	// INADDR_ANY: 서버의 IP주소를 자동으로 찾아서 대입
+	sockAddr.sin_family = AF_INET;	// 주소체계 구분, IPv4
+	sockAddr.sin_port = htons(this->_port);	// port를 network byte order로 변환(16비트로 변환)
+	sockAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+	// 호스트 IP 주소
+	// INADDR_ANY: 서버의 IP주소를 자동으로 찾아서 대입
 
 	// 로컬 주소를 소켓과 연결
 	if (bind(this->_serverSoc, (struct sockaddr *)&sockAddr, sizeof(sockAddr)))
@@ -178,6 +180,8 @@ void	Server::_disconnectClient( uintptr_t ident )
 
 	client->disconnectClientFromChannel();
 
+	close(ident);	// 나중에 추가함 확인
+
 	delete client;
 
 	std::cout << "[ SERVER ] Client disconnected" << std::endl;
@@ -209,8 +213,9 @@ void	Server::_acceptNewClient()
 	this->_setNonBlock(clientSoc);
 	this->_setEvent(clientSoc, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
 	this->_setEvent(clientSoc, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
-	
+
 	std::string	addr(inet_ntoa(clientAddr.sin_addr));
+	// 정수형 IP주소를 문자열로 변환
 	Client *newClient = new Client(clientSoc, addr);
 	this->_clients.insert(std::make_pair(clientSoc, newClient));
 
@@ -408,7 +413,7 @@ Channel *Server::createChannel( std::string ch_name, std::string key, Client &cl
 	this->_channels[ch_name] = newchannel;
 	newchannel->setName(ch_name);
 	newchannel->addOperator(client);
-	// std::cout << "create channel: " << ch_name << std::endl;
+	std::cout << "create channel: " << ch_name << std::endl;
 	return newchannel;
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cmd_USER.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 10:10:07 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 11:32:13 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/04 23:11:08 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	Command::_split( Client *client, std::istringstream &iss, std::string *spli
 
 void	Command::user( Client *client, std::istringstream &iss )
 {
+	// user <닉네임> <사용자 이름> <호스트 이름> :<실제 이름>
+
 	std::string	line;
 	std::string	split[4];
 

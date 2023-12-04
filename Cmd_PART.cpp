@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cmd_PART.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 18:35:31 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 21:14:30 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/04 23:26:30 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void Command::part( Server *server, Client *client, std::istringstream &buffer_s
 	while (std::getline(new_stream, channel, ','))
 	{
 		this->_removeCRLF(channel);
-		// std::cout << "channel : " << channel << std::endl;
+		std::cout << "channel : " << channel << std::endl;
 		v_channels.push_back(channel);
 	}
 

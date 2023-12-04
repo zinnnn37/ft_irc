@@ -88,13 +88,7 @@ Channel::Channel(const std::string &ChannelName, Client &client, std::string key
     this->_clientAuth[client.getNick()] = "OWNER";
     this->_accessLimit = 1000000;
     this->addOperator(client);
-    this->_create_time = time(NULL);
 }
-
-long long Channel::getChannelCreateTime(){
-    return this->_create_time;
-}
-
 
 // 소멸자
 Channel::~Channel() {}
@@ -184,9 +178,10 @@ int Channel::setTopic(Client &client, const std::string &topic)
 	time_t		clock_timer;
     struct tm*	tm_struct;
 
-	clock_timer = time(NULL);
+	clock_timer = time(NULL);	// 현재 시간을 초 단위로 얻기
 	tm_struct = localtime(&clock_timer);
-    
+	// 로컬 타임을 기준으로 tm 구조체를 만들어줌
+
     _topicSetUser = client.getNick();
 	strftime(buf, 100, "%Y-%m-%d %H:%M:%S", tm_struct);
 	_topicSetTime = buf;
@@ -260,12 +255,14 @@ int Channel::removeClient( Client &client )
     // 클라이언트가 채널에 남아 있는 유일한 클라이언트였다면 채널 삭제
     if (_clients.empty())
     {
-        // this->_server->removeChannel(this);
+        this->_server->removeChannel(this);
         // 채널을 삭제하는 로직 추가
+		// 이거 part_ori에 있음 옮기기
     }
 
     return 0;
 }
+
 
 void Channel::setUserNumberLimit(unsigned int limit){
     this->_accessLimit = limit;
@@ -283,12 +280,6 @@ bool Channel::getInviteMode() const {
 	if (this->_mode.find("i") != this->_mode.end())
 		return true;
 	return false;
-}
-
-bool Channel::isMode(std::string mode){
-    if (this->_mode.find(mode) != this->_mode.end())
-        return true;
-    return false;
 }
 
 bool Channel::checkInvite(std::string nickname)
@@ -346,9 +337,3 @@ ClientSet	&Channel::getOperators()
 {
     return (this->_operators);
 }
-
-
-
- void   Channel::addInviteList(std::string name){
-    this->_inviteName.insert(name);
- }
