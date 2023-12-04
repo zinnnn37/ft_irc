@@ -32,8 +32,8 @@ private:
     bool _isInviteOnly;
     bool _isTopicRestricted;
 
+    time_t _create_time;
     Client      *_owner;
-
     std::string _channelName;
     std::string _topic;
     std::string _password;
@@ -81,6 +81,7 @@ public:
     bool isOwner(Client& client);
     bool isOperator(Client& client);
     bool checkmode(char mode);
+    bool isMode(std::string mode);
 
     // Public member functions to access private members
     void getAuth();
@@ -93,7 +94,8 @@ public:
     void delMode(std::string mode);
     void addOperator(Client &client);
     void dismissOperator(Client &client);
-
+    void addInviteList(std::string name);
+    long long getChannelCreateTime();
     void    setName( std::string name );
 
     Client *getClient(std::string nickname);

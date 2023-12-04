@@ -55,6 +55,8 @@ void	Command::_sendToChannel(
 	// client가 channel에 속해있는지 확인
 	if (!channel->isClient(client->getNick()))
 	{
+		std::cout << "channel name: " << channel->getName() << "\n";
+		std::cout << "client  name: " << client->getNick() << "\n";
 		client->setSendData(ERR_CANNOTSENDTOCHAN(target) + CRLF);
 		return ;
 	}

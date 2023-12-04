@@ -41,7 +41,7 @@ void Command::part( Server *server, Client *client, std::istringstream &buffer_s
 	while (std::getline(new_stream, channel, ','))
 	{
 		this->_removeCRLF(channel);
-		std::cout << "channel : " << channel << std::endl;
+		// std::cout << "channel : " << channel << std::endl;
 		v_channels.push_back(channel);
 	}
 

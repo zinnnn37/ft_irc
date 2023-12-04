@@ -87,6 +87,7 @@ void	Command::kick( Server *server, Client *client, std::istringstream &iss )
 		channel->removeClient(targetClient->getNick());
 		channel->removeAuth(targetClient->getNick());
 		targetClient->removeJoinedChannel(channelName);
+		target += ":Welcome";
 		server->broadcast(channelName, RPL_KICK(client->getNick(), channelName, target, message) + CRLF);
 		targetClient->setSendData(RPL_KICK(client->getNick(), channelName, target, message) + CRLF);
 	}

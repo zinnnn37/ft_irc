@@ -4,15 +4,69 @@
 #include "Server.hpp"
 #include <algorithm> 
 
+
+
+// std::string Server::getChannelModeResponse(Client& client, Channel* p_channel)
+// {
+// 	std::string reply;
+// 	std::string response;
+// 	std::string ch_modes = "+";
+// 	std::string ch_params = "";
+// 	std::string ch_name = p_channel->getName();
+
+// 	int cnt = 0;
+// 	int key = 0;
+
+// 	if (p_channel->findMode('k'))
+// 		key++;
+// 	if (p_channel->findMode('l'))
+// 		key++;
+
+// 	std::set<char> modes = p_channel->getModes();
+
+// 	if (key == 0)
+// 			ch_modes = ":+";
+// 	for (std::set<char>::iterator m_it = modes.begin(); m_it != modes.end(); m_it++)
+// 	{
+// 		if (*m_it == 'k')
+// 		{
+// 			if (cnt == key - 1)
+// 				ch_params += " :";
+// 			else
+// 				ch_params += " ";
+// 			ch_params += p_channel->getPassword();
+// 			cnt++;
+// 		}
+// 		else if (*m_it == 'l')
+// 		{
+// 			if (cnt == key - 1)
+// 				ch_params += " :";
+// 			else
+// 				ch_params += " ";
+// 			ch_params += std::to_string(p_channel->getUserLimit());
+// 			cnt++;
+// 		}
+
+// 		ch_modes += *m_it;
+// 	}
+// 	response = makeCRLF(RPL_CHANNELMODEIS(client.getNickname(), ch_name, ch_modes, ch_params));
+// 	response += makeCRLF(RPL_CHANNELCREATETIME(client.getNickname(), ch_name, std::to_string(channels[ch_name]->getCreateTime())));
+
+// 	return response;
+// }
+
+
 void Command::mode(Server *server, Client *client, std::istringstream &iss){
     std::string channel_name;
     std::string channel_mode;
-
     iss >> channel_name;
     iss >> channel_mode;
+    
+    
+    
+    // 
 
-    if ((channel_name[0] != '#') || (channel_mode.empty())
-        || (server->getChannels().find(channel_name) == server->getChannels().end()))
+    if ((channel_name[0] != '#') || (server->getChannels().find(channel_name) == server->getChannels().end()))
     {
         std::cout << "ERROR: Wrong value is typed\n";
         return ;
@@ -20,27 +74,59 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
 
     Channel *ch = server->getChannel(channel_name);
 
+    if (channel_mode.empty()) {
+        std::string reply;
+        std::string response;
+        std::string channel_prefix = "+";
+        std::string channel_parameters = "";
+        std::string channel_name = ch->getName();
 
-// i (Invite-only channel):
-// +i: Invite-only 채널로 설정 / 1
-// -i: Invite-only 채널 설정 제거 / -1
+        int key_mode_count = 0;
+        int key_mode_added = 0;
 
-// t (TOPIC command restrictions to channel operators):
-// +t: TOPIC 명령에 대한 제한을 채널 운영자로 설정
-// -t: TOPIC 명령에 대한 제한 설정 제거
+        if (ch->isMode("k"))
+            key_mode_added++;
+        if (ch->isMode("l"))
+            key_mode_added++;
+        
+        std::set<std::string> channel_modes = ch->getMode();
 
-// k (Channel key - password):
-// +k: 채널 키(비밀번호) 설정
-// -k: 채널 키(비밀번호) 설정 제거
+        if (key_mode_added == 0)
+            channel_prefix = ":+";
+        for (std::set<std::string>::iterator mode_it = channel_modes.begin(); mode_it != channel_modes.end(); mode_it++) {
+            if (*mode_it == "k") {
+                if (key_mode_count == key_mode_added - 1)
+                    channel_parameters += " :";
+                else
+                    channel_parameters += " ";
+                channel_parameters += ch->getPassword();
+                key_mode_count++;
+            }
+            else if (*mode_it == "l") {
+                if (key_mode_count == key_mode_added - 1)
+                    channel_parameters += " :";
+                else
+                    channel_parameters += " ";
+                channel_parameters += ch->getUserCountLimit();
+                key_mode_count++;
+            }
+            channel_prefix += *mode_it;
+        }
 
-// o (Channel operator privilege):
-// +o: 사용자에게 채널 운영자 권한 부여
-// -o: 사용자로부터 채널 운영자 권한 박탈
+        // (user, channel, modes, params)
+        response = "324 " + client->getNick() + " " + channel_name + " " + channel_prefix + channel_parameters + "\r\n";
 
-// l (User limit to channel):
-// +l: 채널에 사용자 제한 설정
-// -l: 채널에 사용자 제한 설정 제거
-            // 소유자가 아님 운영진이 아님 -> false
+        // define RPL_CHANNELCREATETIME(user, channel, date)								
+        response += "329 " + client->getNick() + " " + channel_name + " :" + std::to_string(ch->getChannelCreateTime()) + "\r\n";
+
+        std::cout << "response: " << response << "\n";
+        
+        server->broadcast(channel_name, response);
+        client->setSendData(response);
+        return;
+    }
+
+
     int plus_minus = 1;
     int pre_plus_minu = 0;
     std::string mode_msg = "";
@@ -177,6 +263,8 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
             std::string limit;
             iss >> limit;
             if (plus_minus == 1){
+                std::cout <<  "mode l channel name: " <<  ch->getName() << "\n";
+                std::cout <<  "mode l channel name: " <<  channel_name  << "\n";
                 if (limit.empty())
                     std::cout << "ERROR: l option must  must be followed by the number\n";
                 if (limit.length() > 10)
@@ -187,7 +275,7 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
                     std::cout << "ERROR: mode l limit user number is lower than current channel user\n";
                     continue;
                 }
-                if (ch->checkmode(channel_mode[i]) && LimitNumber == ch->getUserCountLimit()){
+                if (ch->checkmode(channel_mode[i]) && LimitNumber < ch->getUserCountLimit()){
                     std::cout << "ERROR: mode l count is same before user limit\n";
                     continue;
                 }
@@ -210,11 +298,11 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
             }
         }
 
-        if (mode_msg.empty())
-            mode_msg.insert(0, ":");
-        if (!mode_msg.empty()){
-            std::string msg = ":" + client->getNick() + " MODE " + channel_name + " " + mode_msg;
-            server->broadcast(channel_name, msg);
-        } 
     }
+    if (mode_msg.empty())
+        mode_msg.insert(0, ":");
+    if (!mode_msg.empty()){
+        std::string msg = ":" + client->getNick() + " MODE " + channel_name + " " + mode_msg;
+        server->broadcast(channel_name, msg);
+    } 
 }

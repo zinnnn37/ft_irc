@@ -408,7 +408,7 @@ Channel *Server::createChannel( std::string ch_name, std::string key, Client &cl
 	this->_channels[ch_name] = newchannel;
 	newchannel->setName(ch_name);
 	newchannel->addOperator(client);
-	std::cout << "create channel: " << ch_name << std::endl;
+	// std::cout << "create channel: " << ch_name << std::endl;
 	return newchannel;
 }
 

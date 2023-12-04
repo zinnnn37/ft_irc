@@ -88,7 +88,13 @@ Channel::Channel(const std::string &ChannelName, Client &client, std::string key
     this->_clientAuth[client.getNick()] = "OWNER";
     this->_accessLimit = 1000000;
     this->addOperator(client);
+    this->_create_time = time(NULL);
 }
+
+long long Channel::getChannelCreateTime(){
+    return this->_create_time;
+}
+
 
 // 소멸자
 Channel::~Channel() {}
@@ -261,7 +267,6 @@ int Channel::removeClient( Client &client )
     return 0;
 }
 
-
 void Channel::setUserNumberLimit(unsigned int limit){
     this->_accessLimit = limit;
 }
@@ -278,6 +283,12 @@ bool Channel::getInviteMode() const {
 	if (this->_mode.find("i") != this->_mode.end())
 		return true;
 	return false;
+}
+
+bool Channel::isMode(std::string mode){
+    if (this->_mode.find(mode) != this->_mode.end())
+        return true;
+    return false;
 }
 
 bool Channel::checkInvite(std::string nickname)
@@ -335,3 +346,9 @@ ClientSet	&Channel::getOperators()
 {
     return (this->_operators);
 }
+
+
+
+ void   Channel::addInviteList(std::string name){
+    this->_inviteName.insert(name);
+ }

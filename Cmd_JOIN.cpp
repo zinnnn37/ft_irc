@@ -97,11 +97,11 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
         p_channel = server->getChannel(ch_name);
     else
         p_channel = server->createChannel(ch_name, key, client);
-
+	// std::cout << "join channel name : " << p_channel->getName() << "\n";
+	// std::cout << "channel client size: " << p_channel->getClients().size() + 1 <<  "\n";
+	// std::cout << "channel user limit: " << p_channel->getUserCountLimit() << "\n";
 	if (p_channel->getClients().size() + 1 > p_channel->getUserCountLimit())
 	{
-		std::cout << "channel client size: " << p_channel->getClients().size() + 1 <<  "\n";
-		std::cout << "channel user limit: " << p_channel->getUserCountLimit() << "\n";
 		// 채널의 제한 인원이 꽉 찼을 경우
 		response += ERR_CHANNELISFULL(p_channel->getName());
 		return response;
@@ -111,13 +111,12 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 		|| (!p_channel->getPassword().empty() && key != p_channel->getPassword()) // 비밀 번호가 다른 경우
 		|| (p_channel->getPassword().empty() && !key.empty())) // 비밀 번호가 없는데 client가 비밀번호를 보낸 경우 
 	{
-		std::string response;
 		response += "475 " + client.getNick() + " " + ch_name + " :Cannot join channel (+k)";
 		return response;
 	}
 	if (p_channel->getInviteMode() && !p_channel->checkInvite(client.getNick()))
 	{
-		std::string response;
+		// print()
 		response += "473 " + client.getNick() + " " + ch_name + " :Cannot join channel (+i)";
 		return response;
 	}

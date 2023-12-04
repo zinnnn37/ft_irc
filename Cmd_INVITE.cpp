@@ -46,5 +46,6 @@ void	Command::invite( Server *server, Client *client, std::istringstream &iss )
 
 	// 초대
 	cl->addInvited(ch);
+	ch->addInviteList(cl->getNick());
 	cl->setSendData(RPL_INVITE(client->getNick(), target, channelName) + CRLF);
 }
