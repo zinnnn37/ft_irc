@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 09:50:58 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 10:13:35 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -347,7 +347,7 @@ void	Channel::removeClient( std::string nick )
 		if (nick == (*it)->getNick())
 		{
 			std::cout << "remove client " << (*it)->getNick() << " from " << this->getName() << std::endl;
-			clients.erase(it);  // segfault
+			clients.erase(it);
             break;
 		}
 	}
