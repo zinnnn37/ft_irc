@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Command.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:48 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 20:38:19 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 16:36:01 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ class	Command
 		void	privmsg( Server *server, Client *client, std::istringstream &iss );
 		void	topic( Server *server, Client *client, std::istringstream &iss );
 		void	user( Client *client, std::istringstream &iss );
+		void	quit( Client *client, std::istringstream &iss );
 };
 
 #endif
