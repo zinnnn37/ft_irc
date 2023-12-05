@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 10:14:39 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 10:17:42 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,8 +189,6 @@ void	Server::_disconnectClient( uintptr_t ident )
 	this->_clients.erase(ident);
 
 	client->disconnectClientFromChannel();
-
-	close(ident);	// 나중에 추가함 확인
 
 	delete client;
 
