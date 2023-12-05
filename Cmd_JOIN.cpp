@@ -120,8 +120,8 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 		response += "473 " + client.getNick() + " " + ch_name + " :Cannot join channel (+i)";
 		return response;
 	}
-	try
-	{
+	//try
+	//{
 		// 사용자 목록을 담을 빈 문자열 초기화
 		// 채널의 사용자 목록을 얻어옴
 		// server
@@ -168,14 +168,14 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 		// 사용자 목록의 끝에 대한 응답을 추가
 		std::string msg4 = "366 " + client.getNick() + " " + ch_name + " :End of /NAMES list.";
 		response += makeCRLF2(msg4);
-	}
-	catch (const std::exception &e)
-	{
-		std::cout << "EXCEPTION!!" << std::endl;
+	//}
+	//catch (const std::exception &e)
+	//{
+	//	std::cout << "EXCEPTION!!" << std::endl;
 		// 예외가 발생한 경우 (예: 채널에서 사용자가 차단된 경우)
 		// 차단된 채널에 대한 에러 메시지를 응답에 추가
 		// response += makeCRLF(ERR_BANNEDFROMCHAN(client.getNickname(), ch_name));
-	}
+	//}
 
 	return response;
 }

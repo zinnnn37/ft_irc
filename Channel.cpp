@@ -9,7 +9,7 @@ Channel::Channel() : _isInviteOnly(false), _isTopicRestricted(false) {
 Channel::Channel(const Channel &c)
     : _isInviteOnly(c._isInviteOnly), _isTopicRestricted(c._isTopicRestricted),
       _channelName(c._channelName), _topic(c._topic), _password(c._password),
-      _clients(c._clients), _bannedClients(c._bannedClients) {}
+      _clients(c._clients) {}//, _bannedClients(c._bannedClients) {}
 
 
 // 대입 연산자 오버로딩
@@ -133,27 +133,27 @@ std::string Channel::getTopicSetTime(){
     return this->_topicSetTime;
 }
 
-void Channel::addBan(Client& client)
-{
-	std::string name = client.getNick();
+//void Channel::addBan(Client& client)
+//{
+//	std::string name = client.getNick();
 
-	this->_clientAuth.erase(name);
-	this->_clients.erase(this->_clients.find(&client));
-    this->_bannedClients.insert(&client);
-}
+//	this->_clientAuth.erase(name);
+//	this->_clients.erase(this->_clients.find(&client));
+//    this->_bannedClients.insert(&client);
+//}
 
-bool Channel::checkBan(Client& client)
-{
-    if (this->_bannedClients.size() > 0)
-    {
-        std::set<Client*>::iterator it = this->_bannedClients.find(&client);
-        if (it != this->_bannedClients.end()) {
-            std::cout << "You are a banned client in this channel" << std::endl;
-            return true;
-        }
-    }
-    return false;
-}
+//bool Channel::checkBan(Client& client)
+//{
+//    if (this->_bannedClients.size() > 0)
+//    {
+//        std::set<Client*>::iterator it = this->_bannedClients.find(&client);
+//        if (it != this->_bannedClients.end()) {
+//            std::cout << "You are a banned client in this channel" << std::endl;
+//            return true;
+//        }
+//    }
+//    return false;
+//}
 
 void Channel::setOwner(Client& client)
 {
@@ -162,8 +162,8 @@ void Channel::setOwner(Client& client)
 
 void Channel::joinClient(Client& client, std::string auth)
 {
-	if (checkBan(client))
-		return;
+	//if (checkBan(client))
+	//	return;
 	if (auth == "OWNER")
 		this->setOwner(client);
 	std::string name = client.getNick();

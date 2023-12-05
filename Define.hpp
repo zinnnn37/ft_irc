@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Define.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 21:35:32 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 09:13:17 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ typedef std::set<Client *>					ClientSet;
 // :0은 hopcount, 서버와 사용자 사이의 거리
 #define RPL_NAMREPLY(nick, channel, users)							"353 " + nick + " " + channel + " :" + users
 #define RPL_ENDOFNAMES(channel)										"366 " + channel + " :End of /NAMES list."
-#define RPL_ENDOFBANLIST(channel)									"368 " + channel + " :End of Ban list"
+//#define RPL_ENDOFBANLIST(channel)									"368 " + channel + " :End of Ban list"
 
 
 /*
