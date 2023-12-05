@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:35:17 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 16:40:03 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 16:40:56 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ void	Command::quit( Client *client, std::istringstream &iss )
 	std::string		message;
 
 	std::getline(iss, message);
-	this->_removeCRLF(message);
 
 	if (message.empty())
 		message = "Client quit";
 	else
+	{
+		this->_removeCRLF(message);
 		message.substr(1);
+	}
 
 	client->setSendData(message + CRLF);
 }
