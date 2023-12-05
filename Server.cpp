@@ -191,7 +191,7 @@ void	Server::_disconnectClient( uintptr_t ident )
 	
 	this->_clients.erase(ident);
 
-	client->disconnectClientFromChannel();
+	client->disconnectClientFromChannel(this);
 
 	delete client;
 
@@ -318,8 +318,6 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 		command.privmsg(this, client, ss);
 	else if (cmd == "INVITE")
 		command.invite(this, client, ss);
-	else if (cmd == "PART")
-		command.part(this, client, ss);
 	else if (cmd == "MODE")
 		command.mode(this, client, ss);
 	else if (cmd == "KICK")
@@ -350,18 +348,19 @@ void Server::changeChannelNick(Client& client, const std::string& before, const 
 {
 	std::string	auth;
 	std::string	channelName;
-	ClientMap	channels = client.getChannels();
+	// ClientMap channels = client.getChannels();
+	ChannelMap channels = client.getChannels();
 
 	for (ChannelMap::iterator it = channels.begin(); it != channels.end(); it++)
 	{
 		// 서버에 있는 channels
 		channelName = it->second->getName();
-		auth = (this->_channels[channelName])->getAuth(before)
+		auth = (this->_channels[channelName])->getAuth(before);
 
 		if (auth != "")
 		{
-			(this->channels[channelName])->removeClient(before);
-			(this->channels[channelName])->joinClient(client, auth);
+			(this->_channels[channelName])->removeClient(before);
+			(this->_channels[channelName])->joinClient(client, auth);
 
 			std::string	res;
 			res += ":" + before_prefix + " NICK :" + client.getNick();

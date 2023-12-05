@@ -258,24 +258,6 @@ std::string Channel::getName(){
     return this->_channelName;
 }
 
-// 클라이언트 제거
-int Channel::removeClient( Client &client )
-{
-    // 클라이언트 제거 로직을 추가
-    _clients.erase(&client);
-	_operators.erase(&client);
-	_inviteName.erase(client.getNick());
-
-    // 클라이언트가 채널에 남아 있는 유일한 클라이언트였다면 채널 삭제
-    if (_clients.empty())
-    {
-        this->_server->removeChannel(this);
-        // 채널을 삭제하는 로직 추가
-		// 이거 part_ori에 있음 옮기기
-    }
-
-    return 0;
-}
 
 void removeChannel(ChannelMap &channels, const std::string &channelName)
 {
@@ -336,7 +318,7 @@ bool    Channel::isClient( std::string nick )
 	return (false);
 }
 
-void	Channel::removeClient( std::string nick )
+void	Channel::removeClient(std::string nick )
 {
 	ClientSet			clients = this->getClients();
 	ClientSet::iterator	it = clients.begin();
@@ -354,6 +336,7 @@ void	Channel::removeClient( std::string nick )
 	this->_clients = clients;
 }
 
+
 void	Channel::removeAuth( std::string nick )
 {
 	this->_clientAuth.erase(nick);
@@ -363,11 +346,46 @@ ClientSet	&Channel::getOperators()
 {
     return (this->_operators);
 }
+// 클라이언트 제거
+int Channel::removeClientinServer(Server *server, Client &client )
+{
+    // 클라이언트 제거 로직을 추가
+    _clients.erase(&client);
+	_operators.erase(&client);
+	_inviteName.erase(client.getNick());
 
-std::string	&Channel::getAuth( std::string &nick )
+    // 클라이언트가 채널에 남아 있는 유일한 클라이언트였다면 채널 삭제
+    if (_clients.empty())
+    {
+        removeChannel(server->getChannels(), this->getName());
+        // 채널을 삭제하는 로직 추가
+		// 이거 part_ori에 있음 옮기기
+    }
+
+    return 0;
+}
+
+
+long long Channel::getChannelCreateTime(){
+    return this->_create_time;
+}
+
+bool Channel::isMode(std::string mode){
+    if (this->_mode.find(mode) != this->_mode.end())
+        return true;
+    return false;
+}
+
+void   Channel::addInviteList(std::string name){
+    this->_inviteName.insert(name);
+}
+
+
+std::string	Channel::getAuth(const std::string &nick )
 {
 	if (this->_clientAuth.find(nick) != this->_clientAuth.end())
 		return (this->_clientAuth[nick]);
 	else
 		return ("");
 }
+

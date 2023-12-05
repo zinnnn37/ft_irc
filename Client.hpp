@@ -19,6 +19,7 @@
 #include "Client.hpp"
 #include "Channel.hpp"
 #include "Define.hpp"
+#include "Server.hpp"
 
 #include <iostream>
 #include <unistd.h>
@@ -86,7 +87,7 @@ class	Client
 		void		appendSendData( std::string sendData );
 		void		clearSendData();
 
-		void		disconnectClientFromChannel();
+		void		disconnectClientFromChannel(Server *server);
 		
 		std::string getPrefix();
 		ChannelMap	getChannels();

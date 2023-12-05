@@ -185,16 +185,14 @@ void Client::joinChannel( Channel *channel )
 	this->_joinedChannels[channel->getName()] = channel;
 }
 
-void	Client::disconnectClientFromChannel()
+void	Client::disconnectClientFromChannel(Server *server)
 {
-	size_t	size;
-
 	for (ChannelMap::iterator it = this->_joinedChannels.begin();
 	 		it != this->_joinedChannels.end(); it++)
 	{
 	 	//size = (*it)->getClients().size();
-	 	(*it)->removeClient(client);
-		(*it)->removeAuth(client.getNick());
+	 	(it)->second->removeClientinServer(server, *this);
+		(it)->second->removeAuth(this->getNick());
 
 	 	// 클라이언트가 채널에 남아있는 유일한 클라이언트였다면 채널 삭제
 	 	//if (size == 1)

@@ -21,7 +21,6 @@ SRC_FILES	=	main\
 				Cmd_JOIN\
 				Cmd_KICK\
 				Cmd_MODE\
-				Cmd_PART\
 				Cmd_PASS\
 				Cmd_PRIVMSG\
 				Cmd_TOPIC\

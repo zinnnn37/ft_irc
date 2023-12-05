@@ -21,8 +21,9 @@
 
 #include "Client.hpp"
 #include "Define.hpp"
+#include "Server.hpp"
 
-
+class Server;
 
 class Channel
 {
@@ -69,7 +70,7 @@ public:
     // Member functions
     int addClient(Client &client);
     int kickClient(Client &client);
-    int removeClient(Client &client);
+    int removeClientinServer(Server *server, Client &client);
     int removeOperator(Client &client);
     int setTopic(Client &client, const std::string &topic);
     int sendMessage(Client &client, const std::string &message);
@@ -83,7 +84,7 @@ public:
     bool checkmode(char mode);
     bool isMode(std::string mode);
 
-    std::string getAuth( std::string &nick );
+    std::string getAuth(const std::string &nick );
     //void addBan(Client& client);
     void joinClient(Client& client, std::string auth);
     void setOwner(Client& client);
@@ -111,7 +112,7 @@ public:
 
     bool    isClient( std::string nick );
 
-    void    removeClient( std::string nick );
+    void    removeClient(std::string nick );
 	void	removeAuth( std::string nick );
 
     ClientSet   &getOperators();
