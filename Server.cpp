@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 09:20:23 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 09:34:44 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,17 +353,17 @@ void Server::changeChannelNick(Client& client, const std::string& before, const 
 
 	for (ChannelMap::iterator m_it = channels.begin(); m_it != channels.end(); m_it++)
 	{
-				// 서버에 있는 channels 
+		// 서버에 있는 channels
 		ch_name = m_it->second->getName();
-		// auth = (this->_channels[ch_name])->getAuth()[before];
-		// (this->channels[ch_name])->deleteClient(before);
-		// (this->channels[ch_name])->joinClient(client, auth);
+		auth = (this->_channels[ch_name])->getAuth()[before];
+		(this->channels[ch_name])->deleteClient(before);
+		(this->channels[ch_name])->joinClient(client, auth);
 
-		// std::map<std::string, Client> users = (this->_channels[ch_name])->getUsers();
-		// for (std::map<std::string, Client>::iterator u_it = users.begin(); u_it != users.end(); u_it++)
-		// {
-		// 	c_sockets.insert(u_it->second.getSocket());
-		// }
+		std::map<std::string, Client> users = (this->_channels[ch_name])->getUsers();
+		for (std::map<std::string, Client>::iterator u_it = users.begin(); u_it != users.end(); u_it++)
+		{
+			c_sockets.insert(u_it->second.getSocket());
+		}
 	}
 
 	for (std::set<int>::iterator s_it = c_sockets.begin(); s_it != c_sockets.end(); s_it++)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cmd_TOPIC.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:32:26 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 18:23:56 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 09:24:38 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	Command::topic( Server *server, Client *client, std::istringstream &iss )
 
 	this->_removeCRLF(topic);
 
-	if (channelName[0] == ':')
+	if (channelName[0] == ':')	// 없애고 테스트 해보기
 		channelName = channelName.substr(1);
 	std::cout << "channelName: " << channelName << std::endl;
 	if (topic[0] == ' ' || topic[0] == ':')

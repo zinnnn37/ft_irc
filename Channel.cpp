@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 09:14:12 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 09:36:51 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,6 +263,8 @@ int Channel::removeClient( Client &client )
 {
     // 클라이언트 제거 로직을 추가
     _clients.erase(&client);
+	_operators.erase(&client);
+	_inviteName.erase(client.getNick());
 
     // 클라이언트가 채널에 남아 있는 유일한 클라이언트였다면 채널 삭제
     if (_clients.empty())
@@ -275,6 +277,18 @@ int Channel::removeClient( Client &client )
     return 0;
 }
 
+void removeChannel(ChannelMap &channels, const std::string &channelName)
+{
+    ChannelMap::iterator iterator = channels.find(channelName);
+
+    if (iterator != channels.end())
+	{
+        delete iterator->second; // 해당 채널 객체를 메모리에서 해제
+        channels.erase(iterator); // map에서 제거
+    }
+	else
+        std::cout << "Channel not found: " << channelName << std::endl;
+}
 
 void Channel::setUserNumberLimit(unsigned int limit){
     this->_accessLimit = limit;
@@ -348,4 +362,9 @@ void	Channel::removeAuth( std::string nick )
 ClientSet	&Channel::getOperators()
 {
     return (this->_operators);
+}
+
+std::map<std::string, std::string>	&Channel::getAuth()
+{
+	return (this->_clientAuth);
 }

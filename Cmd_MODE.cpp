@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:40 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 09:14:41 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 09:32:25 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,8 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
     std::string channel_mode;
     iss >> channel_name;
     iss >> channel_mode;
-    
-    
-    
-    // 
 
-    if ((channel_name[0] != '#') || (server->getChannels().find(channel_name) == server->getChannels().end()))
+	if ((channel_name[0] != '#') || (channel_name[0] != '&') || (server->getChannels().find(channel_name) == server->getChannels().end()))
     {
         std::cout << "ERROR: Wrong value is typed\n";
         return ;

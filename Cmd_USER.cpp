@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 10:10:07 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/04 23:11:08 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 09:22:23 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,17 @@ void	Command::_split( Client *client, std::istringstream &iss, std::string *spli
 			return ;
 		}
 
-		if (line[0] == ':')
-		{
-			line = line.substr(1);
-
-			if (line.length() == 0)
-				continue ;
-		}
 		split[i++] = line;
 	}
+
+	if (split[3][0] == ':')
+	{
+		split[3] = split[3].substr(1);
+
+		if (split[3].length() == 0)
+			iss >> split[3];
+	}
+	std::cout << "======== real name : " << split[3] << std::endl;
 }
 
 void	Command::user( Client *client, std::istringstream &iss )

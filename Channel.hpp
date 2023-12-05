@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:41 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 09:12:42 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 09:37:42 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,7 @@ public:
     bool checkmode(char mode);
     bool isMode(std::string mode);
 
-    // Public member functions to access private members
-    void getAuth();
+    std::map<std::string, std::string> getAuth();
     //void addBan(Client& client);
     void joinClient(Client& client, std::string auth);
     void setOwner(Client& client);
@@ -96,7 +95,7 @@ public:
     void dismissOperator(Client &client);
     void addInviteList(std::string name);
     long long getChannelCreateTime();
-    void    setName( std::string name );
+    void setName( std::string name );
 
     Client *getClient(std::string nickname);
 
