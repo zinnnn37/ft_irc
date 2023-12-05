@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 18:35:31 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 21:14:30 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/06 07:22:51 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void Command::_clientLeaveChannel( Server *server, Client *client, Channel *channel )
 {
-	std::cout << "-------------" << std::endl;
 	std::string ch_name = channel->getName();
 	server->broadcast(ch_name, RPL_PART(client->getNick(), ch_name));
 	client->removeJoinedChannel(ch_name);
@@ -47,8 +46,6 @@ void Command::part( Server *server, Client *client, std::istringstream &buffer_s
 
 	for (std::vector<std::string>::iterator it = v_channels.begin(); it != v_channels.end(); it++)
 	{
-		std::cout << "=======================" << std::endl;
-		std::cout << "=======================" << std::endl;
 		if (server->getChannels().find(*it) == server->getChannels().end())
 		{
 			// 없는 채널일 경우 403

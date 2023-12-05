@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:40 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/06 07:15:36 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/06 07:24:22 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,56 +15,6 @@
 #include "Channel.hpp"
 #include "Server.hpp"
 #include <algorithm>
-
-// std::string Server::getChannelModeResponse(Client& client, Channel* p_channel)
-// {
-// 	std::string reply;
-// 	std::string response;
-// 	std::string ch_modes = "+";
-// 	std::string ch_params = "";
-// 	std::string ch_name = p_channel->getName();
-
-// 	int cnt = 0;
-// 	int key = 0;
-
-// 	if (p_channel->findMode('k'))
-// 		key++;
-// 	if (p_channel->findMode('l'))
-// 		key++;
-
-// 	std::set<char> modes = p_channel->getModes();
-
-// 	if (key == 0)
-// 			ch_modes = ":+";
-// 	for (std::set<char>::iterator m_it = modes.begin(); m_it != modes.end(); m_it++)
-// 	{
-// 		if (*m_it == 'k')
-// 		{
-// 			if (cnt == key - 1)
-// 				ch_params += " :";
-// 			else
-// 				ch_params += " ";
-// 			ch_params += p_channel->getPassword();
-// 			cnt++;
-// 		}
-// 		else if (*m_it == 'l')
-// 		{
-// 			if (cnt == key - 1)
-// 				ch_params += " :";
-// 			else
-// 				ch_params += " ";
-// 			ch_params += std::to_string(p_channel->getUserLimit());
-// 			cnt++;
-// 		}
-
-// 		ch_modes += *m_it;
-// 	}
-// 	response = makeCRLF(RPL_CHANNELMODEIS(client.getNickname(), ch_name, ch_modes, ch_params));
-// 	response += makeCRLF(RPL_CHANNELCREATETIME(client.getNickname(), ch_name, std::to_string(channels[ch_name]->getCreateTime())));
-
-// 	return response;
-// }
-
 
 void Command::mode(Server *server, Client *client, std::istringstream &iss){
     std::string channel_name;
@@ -156,10 +106,11 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
         // -i: Invite-only 채널 설정 제거 / -1
         else if (channel_mode[i] == 'i'){
             if (plus_minus == 1){
-                if (ch->checkmode(channel_mode[i])) continue; // 이미 해당 조건이 있다면 넘어감
+                mode_msg += channel_mode[i];
+                if (ch->checkmode(channel_mode[i]))
+                    continue; // 이미 해당 조건이 있다면 넘어감
                 std::string tmp_mode(1, channel_mode[i]);
                 ch->setMode(tmp_mode);
-                mode_msg += channel_mode[i];
                 pre_plus_minu = 1;
             }
             else {
