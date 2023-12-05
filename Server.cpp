@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 16:39:55 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 16:41:31 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,10 +183,11 @@ void	Server::_handleEvent( struct kevent &kev )
 void	Server::_disconnectClient( uintptr_t ident )
 {
 	ClientMap::iterator	it = this->_clients.find(ident);
-	Client	*client = it->second;
 
 	if (it == this->_clients.end())
 		return ;
+
+	Client	*client = it->second;
 	
 	this->_clients.erase(ident);
 
