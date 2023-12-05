@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:10:25 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/15 13:09:42 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/06 02:11:05 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	check_params(int ac, char **av)
 	else
 	{
 		char		*endptr;
-		long		int	port = strtol(av[1], &endptr, 10);
+		long		port = strtol(av[1], &endptr, 10);
 		std::string	pass(av[2]);
 
 		// 0 ~ 1023: well-known ports

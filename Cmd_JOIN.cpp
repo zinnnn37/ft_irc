@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:30 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 23:31:31 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/06 02:18:30 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,13 @@ std::string Command::_processJoinChannels(Server *server, Client &client, const 
     // 채널과 액세스 키에 대한 루프
     for (std::vector<std::string>::iterator it = channels.begin(); it != channels.end(); it++)
     {
+		Channel *channel = server->getChannel(*it);
+		if (channel && channel->getClient(client.getNick()) != NULL)
+		{
+			result += ERR_USERONCHANNEL(client.getNick(), *it);
+			return result;
+		}
+
         if (index < accessKeys.size()){
 			std::string key = accessKeys[index];
             result += _clientJoinChannel(server, client, *it, accessKeys[index]);
@@ -110,13 +117,11 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
     else
     {
 		p_channel = server->createChannel(ch_name, key, client);
-		response = "353 " + client.getNick() + " = " + ch_name + " :" + client.getNick() + CRLF;
-		response += "366 " + client.getNick() + " " + ch_name + " :End of /NAMES list." + CRLF;
-		return response ;
 	}
 	// std::cout << "join channel name : " << p_channel->getName() << "\n";
 	// std::cout << "channel client size: " << p_channel->getClients().size() + 1 <<  "\n";
 	// std::cout << "channel user limit: " << p_channel->getUserCountLimit() << "\n";
+
 	if (p_channel->getClients().size() + 1 > p_channel->getUserCountLimit())
 	{
 		// 채널의 제한 인원이 꽉 찼을 경우
@@ -138,13 +143,13 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 		return response;
 	}
 
-	std::cout << ">> check << " << p_channel->getClients().size() << std::endl;
-	std::cout << ">> check << " << p_channel->getClient(client.getNick()) << std::endl;
-	if (p_channel->getClients().size() > 0 && p_channel->getClient(client.getNick()))
-	{
-		response += ERR_USERONCHANNEL(client.getNick(), ch_name);
-		return response;
-	}
+	// std::cout << ">> check << " << p_channel->getClients().size() << std::endl;
+	// std::cout << ">> check << " << p_channel->getClient(client.getNick()) << std::endl;
+	// if (p_channel->getClients().size() > 0 && p_channel->getClient(client.getNick()))
+	// {
+	// 	response += ERR_USERONCHANNEL(client.getNick(), ch_name);
+	// 	return response;
+	// }
 	//try
 	//{
 		// 사용자 목록을 담을 빈 문자열 초기화
