@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:30 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/06 02:18:30 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/06 06:26:47 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 		|| (!p_channel->getPassword().empty() && key != p_channel->getPassword()) // 비밀 번호가 다른 경우
 		|| (p_channel->getPassword().empty() && !key.empty())) // 비밀 번호가 없는데 client가 비밀번호를 보낸 경우 
 	{
-		response += "475 " + client.getNick() + " " + ch_name + " :Cannot join channel (+k)";
+		response += ERR_BADCHANNELKEY(ch_name) + CRLF;
 		return response;
 	}
 	if (p_channel->getInviteMode() && !p_channel->checkInvite(client.getNick()))

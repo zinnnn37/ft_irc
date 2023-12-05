@@ -6,7 +6,7 @@
 #    By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/15 11:51:53 by minjinki          #+#    #+#              #
-#    Updated: 2023/12/05 22:59:49 by minjinki         ###   ########.fr        #
+#    Updated: 2023/12/06 06:21:33 by minjinki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRC_FILES	=	main\
 				Cmd_JOIN\
 				Cmd_KICK\
 				Cmd_MODE\
+				Cmd_PART\
 				Cmd_PASS\
 				Cmd_PRIVMSG\
 				Cmd_TOPIC\

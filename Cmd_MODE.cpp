@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:40 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 23:02:11 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/06 06:39:03 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,6 +234,8 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
             std::string new_operator_name;
             iss >> new_operator_name;
 
+            std::cout << "new_operator_name: " << new_operator_name << "\n";
+
             if (new_operator_name.empty()) {
                 std::cout << "ERROR: o option must have an owner name\n";
                 continue;  // 처리를 중단하고 다음 반복으로 이동
@@ -241,8 +243,9 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
 
             Client* new_operator = ch->getClient(new_operator_name);
 
-            if (new_operator == nullptr) {
+            if (new_operator == NULL) {
                 std::cout << "ERROR: o option's client must be in this channel\n";
+                client->setSendData(ERR_USERNOTINCHANNEL(new_operator_name, channel_name) + CRLF);
                 continue;  // 처리를 중단하고 다음 반복으로 이동
             }
 
@@ -307,7 +310,9 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
     }
     if (mode_msg.empty())
         mode_msg.insert(0, ":");
-    if (!mode_msg.empty()){
+    std::cout << "mode_msg: " << mode_msg << "\n";
+    std::cout << "length: " << mode_msg.length() << "\n";
+    if (!mode_msg.empty() && (mode_msg[0] != '+' || mode_msg[0] != '-') && mode_msg.length() > 1){
         std::string msg = ":" + client->getNick() + " MODE " + channel_name + " " + mode_msg;
         server->broadcast(channel_name, msg);
     } 

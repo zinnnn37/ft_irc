@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:48 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 23:01:23 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/06 06:21:23 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ class	Command
 		void	kick( Server *server, Client *client, std::istringstream &iss );
 		void	mode( Server *server, Client *client, std::istringstream &iss );
 		void	nick( Server *server, Client *client, std::istringstream &iss );
+		void	part( Server *server, Client *client, std::istringstream &iss );
 		void	pass( Server *server, Client *client, std::istringstream &iss );
 		void	privmsg( Server *server, Client *client, std::istringstream &iss );
 		void	topic( Server *server, Client *client, std::istringstream &iss );
