@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 09:36:51 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 09:50:58 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -364,7 +364,10 @@ ClientSet	&Channel::getOperators()
     return (this->_operators);
 }
 
-std::map<std::string, std::string>	&Channel::getAuth()
+std::string	&Channel::getAuth( std::string &nick )
 {
-	return (this->_clientAuth);
+	if (this->_clientAuth.find(nick) != this->_clientAuth.end())
+		return (this->_clientAuth[nick]);
+	else
+		return ("");
 }

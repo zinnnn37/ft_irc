@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:41 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 09:37:42 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 09:41:02 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ public:
     bool checkmode(char mode);
     bool isMode(std::string mode);
 
-    std::map<std::string, std::string> getAuth();
+    std::string getAuth( std::string &nick );
     //void addBan(Client& client);
     void joinClient(Client& client, std::string auth);
     void setOwner(Client& client);

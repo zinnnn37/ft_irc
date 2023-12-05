@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 09:34:44 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 09:57:30 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -345,34 +345,36 @@ bool Server::isClient(const std::string& nickname)
 
 void Server::changeChannelNick(Client& client, const std::string& before, const std::string& before_prefix)
 {
-	(void)before;
-	std::string ch_name;
+	std::string channelName;
 	std::map<std::string, Channel *> channels = client.getChannels();
-	std::set<int> c_sockets;
+	std::set<int> clientSoc;
 	// int auth;
 
 	for (ChannelMap::iterator m_it = channels.begin(); m_it != channels.end(); m_it++)
 	{
 		// 서버에 있는 channels
-		ch_name = m_it->second->getName();
-		auth = (this->_channels[ch_name])->getAuth()[before];
-		(this->channels[ch_name])->deleteClient(before);
-		(this->channels[ch_name])->joinClient(client, auth);
+		channelName = m_it->second->getName();
+		//auth = (this->_channels[ch_name])->getAuth()[before];
 
-		std::map<std::string, Client> users = (this->_channels[ch_name])->getUsers();
-		for (std::map<std::string, Client>::iterator u_it = users.begin(); u_it != users.end(); u_it++)
+		auth = (this->_channels[channelName])->getAuth(before)
+
+		if (auth != "")
 		{
-			c_sockets.insert(u_it->second.getSocket());
+			(this->channels[channelName])->removeClient(before);
+			(this->channels[channelName])->joinClient(client, auth);
 		}
-	}
 
-	for (std::set<int>::iterator s_it = c_sockets.begin(); s_it != c_sockets.end(); s_it++)
-	{
-		std::string response;
-		response += ":" + before_prefix + " NICK :" + client.getNick();
-		std::cout << response << "\n";
-		// this->send_data[*s_it] += makeCRLF(response);
-		// changeEvent(change_list, *s_it, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
+		ClientSet clients = (this->_channels.find(channelName))->getClients();
+		ClientSet::iterator c_it = clients.begin();
+		for (; c_it != clients.end(); c_it++)
+		{
+			std::string	res;
+
+			res += ":" + before_prefix + " NICK :" + client.getNick();
+
+			(*c_it)->setSendData(res + CRLF);
+			changeEvent(change_list, (*c_it)->getSocket(), EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
+		}
 	}
 }
 
@@ -452,10 +454,10 @@ void Server::broadcast(std::string &channel_name, const std::string &msg)
 	std::set<Client *> users = channel->getClients();
 	for (std::set<Client *>::iterator u_it = users.begin(); u_it != users.end(); ++u_it)
 	{
-		int c_socket = (*u_it)->getSocket();
+		int clientSoc = (*u_it)->getSocket();
 		(*u_it)->setSendData(msg + CRLF);
-		changeEvent(_changeList, c_socket, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
-		std::cout << "< Client " << c_socket << " >" << std::endl;
+		changeEvent(_changeList, clientSoc, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
+		std::cout << "< Client " << clientSoc << " >" << std::endl;
 	}
 }
 
