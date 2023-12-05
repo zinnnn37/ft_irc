@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/04 23:30:18 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 09:20:23 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,17 @@ Server::~Server()
 	ChannelMap::iterator	it = this->_channels.begin();
 
 	for (; it != this->_channels.end(); it++)
+	{
 		delete it->second;
+		it->second = 0;
+	}
+
+	ClientMap::iterator	it2 = this->_clients.begin();
+	for (; it2 != this->_clients.end(); it2++)
+	{
+		delete it2->second;
+		it2->second = 0;
+	}
 }
 
 Server	&Server::operator=( const Server &s )
@@ -315,6 +325,8 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 		command.kick(this, client, ss);
 	else if (cmd == "TOPIC")
 		command.topic(this, client, ss);
+	else if (cmd == "TERM")	// leak 테스트 용, 제출 시 삭제
+		this->_exit("Server terminated");
 
 	client->setBuf(buf.substr(crlf + 2));	// crlf 이후 문자열
 }
