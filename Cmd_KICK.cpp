@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 13:33:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 15:37:17 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 21:52:02 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	Command::kick( Server *server, Client *client, std::istringstream &iss )
 	}
 
 	// client가 채널의 operator인지 확인
-	if (!channel->isOperator(*client) || !channel->isOwner(*client))
+	if (!channel->isOperator(*client))
 	{
 		client->setSendData(ERR_CHANOPRIVSNEEDED(channelName) + CRLF);
 		return ;

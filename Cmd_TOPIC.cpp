@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cmd_TOPIC.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:32:26 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 09:24:38 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 22:29:17 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	Command::topic( Server *server, Client *client, std::istringstream &iss )
 		// topic 없음
 		if (channel->getTopic().empty())
 		{
-			std::cout << "NOTOPICS!!!!!!!!!!!!!!!!!!" << std::endl;
 			client->setSendData(RPL_NOTOPIC(channelName) + CRLF);
 		}
 		// topic 있는 경우 토픽 && 설정한 사람, 시간
@@ -66,7 +65,7 @@ void	Command::topic( Server *server, Client *client, std::istringstream &iss )
 			std::cout << "getWhoSetTopic(): " << channel->getWhoSetTopic() << std::endl;
 			std::cout << "getTopicSetTime(): " << channel->getTopicSetTime() << std::endl;
 			client->setSendData(RPL_TOPIC(channelName, channel->getTopic()) + CRLF);
-			client->appendSendData(RPL_TOPICWHOTIME(channelName, channel->getWhoSetTopic(), channel->getTopicSetTime()) + CRLF + CRLF);
+			client->appendSendData(RPL_TOPICWHOTIME(client->getNick(), channelName, channel->getWhoSetTopic(), channel->getTopicSetTime()) + CRLF + CRLF);
 		}
 
 		return ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Define.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 09:13:17 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 23:16:36 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,11 @@ typedef std::set<Client *>					ClientSet;
 #define RPL_LISTSTART()												"321 Channels :Users Name"
 #define RPL_LIST(channel, visible, topic)							"322 " + channel + " " + visible + " :" + topic
 #define RPL_LISTEND()												"323 :End of /LIST"
-#define RPL_CHANNELMODEIS(channel, mode, mode_params)				"324 " + channel + " " + mode + " " + mode_params
-#define RPL_CHANNELCREATETIME(channel, date)						"329 " + channel + " :created at " + date
+#define RPL_CHANNELMODEIS(nick, channel, mode, mode_params)			"324 " nick + " " + channel + " " + mode + " " + mode_params
+#define RPL_CHANNELCREATETIME(nick, channel, date)					"329 " nick + " " + channel + " :created at " + date
 #define RPL_NOTOPIC(channel)										"331 " + channel + " :Topic not set"
 #define RPL_TOPIC(channel, topic)									"332 " + channel + " :" + topic
-#define RPL_TOPICWHOTIME(channel, nick, setat)						"333 " + channel + " " + nick + " " + setat
+#define RPL_TOPICWHOTIME(nick, channel, nick2, setat)				"333 " + nick + " " + channel + " " + nick + " " + setat
 // topic이 마지막으로 변경된 시간과 변경한 사용자
 #define RPL_INVITING(nick, channel)									"341 " + nick + " " + channel
 #define RPL_WHOREPLY(channel, user, host, server, nick, opt, real)	"352 " + channel + " " + user + " " + host + " " + server + " " + nick + " " + opt + " " + ":0 " + real

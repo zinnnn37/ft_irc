@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+         #
+#    By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/15 11:51:53 by minjinki          #+#    #+#              #
-#    Updated: 2023/12/05 16:39:59 by minjinki         ###   ########.fr        #
+#    Updated: 2023/12/05 22:59:49 by minjinki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,6 @@ SRC_FILES	=	main\
 				Cmd_PRIVMSG\
 				Cmd_TOPIC\
 				Cmd_USER\
-				Cmd_QUIT\
 				Channel
 
 SRCS		=	$(addsuffix .cpp, $(SRC_FILES))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cmd_JOIN.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:30 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 09:14:31 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 23:31:31 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,12 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
     if (server->isChannel(ch_name))
         p_channel = server->getChannel(ch_name);
     else
-        p_channel = server->createChannel(ch_name, key, client);
+    {
+		p_channel = server->createChannel(ch_name, key, client);
+		response = "353 " + client.getNick() + " = " + ch_name + " :" + client.getNick() + CRLF;
+		response += "366 " + client.getNick() + " " + ch_name + " :End of /NAMES list." + CRLF;
+		return response ;
+	}
 	// std::cout << "join channel name : " << p_channel->getName() << "\n";
 	// std::cout << "channel client size: " << p_channel->getClients().size() + 1 <<  "\n";
 	// std::cout << "channel user limit: " << p_channel->getUserCountLimit() << "\n";
@@ -132,6 +137,14 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 		response += "473 " + client.getNick() + " " + ch_name + " :Cannot join channel (+i)";
 		return response;
 	}
+
+	std::cout << ">> check << " << p_channel->getClients().size() << std::endl;
+	std::cout << ">> check << " << p_channel->getClient(client.getNick()) << std::endl;
+	if (p_channel->getClients().size() > 0 && p_channel->getClient(client.getNick()))
+	{
+		response += ERR_USERONCHANNEL(client.getNick(), ch_name);
+		return response;
+	}
 	//try
 	//{
 		// 사용자 목록을 담을 빈 문자열 초기화
@@ -144,6 +157,11 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 		if (users.find(&client) == users.end()) {
 			p_channel->joinClient(client, "NORMAL");
 		}
+		// else
+		// {
+		// 	response = ERR_USERONCHANNEL(client.getNick(), ch_name);
+		// 	return response;
+		// }
 
 		// 클라이언트를 채널에 가입시킴
 		client.joinChannel(p_channel);

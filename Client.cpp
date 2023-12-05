@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 09:28:43 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 22:41:20 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ Client::Client( int socket, std::string addr )
 
 Client::~Client()
 {
-	close(this->_clientSoc);
 }
 
 Client	&Client::operator=( const Client &c )
@@ -187,12 +186,13 @@ void Client::joinChannel( Channel *channel )
 
 void	Client::disconnectClientFromChannel(Server *server)
 {
+	(void)server;
 	for (ChannelMap::iterator it = this->_joinedChannels.begin();
 	 		it != this->_joinedChannels.end(); it++)
 	{
 	 	//size = (*it)->getClients().size();
 	 	(it)->second->removeClientinServer(server, *this);
-		(it)->second->removeAuth(this->getNick());
+		// (it)->second->removeAuth(this->getNick());
 
 	 	// 클라이언트가 채널에 남아있는 유일한 클라이언트였다면 채널 삭제
 	 	//if (size == 1)

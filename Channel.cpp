@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 10:13:35 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 23:08:24 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,10 @@ bool Channel::checkmode(char mode)
 Channel::Channel(const std::string &ChannelName, Client &client, std::string key)
     : _isInviteOnly(false), _isTopicRestricted(false), _channelName(ChannelName)
 {
+    char        buf[100];
+    time_t      clock;
+    struct tm*	tm_struct;
+
     if (key != "") {
         this->_password = key;
     }
@@ -100,6 +104,11 @@ Channel::Channel(const std::string &ChannelName, Client &client, std::string key
     this->_clientAuth[client.getNick()] = "OWNER";
     this->_accessLimit = 1000000;
     this->addOperator(client);
+    clock = time(NULL);
+    tm_struct = localtime(&clock);
+    strftime(buf, 100, "%Y-%m-%d %H:%M:%S", tm_struct);
+    std::cout << "time: " << buf << std::endl;
+    this->_create_time = buf;
 }
 
 // 소멸자
@@ -259,15 +268,26 @@ std::string Channel::getName(){
 }
 
 
-void removeChannel(ChannelMap &channels, const std::string &channelName)
+void removeChannel(Server *server, const std::string &channelName)
 {
-    ChannelMap::iterator iterator = channels.find(channelName);
+    // ChannelMap::iterator iterator = channels.find(channelName);
+    // Channel *channel;
 
-    if (iterator != channels.end())
-	{
-        delete iterator->second; // 해당 채널 객체를 메모리에서 해제
-        channels.erase(iterator); // map에서 제거
-    }
+    // if (iterator != channels.end())
+	// {
+    //     channel = iterator->second; // 해당 채널 객체를 메모리에서 해제
+    //     channels.erase(iterator); // map에서 
+    //     if (channel)
+    //     {
+    //         server->getChannels().erase(channel->getName());
+    //         delete channel;
+    //         channel = 0;
+    //     }
+    // }
+    Channel *channel = server->getChannel(channelName);
+
+    if (channel)
+        server->getChannels().erase(channel->getName());
 	else
         std::cout << "Channel not found: " << channelName << std::endl;
 }
@@ -339,7 +359,8 @@ void	Channel::removeClient(std::string nick )
 
 void	Channel::removeAuth( std::string nick )
 {
-	this->_clientAuth.erase(nick);
+    //find로 찾아서 지우기
+    this->_clientAuth.erase(nick);
 }
 
 ClientSet	&Channel::getOperators()
@@ -357,7 +378,7 @@ int Channel::removeClientinServer(Server *server, Client &client )
     // 클라이언트가 채널에 남아 있는 유일한 클라이언트였다면 채널 삭제
     if (_clients.empty())
     {
-        removeChannel(server->getChannels(), this->getName());
+        removeChannel(server, this->getName());
         // 채널을 삭제하는 로직 추가
 		// 이거 part_ori에 있음 옮기기
     }
@@ -366,7 +387,7 @@ int Channel::removeClientinServer(Server *server, Client &client )
 }
 
 
-long long Channel::getChannelCreateTime(){
+std::string Channel::getChannelCreateTime(){
     return this->_create_time;
 }
 

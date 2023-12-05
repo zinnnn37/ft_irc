@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:41 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 09:41:02 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 22:35:35 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ private:
     bool _isInviteOnly;
     bool _isTopicRestricted;
 
-    time_t _create_time;
+    std::string _create_time;
     Client      *_owner;
     std::string _channelName;
     std::string _topic;
@@ -95,7 +95,7 @@ public:
     void addOperator(Client &client);
     void dismissOperator(Client &client);
     void addInviteList(std::string name);
-    long long getChannelCreateTime();
+    std::string getChannelCreateTime();
     void setName( std::string name );
 
     Client *getClient(std::string nickname);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cmd_USER.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 10:10:07 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 09:22:23 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 23:11:38 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,6 @@ void	Command::user( Client *client, std::istringstream &iss )
 	this->_split(client, iss, split);
 	std::cout << std::endl;
 
-	// for (int i = 0; i < 4; i++)
-	// 	std::cout << i << " " << split[i] << std::endl;
-
 	if (split[0].empty() || split[1].empty() || split[2].empty() || split[3].empty())
 	{
 		client->setSendData(ERR_NEEDMOREPARAMS(std::string("USER")) + CRLF);
@@ -61,12 +58,6 @@ void	Command::user( Client *client, std::istringstream &iss )
 	client->setHostName(split[1]);
 	client->setServerName(split[2]);
 	client->setRealName(split[3]);
-
-	// std::cout << client->getNick() << std::endl;
-	// std::cout << client->getUserName() << std::endl;
-	// std::cout << client->getHostName() << std::endl;
-	// std::cout << client->getServerName() << std::endl;
-	// std::cout << client->getRealName() << std::endl;
 
 	std::cout << "< Client " << client->getSocket() << " > user information set" << std::endl;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cmd_MODE.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: minjinki <minjinki@student.42.kr>          +#+  +:+       +#+        */
+/*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:40 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 09:32:25 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/05 23:02:11 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 #include "Client.hpp"
 #include "Channel.hpp"
 #include "Server.hpp"
-#include <algorithm> 
-
-
+#include <algorithm>
 
 // std::string Server::getChannelModeResponse(Client& client, Channel* p_channel)
 // {
@@ -74,7 +72,7 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
     iss >> channel_name;
     iss >> channel_mode;
 
-	if ((channel_name[0] != '#') || (channel_name[0] != '&') || (server->getChannels().find(channel_name) == server->getChannels().end()))
+	if (((channel_name[0] != '#') && (channel_name[0] != '&')) || (server->getChannels().find(channel_name) == server->getChannels().end()))
     {
         std::cout << "ERROR: Wrong value is typed\n";
         return ;
@@ -125,7 +123,7 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
         response = "324 " + client->getNick() + " " + channel_name + " " + channel_prefix + channel_parameters + "\r\n";
 
         // define RPL_CHANNELCREATETIME(user, channel, date)								
-        response += "329 " + client->getNick() + " " + channel_name + " :" + std::to_string(ch->getChannelCreateTime()) + "\r\n";
+        response += "329 " + client->getNick() + " " + channel_name + " :" + ch->getChannelCreateTime() + "\r\n";
 
         std::cout << "response: " << response << "\n";
         
