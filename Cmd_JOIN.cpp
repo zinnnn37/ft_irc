@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:30 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/06 06:26:47 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/06 07:05:04 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,78 +139,60 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 	if (p_channel->getInviteMode() && !p_channel->checkInvite(client.getNick()))
 	{
 		// print()
-		response += "473 " + client.getNick() + " " + ch_name + " :Cannot join channel (+i)";
+		response += ERR_INVITEONLYCHAN(ch_name);
 		return response;
 	}
 
-	// std::cout << ">> check << " << p_channel->getClients().size() << std::endl;
-	// std::cout << ">> check << " << p_channel->getClient(client.getNick()) << std::endl;
-	// if (p_channel->getClients().size() > 0 && p_channel->getClient(client.getNick()))
-	// {
-	// 	response += ERR_USERONCHANNEL(client.getNick(), ch_name);
-	// 	return response;
-	// }
-	//try
-	//{
-		// 사용자 목록을 담을 빈 문자열 초기화
-		// 채널의 사용자 목록을 얻어옴
-		// server
-		std::string s_users = "";
-		std::set<Client *> users = p_channel->getClients();
+	// 사용자 목록을 담을 빈 문자열 초기화
+	// 채널의 사용자 목록을 얻어옴
+	// server
+	std::string s_users = "";
+	std::set<Client *> users = p_channel->getClients();
 
-		// 클라이언트가 사용자 목록에 없으면 채널에 가입
-		if (users.find(&client) == users.end()) {
-			p_channel->joinClient(client, "NORMAL");
-		}
-		// else
-		// {
+	// 클라이언트가 사용자 목록에 없으면 채널에 가입
+	if (users.find(&client) == users.end()) {
+		p_channel->joinClient(client, "NORMAL");
+	}
+	// else
+	// {
 		// 	response = ERR_USERONCHANNEL(client.getNick(), ch_name);
 		// 	return response;
 		// }
 
-		// 클라이언트를 채널에 가입시킴
-		client.joinChannel(p_channel);
+	// 클라이언트를 채널에 가입시킴
+	client.joinChannel(p_channel);
 
-		// 채널의 모든 사용자에 대한 루프
-		for (std::set<Client *>::iterator it = users.begin(); it != users.end(); ++it)
-			s_users.append((*it)->getNick() + " "); // 사용자 목록에 사용자 이름을 추가
-		
-		// 채널 가입 메시지를 브로드캐스트
-		server->broadcast(ch_name, RPL_JOIN(client.getPrefix(), ch_name));
-        
+	// 채널의 모든 사용자에 대한 루프
+	for (std::set<Client *>::iterator it = users.begin(); it != users.end(); ++it)
+		s_users.append((*it)->getNick() + " "); // 사용자 목록에 사용자 이름을 추가
+	
+	// 채널 가입 메시지를 브로드캐스트
+	server->broadcast(ch_name, RPL_JOIN(client.getPrefix(), ch_name));
 
-		std::string who_in_channel = "channel : ";
-        std::set<Client *> channel_in_user = p_channel->getClients();
-		for (std::set<Client *>::iterator it = channel_in_user.begin(); it != channel_in_user.end(); ++it) {
-			Client *currentClient = *it;
-			who_in_channel +=  " " + currentClient->getNick();
-		}
-		std::cout << who_in_channel << std::endl;
+	std::string who_in_channel = "channel : ";
+    std::set<Client *> channel_in_user = p_channel->getClients();
+	for (std::set<Client *>::iterator it = channel_in_user.begin(); it != channel_in_user.end(); ++it) {
+		Client *currentClient = *it;
+		who_in_channel +=  " " + currentClient->getNick();
+	}
+	std::cout << who_in_channel << std::endl;
 
-		// 채널의 토픽이 비어있지 않으면 토픽과 관련된 응답을 추가
-		if (!p_channel->getTopic().empty())
-		{
-			std::string msg1 = "332 " + client.getUserName() + " " + ch_name + " " + p_channel->getTopic();
-			std::string msg2 = "333 " + client.getUserName() + " " + ch_name + " " + p_channel->getWhoSetTopic() + " " + p_channel->getTopicSetTime();
-			response += makeCRLF2(msg1);
-			response += makeCRLF2(msg2);
-		}
+	// 채널의 토픽이 비어있지 않으면 토픽과 관련된 응답을 추가
+	if (!p_channel->getTopic().empty())
+	{
+		std::string msg1 = RPL_TOPIC(ch_name, p_channel->getTopic());
+		std::string msg2 = RPL_TOPICWHOTIME(client.getUserName(), ch_name, p_channel->getWhoSetTopic(), p_channel->getTopicSetTime());
+		response += makeCRLF2(msg1);
+		response += makeCRLF2(msg2);
+	}
 
-		// 사용자 목록에 대한 응답을 추가
-		std::string msg3 = "353 " + client.getNick() + " = " + ch_name + " :" + s_users;
-		response += makeCRLF2(msg3);
+	// 사용자 목록에 대한 응답을 추가
+	std::string msg3 = RPL_NAMREPLY(client.getNick(), ch_name, s_users);
+	response += makeCRLF2(msg3);
 
-		// 사용자 목록의 끝에 대한 응답을 추가
-		std::string msg4 = "366 " + client.getNick() + " " + ch_name + " :End of /NAMES list.";
-		response += makeCRLF2(msg4);
-	//}
-	//catch (const std::exception &e)
-	//{
-	//	std::cout << "EXCEPTION!!" << std::endl;
-		// 예외가 발생한 경우 (예: 채널에서 사용자가 차단된 경우)
-		// 차단된 채널에 대한 에러 메시지를 응답에 추가
-		// response += makeCRLF(ERR_BANNEDFROMCHAN(client.getNickname(), ch_name));
-	//}
+	// 사용자 목록의 끝에 대한 응답을 추가
+	std::string msg4 = RPL_ENDOFNAMES(client.getNick(), ch_name);
+	response += makeCRLF2(msg4);
 
 	return response;
 }

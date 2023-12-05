@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:40 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/06 06:39:03 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/06 07:15:36 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,14 +119,9 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
             channel_prefix += *mode_it;
         }
 
-        // (user, channel, modes, params)
-        response = "324 " + client->getNick() + " " + channel_name + " " + channel_prefix + channel_parameters + "\r\n";
+        response = RPL_CHANNELMODEIS(client->getNick(), channel_name, channel_prefix, channel_parameters) + CRLF;
+        response += RPL_CHANNELCREATETIME(client->getNick(), channel_name, ch->getChannelCreateTime()) + CRLF;
 
-        // define RPL_CHANNELCREATETIME(user, channel, date)								
-        response += "329 " + client->getNick() + " " + channel_name + " :" + ch->getChannelCreateTime() + "\r\n";
-
-        std::cout << "response: " << response << "\n";
-        
         server->broadcast(channel_name, response);
         client->setSendData(response);
         return;
@@ -149,6 +144,7 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
             if (channel_mode[i + 1] == '+' || channel_mode[i + 1] == '-' 
                 || channel_mode[i + 1] == ' '){
                 std::cout <<  "ERROR: The +- operator must be followed by the mode.\n";
+                client->setSendData("ERROR: The +- operator must be followed by the mode.\r\n");
                 return ;
             }
             if (channel_mode[i] == '+') plus_minus = 1;
@@ -202,11 +198,17 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
             std::string new_password;
             iss >> new_password;
 
+            std::cout << "new_password: " << new_password << "\n";
+
             if (new_password.empty()){
                 std::cout << "ERROR: k option must be have password\n";
+                client->setSendData(ERR_NEEDMOREPARAMS(std::string("MODE +k")) + CRLF);
+                return ;
             }
             if (new_password.length() > 20){
                 std::cout << "ERROR: password length is limited under 20\n";
+                client->setSendData("ERROR: password length is limited under 20\r\n");
+                return ;
             }
 
             if (plus_minus == 1){
@@ -238,6 +240,7 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
 
             if (new_operator_name.empty()) {
                 std::cout << "ERROR: o option must have an owner name\n";
+                client->setSendData(ERR_NEEDMOREPARAMS(std::string("MODE +o")) + CRLF);
                 continue;  // 처리를 중단하고 다음 반복으로 이동
             }
 
@@ -275,17 +278,23 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
                 std::cout <<  "mode l channel name: " <<  ch->getName() << "\n";
                 std::cout <<  "mode l channel name: " <<  channel_name  << "\n";
                 if (limit.empty())
+                {
                     std::cout << "ERROR: l option must  must be followed by the number\n";
+                    client->setSendData(ERR_NEEDMOREPARAMS(std::string("MODE +l")) + CRLF);
+                    continue ;
+                }
                 if (limit.length() > 10)
                     limit = "0";
 
                 unsigned int LimitNumber = atol(limit.c_str());
                 if (LimitNumber < ch->getClients().size()){
                     std::cout << "ERROR: mode l limit user number is lower than current channel user\n";
+                    client->setSendData("ERROR: mode l limit user number is lower than current channel user\r\n");
                     continue;
                 }
                 if (ch->checkmode(channel_mode[i]) && LimitNumber < ch->getUserCountLimit()){
                     std::cout << "ERROR: mode l count is same before user limit\n";
+                    client->setSendData("ERROR: mode l count is same before user limit\r\n");
                     continue;
                 }
                 ch->setUserNumberLimit(LimitNumber);
@@ -297,6 +306,7 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
             else {
                 if (!ch->checkmode(channel_mode[i])){
                     std::cout << "ERROR: mode l is not assgined\n";
+                    client->setSendData("ERROR: mode l is not assgined\r\n");
                     continue;
                 }
                 ch->setUserNumberLimit(10000000);
@@ -312,7 +322,7 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
         mode_msg.insert(0, ":");
     std::cout << "mode_msg: " << mode_msg << "\n";
     std::cout << "length: " << mode_msg.length() << "\n";
-    if (!mode_msg.empty() && (mode_msg[0] != '+' || mode_msg[0] != '-') && mode_msg.length() > 1){
+    if (!mode_msg.empty() && (mode_msg[0] != '+' || mode_msg[0] != '-') && mode_msg.length() != 1){
         std::string msg = ":" + client->getNick() + " MODE " + channel_name + " " + mode_msg;
         server->broadcast(channel_name, msg);
     } 
