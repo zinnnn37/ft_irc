@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 22:41:20 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:31:46 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ Client::Client( int socket, std::string addr )
 
 Client::~Client()
 {
+	close(this->_clientSoc);
 }
 
 Client	&Client::operator=( const Client &c )
