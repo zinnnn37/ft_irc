@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/09 01:13:02 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:20:23 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ typedef std::set<Client *>					ClientSet;
  * Commands
  */
 #define RPL_QUIT(nick, message)										":" + nick + " QUIT :Quit: " + message
+#define ERR_QUIT(user, message)										"ERROR :Closing link: (" + user + ") [Quit: " + message + "]"
 #define RPL_JOIN(nick, channel)										":" + nick + " JOIN :" + channel
 #define RPL_PRIVMSG(nick, target, msg)								":" + nick + " PRIVMSG " + target + msg
 #define RPL_TOPIC2(nick, channel, topic)								":" + nick + " TOPIC " + channel + " " + topic
@@ -124,4 +125,5 @@ typedef std::set<Client *>					ClientSet;
 #define RPL_MODE(nick, channel, modes, params)						":" + nick + " MODE " + channel + " " + modes + params
 #define RPL_NICK(before, after)										":" + before + " NICK :" + after
 #define RPL_PONG(nick, ping)										":" + nick + " PONG :" + ping
+
 #endif

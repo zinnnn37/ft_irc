@@ -6,7 +6,7 @@
 #    By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/15 11:51:53 by minjinki          #+#    #+#              #
-#    Updated: 2023/12/09 01:14:38 by minjinki         ###   ########.fr        #
+#    Updated: 2023/12/09 01:24:16 by minjinki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRC_FILES	=	main\
 				Cmd_PASS\
 				Cmd_PING\
 				Cmd_PRIVMSG\
+				Cmd_QUIT\
 				Cmd_TOPIC\
 				Cmd_USER\
 				Channel

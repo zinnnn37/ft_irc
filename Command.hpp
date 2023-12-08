@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:48 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/09 01:15:04 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:24:21 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ class	Command
 		void	pass( Server *server, Client *client, std::istringstream &iss );
 		void	ping( Client *client, std::istringstream &iss );
 		void	privmsg( Server *server, Client *client, std::istringstream &iss );
+		void	quit( Server *server, Client *client, std::istringstream &iss );
 		void	topic( Server *server, Client *client, std::istringstream &iss );
 		void	user( Client *client, std::istringstream &iss );
 };
