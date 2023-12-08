@@ -22,9 +22,14 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
     iss >> channel_name;
     iss >> channel_mode;
 
-	if (((channel_name[0] != '#') && (channel_name[0] != '&')) || (server->getChannels().find(channel_name) == server->getChannels().end()))
+
+    if (((channel_name[0] != '#') && (channel_name[0] != '&'))){
+        return ;
+    }
+
+	if ((server->getChannels().find(channel_name) == server->getChannels().end()))
     {
-        std::cout << "ERROR: Wrong value is typed\n";
+        client->setSendData(ERR_NOSUCHCHANNEL2(client->getNick(), channel_name) + CRLF);
         return ;
     }
 
