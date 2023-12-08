@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:09:18 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 12:50:11 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:08:05 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	Command::privmsg( Server *server, Client *client, std::istringstream &iss )
 
 	if (target.empty())
 	{
-		client->setSendData(ERR_NEEDMOREPARAMS(std::string("PRIVMSG")));
+		client->setSendData(ERR_NEEDMOREPARAMS(client->getNick(), std::string("PRIVMSG")));
 		client->appendSendData(CRLF);
 		return ;
 	}
@@ -48,7 +48,7 @@ void	Command::_sendToChannel(
 	channel = server->getChannel(target);
 	if (!channel)
 	{
-		client->setSendData(ERR_NOSUCHCHANNEL(target) + CRLF);
+		client->setSendData(ERR_NOSUCHCHANNEL(client->getNick(), target) + CRLF);
 		return ;
 	}
 
@@ -57,7 +57,7 @@ void	Command::_sendToChannel(
 	{
 		std::cout << "channel name: " << channel->getName() << "\n";
 		std::cout << "client  name: " << client->getNick() << "\n";
-		client->setSendData(ERR_CANNOTSENDTOCHAN(target) + CRLF);
+		client->setSendData(ERR_CANNOTSENDTOCHAN(client->getNick(), target) + CRLF);
 		return ;
 	}
 
@@ -84,7 +84,7 @@ void	Command::_sendToClient(
 
 	if (!server->isClient(target))
 	{
-		client->setSendData(ERR_NOSUCHNICK(target) + CRLF);
+		client->setSendData(ERR_NOSUCHNICK(client->getNick(), target) + CRLF);
 		return ;
 	}
 

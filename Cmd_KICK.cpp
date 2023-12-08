@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 13:33:51 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 21:52:02 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:06:26 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	Command::kick( Server *server, Client *client, std::istringstream &iss )
 
 	if (channelName.empty() || targets.empty())
 	{
-		client->setSendData(ERR_NEEDMOREPARAMS(std::string("KICK")) + CRLF);
+		client->setSendData(ERR_NEEDMOREPARAMS(client->getNick(), std::string("KICK")) + CRLF);
 		return ;
 	}
 
@@ -37,7 +37,7 @@ void	Command::kick( Server *server, Client *client, std::istringstream &iss )
 	Channel	*channel = server->getChannel(channelName);
 	if (!channel)
 	{
-		client->setSendData(ERR_NOSUCHCHANNEL(channelName) + CRLF);
+		client->setSendData(ERR_NOSUCHCHANNEL(client->getNick(), channelName) + CRLF);
 		return ;
 	}
 
@@ -46,14 +46,14 @@ void	Command::kick( Server *server, Client *client, std::istringstream &iss )
 	// client가 채널에 참가중인지 확인
 	if (!channel->isClient(client->getNick()))
 	{
-		client->setSendData(ERR_NOTONCHANNEL(channelName) + CRLF);
+		client->setSendData(ERR_NOTONCHANNEL(client->getNick(), channelName) + CRLF);
 		return ;
 	}
 
 	// client가 채널의 operator인지 확인
 	if (!channel->isOperator(*client))
 	{
-		client->setSendData(ERR_CHANOPRIVSNEEDED(channelName) + CRLF);
+		client->setSendData(ERR_CHANOPRIVSNEEDED(client->getNick(), channelName) + CRLF);
 		return ;
 	}
 
@@ -78,7 +78,7 @@ void	Command::kick( Server *server, Client *client, std::istringstream &iss )
 		// target이 채널에 참가중인지 확인
 		if (!channel->isClient(target))
 		{
-			client->appendSendData(ERR_USERNOTINCHANNEL(target, channelName) + CRLF);
+			client->appendSendData(ERR_USERNOTINCHANNEL(client->getNick(), target, channelName) + CRLF);
 			continue ;
 		}
 

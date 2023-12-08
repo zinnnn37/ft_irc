@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 18:35:31 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/06 07:22:51 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:15:06 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void Command::_clientLeaveChannel( Server *server, Client *client, Channel *channel )
 {
 	std::string ch_name = channel->getName();
-	server->broadcast(ch_name, RPL_PART(client->getNick(), ch_name));
+	server->broadcast(ch_name, RPL_PART(client->getNick(), client->getNick(), ch_name));
 	client->removeJoinedChannel(ch_name);
 	channel->removeClient(client->getNick());
 	if (channel->getClients().empty())

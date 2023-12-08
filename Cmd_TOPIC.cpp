@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:32:26 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 22:29:17 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:13:04 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	Command::topic( Server *server, Client *client, std::istringstream &iss )
 	// 채널 이름 입력 x
 	if (channelName.empty())
 	{
-		client->setSendData(ERR_NEEDMOREPARAMS(std::string("TOPIC")) + CRLF);
+		client->setSendData(ERR_NEEDMOREPARAMS(client->getNick(), std::string("TOPIC")) + CRLF);
 		return ;
 	}
 
@@ -39,14 +39,14 @@ void	Command::topic( Server *server, Client *client, std::istringstream &iss )
 	Channel *channel = server->getChannel(channelName);
 	if (!channel)
 	{
-		client->setSendData(ERR_NOSUCHCHANNEL(channelName) + CRLF);
+		client->setSendData(ERR_NOSUCHCHANNEL(client->getNick(), channelName) + CRLF);
 		return ;
 	}
 
 	// 사용자가 채널에 없음
 	if (!channel->isClient(client->getNick()))
 	{
-		client->setSendData(ERR_NOTONCHANNEL(channelName) + CRLF);
+		client->setSendData(ERR_NOTONCHANNEL(client->getNick(), channelName) + CRLF);
 		return ;
 	}
 

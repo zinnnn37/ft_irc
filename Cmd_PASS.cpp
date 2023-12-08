@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 10:51:45 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/26 15:26:17 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:07:45 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	Command::pass( Server *server, Client *client, std::istringstream &iss )
 
 	if (client->isRegistered())
 	{
-		client->setSendData(ERR_ALREADYREGISTRED());
+		client->setSendData(ERR_ALREADYREGISTRED(client->getNick()));
 		client->appendSendData(CRLF);
 		return ;
 	}
@@ -29,14 +29,14 @@ void	Command::pass( Server *server, Client *client, std::istringstream &iss )
 
 	if (password.empty())
 	{
-		client->setSendData(ERR_NEEDMOREPARAMS(std::string("PASS")));
+		client->setSendData(ERR_NEEDMOREPARAMS(client->getNick(), std::string("PASS")));
 		client->appendSendData(CRLF);
 		return ;
 	}
 
 	if (password != server->getPassword())
 	{
-		client->setSendData(ERR_PASSWDMISMATCH());
+		client->setSendData(ERR_PASSWDMISMATCH(client->getNick()));
 		client->appendSendData(CRLF);
 		return ;
 	}

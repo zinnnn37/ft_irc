@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/06 07:07:06 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:15:02 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,33 +67,28 @@ typedef std::set<Client *>					ClientSet;
 /*
  * Error Replies
  */
-#define ERR_NOSUCHNICK(nick)										"401 :No such nick named " + nick
-#define ERR_NOSUCHSERVER(server)									"402 :No such server named " + server
-#define ERR_NOSUCHCHANNEL(channel)									"403 :No such channel named " + channel
-#define ERR_NOSUCHCHANNEL2(user, channel)							"403 " + user + " " + channel + " :No such channel"
-#define ERR_NOSUCHCHANNEL3(user, channel)							"403 " + user + " " + channel + " :you left"
-#define ERR_NOTONCHANNEL2(user, channel)							"442 " + user + " " + channel + " :You're not on that channel!"
-#define ERR_CANNOTSENDTOCHAN(channel)								"404 :Cannot send to channel " + channel
-#define ERR_TOOMANYCHANNELS()										"405 :You have joined too many channels"
-#define ERR_NONICKNAMEGIVEN()										"431 :Nickname not given"
-#define ERR_NICKNAMEINUSE(nick)										"433 " + nick + " :is already in use"
-#define ERR_USERNOTINCHANNEL(nick, channel)							"441 " + nick + " " + channel + " :They are not on that channel"
-#define ERR_NOTONCHANNEL(channel)									"442 " + channel + " :You are not in the channel"
-#define ERR_USERONCHANNEL(nick, channel)							"443 " + nick + " " + channel + " :is already on channel"
-#define ERR_NOTREGISTERED()											"451 :You have not registered"
-#define ERR_NEEDMOREPARAMS(command)									"461 " + command + " :Need more parameters"
-#define ERR_ALREADYREGISTRED()										"462 :You have already registered"
-#define ERR_PASSWDMISMATCH()										"464 :Password incorrect "
-// #define ERR_YOUREBANNEDCREEP()										"465 :You are banned from this server"
-#define ERR_CHANNELISFULL(channel)									"471 " + channel + " :Channel is full"
-#define ERR_UNKNOWNMODE(mode)										"472 " + mode + " :unknown mode"
-#define ERR_INVITEONLYCHAN(channel)									"473 " + channel + " :You are not invited"
-// #define ERR_BANNEDFROMCHAN(channel)									"474 " + channel + " :You are banned from this channel"
-#define ERR_BADCHANNELKEY(channel)									"475 " + channel + " :Wrong channel key"
-#define ERR_CHANOPRIVSNEEDED(channel)								"482 " + channel + " :You are not channel operator"
-// #define ERR_NOOPPARAM(nick, channel, mode, modename, param)			"696 " + nick + " " + channel + " " + mode + " * :You must specify a parameter for the " + modename + " mode. Syntax: <" + param + ">." 
-// #define ERR_LONGPWD(nick, channel)									":" + nick + " " + channel + " :Too long password"
-// #define ERR_QUIT(nick, message)										"ERROR :Closing link: (" + nick + ") [Quit: " + message + "]"
+#define ERR_NOSUCHNICK(user, nick)										"401 " + user + ":No such nick named " + nick
+#define ERR_NOSUCHSERVER(user, server)									"402 " + user + ":No such server named " + server
+#define ERR_NOSUCHCHANNEL(user, channel)								"403 " + user + ":No such channel named " + channel
+#define ERR_NOSUCHCHANNEL2(user, channel)								"403 " + user + " " + channel + " :No such channel"
+#define ERR_NOSUCHCHANNEL3(user, channel)								"403 " + user + " " + channel + " :you left"
+#define ERR_NOTONCHANNEL2(user, channel)								"442 " + user + " " + channel + " :You're not on that channel!"
+#define ERR_CANNOTSENDTOCHAN(user, channel)								"404 " + user + ":Cannot send to channel " + channel
+#define ERR_TOOMANYCHANNELS(user)										"405 " + user + ":You have joined too many channels"
+#define ERR_NONICKNAMEGIVEN(user)										"431 " + user + ":Nickname not given"
+#define ERR_NICKNAMEINUSE(user, nick)									"433 " + user + " " + nick + " :is already in use"
+#define ERR_USERNOTINCHANNEL(user, nick, channel)						"441 " + user + " " + nick + " " + channel + " :They are not on that channel"
+#define ERR_NOTONCHANNEL(user, channel)									"442 " + user + " " + channel + " :You are not in the channel"
+#define ERR_USERONCHANNEL(user, nick, channel)							"443 " + user + " " + nick + " " + channel + " :is already on channel"
+#define ERR_NOTREGISTERED(user)											"451 " + user + ":You have not registered"
+#define ERR_NEEDMOREPARAMS(user, command)								"461 " + user + " " + command + " :Need more parameters"
+#define ERR_ALREADYREGISTRED(user)										"462 " + user + ":You have already registered"
+#define ERR_PASSWDMISMATCH(user)										"464 " + user + ":Password incorrect "
+#define ERR_CHANNELISFULL(user, channel)								"471 " + user + " " + channel + " :Channel is full"
+#define ERR_UNKNOWNMODE(user, mode)										"472 " + user + " " + mode + " :unknown mode"
+#define ERR_INVITEONLYCHAN(user, channel)								"473 " + user + " " + channel + " :You are not invited"
+#define ERR_BADCHANNELKEY(user, channel)								"475 " + user + " " + channel + " :Wrong channel key"
+#define ERR_CHANOPRIVSNEEDED( channel)									"482 " + channel + " :You are not channel operator"
 
 /*
  * Command Responses
@@ -113,7 +108,6 @@ typedef std::set<Client *>					ClientSet;
 // :0은 hopcount, 서버와 사용자 사이의 거리
 #define RPL_NAMREPLY(nick, channel, users)							"353 " + nick + " = " + channel + " :" + users;
 #define RPL_ENDOFNAMES(nick, channel)								"366 " + nick + " " + channel + " :End of /NAMES list."
-//#define RPL_ENDOFBANLIST(channel)									"368 " + channel + " :End of Ban list"
 
 
 /*
@@ -123,7 +117,7 @@ typedef std::set<Client *>					ClientSet;
 #define RPL_JOIN(nick, channel)										":" + nick + " JOIN :" + channel
 #define RPL_PRIVMSG(nick, target, msg)								":" + nick + " PRIVMSG " + target + msg
 #define RPL_TOPIC2(nick, channel, topic)							": TOPIC " + channel + " " + topic
-#define RPL_PART(nick, channel)										":" + nick + " PART :" + channel
+#define RPL_PART(user, nick, channel)								":" + user + " " + nick + " PART :" + channel
 #define RPL_KICK(nick, channel, nick2, msg)							":" + nick + " KICK " + channel + " " + nick2 + " :" + msg
 #define RPL_INVITE(nick, nick2, channel)							":" + nick + " INVITE " + nick2 + " :" + channel
 #define RPL_MODE(nick, channel, modes, params)						":" + nick + " MODE " + channel + " " + modes + params

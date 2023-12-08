@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:40 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/06 07:24:22 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:06:55 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
     }
     else {
         std::cout <<  "ERROR: client is not this Channel OWNER or OPERATOR\n";
-        client->setSendData(ERR_CHANOPRIVSNEEDED(channel_name) + CRLF);
+        client->setSendData(ERR_CHANOPRIVSNEEDED(client->getNick(), channel_name) + CRLF);
         return ;
     }
     for (unsigned long i = 0; i < channel_mode.length(); i++){
@@ -151,20 +151,18 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
 
             std::cout << "new_password: " << new_password << "\n";
 
-            if (new_password.empty()){
-                std::cout << "ERROR: k option must be have password\n";
-                client->setSendData(ERR_NEEDMOREPARAMS(std::string("MODE +k")) + CRLF);
-                return ;
-            }
-            if (new_password.length() > 20){
-                std::cout << "ERROR: password length is limited under 20\n";
-                client->setSendData("ERROR: password length is limited under 20\r\n");
-                return ;
-            }
-
             if (plus_minus == 1){
+                if (new_password.empty()){
+                    std::cout << "ERROR: k option must be have password\n";
+                    client->setSendData(ERR_NEEDMOREPARAMS(client->getNick(), std::string("MODE +k")) + CRLF);
+                    return ;
+                }
+                if (new_password.length() > 20){
+                    std::cout << "ERROR: password length is limited under 20\n";
+                    client->setSendData("ERROR: password length is limited under 20\r\n");
+                    return ;
+                }
                 mode_msg += channel_mode[i];
-                if (ch->checkmode(channel_mode[i])) continue; // 이미 해당 조건이 있다면 넘어감
                 std::string tmp_mode(1, channel_mode[i]);
                 ch->setPassword(new_password);
                 ch->setMode(tmp_mode);
@@ -191,7 +189,7 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
 
             if (new_operator_name.empty()) {
                 std::cout << "ERROR: o option must have an owner name\n";
-                client->setSendData(ERR_NEEDMOREPARAMS(std::string("MODE +o")) + CRLF);
+                client->setSendData(ERR_NEEDMOREPARAMS(client->getNick(), std::string("MODE +o")) + CRLF);
                 continue;  // 처리를 중단하고 다음 반복으로 이동
             }
 
@@ -199,7 +197,7 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
 
             if (new_operator == NULL) {
                 std::cout << "ERROR: o option's client must be in this channel\n";
-                client->setSendData(ERR_USERNOTINCHANNEL(new_operator_name, channel_name) + CRLF);
+                client->setSendData(ERR_USERNOTINCHANNEL(client->getNick(), new_operator_name, channel_name) + CRLF);
                 continue;  // 처리를 중단하고 다음 반복으로 이동
             }
 
@@ -231,7 +229,7 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
                 if (limit.empty())
                 {
                     std::cout << "ERROR: l option must  must be followed by the number\n";
-                    client->setSendData(ERR_NEEDMOREPARAMS(std::string("MODE +l")) + CRLF);
+                    client->setSendData(ERR_NEEDMOREPARAMS(client->getNick(), std::string("MODE +l")) + CRLF);
                     continue ;
                 }
                 if (limit.length() > 10)

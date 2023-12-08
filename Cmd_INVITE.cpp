@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 12:54:15 by minjinki          #+#    #+#             */
-/*   Updated: 2023/11/29 15:45:40 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:04:35 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	Command::invite( Server *server, Client *client, std::istringstream &iss )
 	Channel	*ch = client->findJoinedChannel(channelName);
 	if (!ch)
 	{
-		client->setSendData(ERR_NOTONCHANNEL(channelName) + CRLF);
+		client->setSendData(ERR_NOTONCHANNEL(client->getNick(), channelName) + CRLF);
 		return ;
 	}
 
@@ -33,14 +33,14 @@ void	Command::invite( Server *server, Client *client, std::istringstream &iss )
 	Client	*cl = server->getClient(target);
 	if (!cl)
 	{
-		client->setSendData(ERR_NOSUCHNICK(target) + CRLF);
+		client->setSendData(ERR_NOSUCHNICK(client->getNick(), target) + CRLF);
 		return ;
 	}
 	
 	// target이 이미 channel에 있는 경우
 	if (ch->isClient(cl->getNick()))
 	{
-		client->setSendData(ERR_USERONCHANNEL(channelName, target) + CRLF);
+		client->setSendData(ERR_USERONCHANNEL(client->getNick(), channelName, target) + CRLF);
 		return ;
 	}
 

@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/06 06:56:45 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:08:50 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,7 +305,7 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 	if (cmd == "PASS")
 		command.pass(this, client, ss);
 	else if (client->isRegistered() == false)
-		client->setSendData(ERR_NOTREGISTERED() + std::string(CRLF));
+		client->setSendData(ERR_NOTREGISTERED(client->getNick()) + std::string(CRLF));
 	else if (cmd == "NICK")
 		command.nick(this, client, ss);
 	else if (cmd == "JOIN")

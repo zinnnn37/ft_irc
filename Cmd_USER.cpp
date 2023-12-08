@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 10:10:07 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 23:11:38 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:08:33 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	Command::_split( Client *client, std::istringstream &iss, std::string *spli
 	{
 		if (!(iss >> line))
 		{
-			client->setSendData(ERR_NEEDMOREPARAMS(std::string("USER")) + CRLF);
+			client->setSendData(ERR_NEEDMOREPARAMS(client->getNick(), std::string("USER")) + CRLF);
 			return ;
 		}
 
@@ -50,7 +50,7 @@ void	Command::user( Client *client, std::istringstream &iss )
 
 	if (split[0].empty() || split[1].empty() || split[2].empty() || split[3].empty())
 	{
-		client->setSendData(ERR_NEEDMOREPARAMS(std::string("USER")) + CRLF);
+		client->setSendData(ERR_NEEDMOREPARAMS(client->getNick(), std::string("USER")) + CRLF);
 		return ;
 	}
 

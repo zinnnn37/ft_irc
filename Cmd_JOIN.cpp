@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:30 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/06 07:05:04 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:10:08 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ std::string Command::_processJoinChannels(Server *server, Client &client, const 
 		Channel *channel = server->getChannel(*it);
 		if (channel && channel->getClient(client.getNick()) != NULL)
 		{
-			result += ERR_USERONCHANNEL(client.getNick(), *it);
+			result += ERR_USERONCHANNEL(client.getNick(), client.getNick(), *it);
 			return result;
 		}
 
@@ -85,11 +85,11 @@ void Command::join(Server *server, Client *client, std::istringstream &iss)
 
     // JOIN 명령에 필요한 매개변수가 충분하지 않을 경우 에러 메시지 생성
     if (channelName.empty())
-        result += "461 " + client->getNick() + " JOIN :Not enough parameters";
+        result += ERR_NEEDMOREPARAMS(client->getNick(), "JOIN");
 
     // 클라이언트가 최대 채널 수에 가입했을 경우 에러 메시지 생성
     if (client->getChannels().size() > 10)
-        result += "405 " + client->getNick() + " " + channelName + " :You have joined too many channels";
+        result += ERR_TOOMANYCHANNELS(client->getNick());
 
     // 채널 이름이 '#'로 시작하지 않으면 '#'을 추가
     if (channelName[0] != '#' && channelName[0] != '&')
@@ -125,7 +125,7 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 	if (p_channel->getClients().size() + 1 > p_channel->getUserCountLimit())
 	{
 		// 채널의 제한 인원이 꽉 찼을 경우
-		response += ERR_CHANNELISFULL(p_channel->getName());
+		response += ERR_CHANNELISFULL(client.getNick(), p_channel->getName());
 		return response;
 	}
 
@@ -133,13 +133,13 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 		|| (!p_channel->getPassword().empty() && key != p_channel->getPassword()) // 비밀 번호가 다른 경우
 		|| (p_channel->getPassword().empty() && !key.empty())) // 비밀 번호가 없는데 client가 비밀번호를 보낸 경우 
 	{
-		response += ERR_BADCHANNELKEY(ch_name) + CRLF;
+		response += ERR_BADCHANNELKEY(client.getNick(), ch_name) + CRLF;
 		return response;
 	}
 	if (p_channel->getInviteMode() && !p_channel->checkInvite(client.getNick()))
 	{
 		// print()
-		response += ERR_INVITEONLYCHAN(ch_name);
+		response += ERR_INVITEONLYCHAN(client.getNick(), ch_name);
 		return response;
 	}
 

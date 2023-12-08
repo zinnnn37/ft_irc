@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 10:51:07 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/02 20:38:15 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:08:41 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ void Command::nick( Server *server, Client *client, std::istringstream &buffer_s
 	std::string			pre_prefix;
 
 	if (!(buffer_stream >> name))
-		client->setSendData(ERR_NONICKNAMEGIVEN());
+		client->setSendData(ERR_NONICKNAMEGIVEN(client->getNick()));
 	else
 	{
 		if (server->isClient(name))
-			client->setSendData(ERR_NICKNAMEINUSE(name) + CRLF);
+			client->setSendData(ERR_NICKNAMEINUSE(client->getNick(), name) + CRLF);
 		else
 		{
 			pre_nick = client->getNick();
