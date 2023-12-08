@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/09 01:31:46 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:32:55 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,14 +191,7 @@ void	Client::disconnectClientFromChannel(Server *server)
 	for (ChannelMap::iterator it = this->_joinedChannels.begin();
 	 		it != this->_joinedChannels.end(); it++)
 	{
-	 	//size = (*it)->getClients().size();
 	 	(it)->second->removeClientinServer(server, *this);
-		// (it)->second->removeAuth(this->getNick());
-
-	 	// 클라이언트가 채널에 남아있는 유일한 클라이언트였다면 채널 삭제
-	 	//if (size == 1)
-	 	//	this->_server->removeChannel(*it);
-		// 이거 removeClient 안에 있어서.. 한번 테스트해보고 없앨지 결정
 	}
 
 	this->_joinedChannels.clear();
