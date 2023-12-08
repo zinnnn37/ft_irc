@@ -114,10 +114,10 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
                 pre_plus_minu = 1;
             }
             else {
+                mode_msg += channel_mode[i];
                 if (!ch->checkmode(channel_mode[i])) continue; // 해당 조건이 없다면 넘어감
                 std::string tmp_mode(1, channel_mode[i]);
                 ch->delMode(tmp_mode);
-                mode_msg += channel_mode[i];
                 pre_plus_minu = -1;
             }
             
@@ -127,17 +127,17 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
         // -t: TOPIC 명령에 대한 제한 설정 제거
         else if (channel_mode[i] == 't'){
             if (plus_minus == 1){
+                mode_msg += channel_mode[i];
                 if (ch->checkmode(channel_mode[i])) continue; // 이미 해당 조건이 있다면 넘어감
                 std::string tmp_mode(1, channel_mode[i]);
                 ch->setMode(tmp_mode);
-                mode_msg += channel_mode[i];
                 pre_plus_minu = 1;
             }
             else {
+                mode_msg += channel_mode[i];
                 if (!ch->checkmode(channel_mode[i])) continue; // 해당 조건이 없다면 넘어감
                 std::string tmp_mode(1, channel_mode[i]);
                 ch->delMode(tmp_mode);
-                mode_msg += channel_mode[i];
                 pre_plus_minu = -1;
             }
             
@@ -163,20 +163,20 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
             }
 
             if (plus_minus == 1){
+                mode_msg += channel_mode[i];
                 if (ch->checkmode(channel_mode[i])) continue; // 이미 해당 조건이 있다면 넘어감
                 std::string tmp_mode(1, channel_mode[i]);
                 ch->setPassword(new_password);
                 ch->setMode(tmp_mode);
-                mode_msg += channel_mode[i];
                 pre_plus_minu = 1;
             }
             else {
+                mode_msg += channel_mode[i];
                 if (!ch->checkmode(channel_mode[i])) continue; // 해당 조건이 없다면 넘어감
                 std::string tmp_mode(1, channel_mode[i]);
                 new_password = "";
                 ch->setPassword(new_password);
                 ch->delMode(tmp_mode);
-                mode_msg += channel_mode[i];
                 pre_plus_minu = -1;
             }
         }
@@ -204,16 +204,16 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
             }
 
             if (plus_minus == 1) {
+                mode_msg += channel_mode[i];
                 if (ch->isOperator(*new_operator))
                     continue;  // 이미 소유자거나 운영자인 경우
                 ch->addOperator(*new_operator);
-                mode_msg += channel_mode[i];
                 pre_plus_minu = 1;
             } else {
+                mode_msg += channel_mode[i];
                 if (!ch->isOperator(*new_operator))
                     continue;  // 소유자이거나 운영자가 아닌 경우
                 ch->dismissOperator(*new_operator);
-                mode_msg += channel_mode[i];
                 pre_plus_minu = -1;
             }
         }
@@ -248,10 +248,10 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
                     client->setSendData("ERROR: mode l count is same before user limit\r\n");
                     continue;
                 }
+                mode_msg += channel_mode[i];
                 ch->setUserNumberLimit(LimitNumber);
                 std::string tmp(1, channel_mode[i]);
                 ch->setMode(tmp);
-                mode_msg += channel_mode[i];
                 pre_plus_minu = 1;
             }
             else {
@@ -260,10 +260,10 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
                     client->setSendData("ERROR: mode l is not assgined\r\n");
                     continue;
                 }
+                mode_msg += channel_mode[i];
                 ch->setUserNumberLimit(10000000);
                 std::string tmp(1, channel_mode[i]);
                 ch->delMode(tmp);
-                mode_msg += channel_mode[i];
                 pre_plus_minu = 1;
             }
         }
