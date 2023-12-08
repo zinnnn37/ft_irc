@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/08 22:37:36 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:13:02 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef std::set<Client *>					ClientSet;
 #define ERR_NEEDMOREPARAMS(user, command)								"461 " + user + " " + command + " :Need more parameters"
 #define ERR_ALREADYREGISTRED(user)										"462 " + user + ":You have already registered"
 #define ERR_PASSWDMISMATCH(user)										"464 " + user + ":Password incorrect "
+#define ERR_NOORIGIN(user)												"465 " + user + " :No origin specified"
 #define ERR_CHANNELISFULL(user, channel)								"471 " + user + " " + channel + " :Channel is full"
 #define ERR_UNKNOWNMODE(user, mode)										"472 " + user + " " + mode + " :unknown mode"
 #define ERR_INVITEONLYCHAN(user, channel)								"473 " + user + " " + channel + " :You are not invited"
