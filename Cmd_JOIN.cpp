@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:30 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/08 22:37:42 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:50:05 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ std::string Command::_processJoinChannels(Server *server, Client &client, const 
 		Channel *channel = server->getChannel(*it);
 		if (channel && channel->getClient(client.getNick()) != NULL)
 		{
-			result += ERR_USERONCHANNEL(client.getNick(), client.getNick(), *it);
+			result += ERR_USERONCHANNEL(client.getNick(), client.getNick(), *it) + CRLF;
 			return result;
 		}
 
@@ -85,25 +85,29 @@ void Command::join(Server *server, Client *client, std::istringstream &iss)
 
     // JOIN 명령에 필요한 매개변수가 충분하지 않을 경우 에러 메시지 생성
     if (channelName.empty())
-        result += ERR_NEEDMOREPARAMS(client->getNick(), "JOIN");
+        result += ERR_NEEDMOREPARAMS(client->getNick(), "JOIN") + CRLF;
 
     // 클라이언트가 최대 채널 수에 가입했을 경우 에러 메시지 생성
-    if (client->getChannels().size() > 10)
-        result += ERR_TOOMANYCHANNELS(client->getNick());
+    else if (client->getChannels().size() > 10)
+        result += ERR_TOOMANYCHANNELS(client->getNick()) + CRLF;
 
-    // 채널 이름이 '#'로 시작하지 않으면 '#'을 추가
-    if (channelName[0] != '#' && channelName[0] != '&')
-        channelName = "#" + channelName;
 
     // 채널과 액세스 키에 대한 처리를 담당하는 새로운 함수 호출
-	result = _processJoinChannels(server, *client, channelName, accessKey, result);
-    std::cout << result << std::endl;
+	else
+	{
+		// 채널 이름이 '#'로 시작하지 않으면 '#'을 추가
+		if (channelName[0] != '#' && channelName[0] != '&')
+			channelName = "#" + channelName;
+		result = _processJoinChannels(server, *client, channelName, accessKey, result);
+		std::cout << result << std::endl;
+	}
 
 	// 클라이언트에게 결과 전송
 	client->setSendData(result + CRLF);
 }
 
-std::string makeCRLF2(std::string buffer){
+std::string makeCRLF2(std::string buffer)
+{
 	return buffer += "\r\n";
 }
 
@@ -118,14 +122,11 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
     {
 		p_channel = server->createChannel(ch_name, key, client);
 	}
-	// std::cout << "join channel name : " << p_channel->getName() << "\n";
-	// std::cout << "channel client size: " << p_channel->getClients().size() + 1 <<  "\n";
-	// std::cout << "channel user limit: " << p_channel->getUserCountLimit() << "\n";
 
 	if (p_channel->getClients().size() + 1 > p_channel->getUserCountLimit())
 	{
 		// 채널의 제한 인원이 꽉 찼을 경우
-		response += ERR_CHANNELISFULL(client.getNick(), p_channel->getName());
+		response += ERR_CHANNELISFULL(client.getNick(), p_channel->getName()) + CRLF;
 		return response;
 	}
 
@@ -138,8 +139,7 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 	}
 	if (p_channel->getInviteMode() && !p_channel->checkInvite(client.getNick()))
 	{
-		// print()
-		response += ERR_INVITEONLYCHAN(client.getNick(), ch_name);
+		response += ERR_INVITEONLYCHAN(client.getNick(), ch_name) + CRLF;
 		return response;
 	}
 
@@ -150,14 +150,8 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 	std::set<Client *> users = p_channel->getClients();
 
 	// 클라이언트가 사용자 목록에 없으면 채널에 가입
-	if (users.find(&client) == users.end()) {
+	if (users.find(&client) == users.end())
 		p_channel->joinClient(client, "NORMAL");
-	}
-	// else
-	// {
-		// 	response = ERR_USERONCHANNEL(client.getNick(), ch_name);
-		// 	return response;
-		// }
 
 	// 클라이언트를 채널에 가입시킴
 	client.joinChannel(p_channel);
@@ -167,11 +161,12 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 		s_users.append((*it)->getNick() + " "); // 사용자 목록에 사용자 이름을 추가
 	
 	// 채널 가입 메시지를 브로드캐스트
-	server->broadcast(ch_name, RPL_JOIN(client.getPrefix(), ch_name));
+	server->broadcast(ch_name, RPL_JOIN(client.getPrefix(), ch_name) + CRLF);
 
 	std::string who_in_channel = "channel : ";
     std::set<Client *> channel_in_user = p_channel->getClients();
-	for (std::set<Client *>::iterator it = channel_in_user.begin(); it != channel_in_user.end(); ++it) {
+	for (std::set<Client *>::iterator it = channel_in_user.begin(); it != channel_in_user.end(); ++it)
+	{
 		Client *currentClient = *it;
 		who_in_channel +=  " " + currentClient->getNick();
 	}

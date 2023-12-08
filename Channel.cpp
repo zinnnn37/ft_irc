@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 23:08:24 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:38:55 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Channel::Channel() : _isInviteOnly(false), _isTopicRestricted(false) {
 Channel::Channel(const Channel &c)
     : _isInviteOnly(c._isInviteOnly), _isTopicRestricted(c._isTopicRestricted),
       _channelName(c._channelName), _topic(c._topic), _password(c._password),
-      _clients(c._clients) {}//, _bannedClients(c._bannedClients) {}
+      _clients(c._clients) {}
 
 
 // 대입 연산자 오버로딩
@@ -154,28 +154,6 @@ std::string Channel::getTopicSetTime(){
     return this->_topicSetTime;
 }
 
-//void Channel::addBan(Client& client)
-//{
-//	std::string name = client.getNick();
-
-//	this->_clientAuth.erase(name);
-//	this->_clients.erase(this->_clients.find(&client));
-//    this->_bannedClients.insert(&client);
-//}
-
-//bool Channel::checkBan(Client& client)
-//{
-//    if (this->_bannedClients.size() > 0)
-//    {
-//        std::set<Client*>::iterator it = this->_bannedClients.find(&client);
-//        if (it != this->_bannedClients.end()) {
-//            std::cout << "You are a banned client in this channel" << std::endl;
-//            return true;
-//        }
-//    }
-//    return false;
-//}
-
 void Channel::setOwner(Client& client)
 {
 	this->_owner = &client;
@@ -183,8 +161,6 @@ void Channel::setOwner(Client& client)
 
 void Channel::joinClient(Client& client, std::string auth)
 {
-	//if (checkBan(client))
-	//	return;
 	if (auth == "OWNER")
 		this->setOwner(client);
 	std::string name = client.getNick();
@@ -224,17 +200,9 @@ void Channel::setMode(std::string mode)
     this->_mode.insert(mode);
 }
 
-void Channel::delMode(std::string mode){
-    this->_mode.erase(mode);
-}
-
-// 메시지 전송
-int Channel::sendMessage(Client &client, const std::string &message)
+void Channel::delMode(std::string mode)
 {
-    (void)client;
-    (void)message;
-    // 메시지 전송 로직 추가
-    return 0;
+    this->_mode.erase(mode);
 }
 
 void    Channel::setName( std::string name )
@@ -262,28 +230,12 @@ Client* Channel::getClient(std::string nickname)
     return NULL;
 }
 
-
 std::string Channel::getName(){
     return this->_channelName;
 }
 
-
 void removeChannel(Server *server, const std::string &channelName)
 {
-    // ChannelMap::iterator iterator = channels.find(channelName);
-    // Channel *channel;
-
-    // if (iterator != channels.end())
-	// {
-    //     channel = iterator->second; // 해당 채널 객체를 메모리에서 해제
-    //     channels.erase(iterator); // map에서 
-    //     if (channel)
-    //     {
-    //         server->getChannels().erase(channel->getName());
-    //         delete channel;
-    //         channel = 0;
-    //     }
-    // }
     Channel *channel = server->getChannel(channelName);
 
     if (channel)
@@ -292,19 +244,23 @@ void removeChannel(Server *server, const std::string &channelName)
         std::cout << "Channel not found: " << channelName << std::endl;
 }
 
-void Channel::setUserNumberLimit(unsigned int limit){
+void Channel::setUserNumberLimit(unsigned int limit)
+{
     this->_accessLimit = limit;
 }
 
-std::string Channel::getPassword(){
+std::string Channel::getPassword()
+{
     return this->_password;
 }
 
-std::set<std::string> Channel::getMode(){
+std::set<std::string> Channel::getMode()
+{
     return this->_mode;
 }
 
-bool Channel::getInviteMode() const {
+bool Channel::getInviteMode() const
+{
 	if (this->_mode.find("i") != this->_mode.end())
 		return true;
 	return false;
@@ -321,7 +277,8 @@ bool Channel::checkInvite(std::string nickname)
     }
 }
 
-std::string Channel::getTopic(){
+std::string Channel::getTopic()
+{
     return (this->_topic);
 }
 
@@ -345,7 +302,6 @@ void	Channel::removeClient(std::string nick )
 
 	for (; it != clients.end(); it++)
 	{
-		// std::cout << "client " << (*it)->getNick() << std::endl;
 		if (nick == (*it)->getNick())
 		{
 			std::cout << "remove client " << (*it)->getNick() << " from " << this->getName() << std::endl;
@@ -353,13 +309,13 @@ void	Channel::removeClient(std::string nick )
             break;
 		}
 	}
+
 	this->_clients = clients;
 }
 
 
 void	Channel::removeAuth( std::string nick )
 {
-    //find로 찾아서 지우기
     this->_clientAuth.erase(nick);
 }
 
@@ -367,10 +323,10 @@ ClientSet	&Channel::getOperators()
 {
     return (this->_operators);
 }
+
 // 클라이언트 제거
 int Channel::removeClientinServer(Server *server, Client &client )
 {
-    // 클라이언트 제거 로직을 추가
     _clients.erase(&client);
 	_operators.erase(&client);
 	_inviteName.erase(client.getNick());
@@ -379,28 +335,27 @@ int Channel::removeClientinServer(Server *server, Client &client )
     if (_clients.empty())
     {
         removeChannel(server, this->getName());
-        // 채널을 삭제하는 로직 추가
-		// 이거 part_ori에 있음 옮기기
     }
 
     return 0;
 }
 
-
-std::string Channel::getChannelCreateTime(){
+std::string Channel::getChannelCreateTime()
+{
     return this->_create_time;
 }
 
-bool Channel::isMode(std::string mode){
+bool Channel::isMode(std::string mode)
+{
     if (this->_mode.find(mode) != this->_mode.end())
         return true;
     return false;
 }
 
-void   Channel::addInviteList(std::string name){
+void   Channel::addInviteList(std::string name)
+{
     this->_inviteName.insert(name);
 }
-
 
 std::string	Channel::getAuth(const std::string &nick )
 {

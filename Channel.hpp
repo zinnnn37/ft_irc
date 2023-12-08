@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:41 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/05 22:35:35 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:37:50 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ public:
     int removeClientinServer(Server *server, Client &client);
     int removeOperator(Client &client);
     int setTopic(Client &client, const std::string &topic);
-    int sendMessage(Client &client, const std::string &message);
     unsigned int getUserCountLimit();
     
     bool getInviteMode() const;

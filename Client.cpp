@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 09:25:20 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/09 01:32:55 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:40:56 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,12 +164,10 @@ void	Client::appendSendData( std::string sendData )
 	this->_sendData.append(sendData);
 }
 
-
 std::map<std::string, Channel *> Client::getChannels()
 {
 	return this->_joinedChannels;
 }
-
 
 std::string Client::getPrefix()
 {
@@ -179,7 +177,6 @@ std::string Client::getPrefix()
     return this->_nick + username + hostname;
 }
 
-
 void Client::joinChannel( Channel *channel )
 {
 	this->_joinedChannels[channel->getName()] = channel;
@@ -187,7 +184,6 @@ void Client::joinChannel( Channel *channel )
 
 void	Client::disconnectClientFromChannel(Server *server)
 {
-	(void)server;
 	for (ChannelMap::iterator it = this->_joinedChannels.begin();
 	 		it != this->_joinedChannels.end(); it++)
 	{
@@ -199,10 +195,6 @@ void	Client::disconnectClientFromChannel(Server *server)
 	this->_buf.clear();
 	this->_sendData.clear();
 }
-
-/************************************************************/
-/*															*/
-/************************************************************/
 
 ChannelMap	&Client::getJoinedChannel()
 {

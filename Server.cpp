@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/09 01:31:41 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:36:46 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ void	Server::run()
 
 	while (1)
 	{
+		// 발생한 이벤트를 eventList에 저장
 		newEv = kevent(this->_kq,
 				&this->_changeList[0], this->_changeList.size(),
 				this->_eventList, 128, NULL);
@@ -206,6 +207,7 @@ void	Server::_acceptNewClient()
 
 	bzero(&clientAddr, sizeof(clientAddr));
 
+	// 클라이언트의 연결 요청 수락
 	clientSoc = accept(this->_serverSoc, (struct sockaddr *)&clientAddr, &clientAddrSize);
 	if (clientSoc == RET_ERROR)
 	{
@@ -225,8 +227,8 @@ void	Server::_acceptNewClient()
 	this->_setEvent(clientSoc, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, NULL);
 	this->_setEvent(clientSoc, EVFILT_WRITE, EV_ADD | EV_ENABLE, 0, 0, NULL);
 
-	std::string	addr(inet_ntoa(clientAddr.sin_addr));
 	// 정수형 IP주소를 문자열로 변환
+	std::string	addr(inet_ntoa(clientAddr.sin_addr));
 	Client *newClient = new Client(clientSoc, addr);
 	this->_clients.insert(std::make_pair(clientSoc, newClient));
 
@@ -244,13 +246,13 @@ void	Server::_readDataFromClient( struct kevent &kev )
 
 	bzero(buf, sizeof(buf));
 
+	// 클라이언트로부터 데이터를 읽어들임
 	byte = recv(kev.ident, buf, sizeof(buf), 0);
 	if (byte <= 0)
 	{
 		if (byte < ERROR)
 			return ;
 		std::cerr << "< Client " << kev.ident << " > Error: recv error" << std::endl;
-		// broadcast to all client
 		this->_disconnectClient(kev.ident);
 	}
 	else
@@ -300,8 +302,6 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 	for (std::string::iterator it = cmd.begin(); it != cmd.end(); it++)
 		*it = toupper(*it);
 
-	// (void)client;
-
 	if (cmd == "PASS")
 		command.pass(this, client, ss);
 	else if (client->isRegistered() == false)
@@ -331,7 +331,7 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 	else if (cmd == "TERM")
 		this->_exit("Server terminated");
 
-	client->setBuf(buf.substr(crlf + 2));	// crlf 이후 문자열
+	client->setBuf(buf.substr(crlf + 2));
 }
 
 
@@ -350,7 +350,6 @@ void Server::changeChannelNick(Client& client, const std::string& before, const 
 {
 	std::string	auth;
 	std::string	channelName;
-	// ClientMap channels = client.getChannels();
 	ChannelMap channels = client.getChannels();
 
 	for (ChannelMap::iterator it = channels.begin(); it != channels.end(); it++)
@@ -382,11 +381,13 @@ void	Server::_sendDataToClient( uintptr_t ident )
 
 	Client	*client = it->second;
 
+	// 보낼 데이터 없음
 	if (client->getSendData().empty()) return ;
 
 	std::cout << "[ SERVER ] message sent: " << client->getSendData() << std::endl;
 
 	data = client->getSendData();
+	// 클라이언트에 데이터 전송
 	byte = send(ident, data.c_str(), data.size(), 0);
 	if (byte == RET_ERROR)
 	{
@@ -407,7 +408,6 @@ std::string	Server::getPassword() const
 	return (this->_password);
 }
 
-
 bool Server::isChannel(std::string &ch_name){
 	if (this->_channels.find(ch_name) != this->_channels.end())
 		return true;
@@ -416,8 +416,8 @@ bool Server::isChannel(std::string &ch_name){
 	
 }
 
-
-Channel *Server::createChannel( std::string ch_name, std::string key, Client &client){
+Channel *Server::createChannel( std::string ch_name, std::string key, Client &client)
+{
 	Channel *newchannel = new Channel(ch_name, client, key);
 	this->_channels[ch_name] = newchannel;
 	newchannel->setName(ch_name);
@@ -426,7 +426,8 @@ Channel *Server::createChannel( std::string ch_name, std::string key, Client &cl
 	return newchannel;
 }
 
-std::string Server::makeCRLF(std::string buffer){
+std::string Server::makeCRLF(std::string buffer)
+{
 	return buffer += "\r\n";
 }
 
@@ -456,11 +457,6 @@ void Server::broadcast(std::string &channel_name, const std::string &msg)
 	}
 }
 
-
-/**********************************************************
- * minjinki ***********************************************
- **********************************************************/
-
 ChannelMap	&Server::getChannels()
 {
 	return (this->_channels);
@@ -470,9 +466,8 @@ Channel	*Server::getChannel( std::string channelName )
 {
 	ChannelMap::iterator	it;
 
-	for (it = this->_channels.begin(); it != this->_channels.end(); it++){
-		// std::cout << "channelName: " << channelName << std::endl;
-		// std::cout << "it->first: " << it->first << std::endl;
+	for (it = this->_channels.begin(); it != this->_channels.end(); it++)
+	{
 		if (it->first == channelName)
 			return (it->second);
 	}
@@ -480,7 +475,8 @@ Channel	*Server::getChannel( std::string channelName )
 	return (NULL);
 }
 
-Client	*Server::getClient( std::string nick ){
+Client	*Server::getClient( std::string nick )
+{
 	ClientMap::iterator	it = this->_clients.begin();
 
 	for (; it != this->_clients.end(); it++)
