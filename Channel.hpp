@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 12:53:41 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/09 01:37:50 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:53:08 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ private:
     std::string _topicSetTime;
 
     std::set<Client *> _clients;
-    //std::set<Client *> _bannedClients;
     std::set<Client *> _operators;
 
     std::set<std::string> _mode;
@@ -50,10 +49,7 @@ private:
 
     std::map<std::string, std::string> _clientAuth;
 
-    // Private copy constructor and copy assignment operator
-
 public:
-    // Public default constructor and parameterized constructor
     Channel();
     Channel(const std::string &channelName, Client &client, std::string key);
     Channel(const Channel &c);
@@ -64,10 +60,8 @@ public:
 	bool	operator>( const Channel &c ) const;
 	bool	operator>=( const Channel &c ) const;
 
-    // Public destructor
     ~Channel();
 
-    // Member functions
     int addClient(Client &client);
     int kickClient(Client &client);
     int removeClientinServer(Server *server, Client &client);
@@ -76,7 +70,6 @@ public:
     unsigned int getUserCountLimit();
     
     bool getInviteMode() const;
-    //bool checkBan(Client& client);
     bool checkInvite(std::string nickname);
     bool isOwner(Client& client);
     bool isOperator(Client& client);
@@ -84,7 +77,6 @@ public:
     bool isMode(std::string mode);
 
     std::string getAuth(const std::string &nick );
-    //void addBan(Client& client);
     void joinClient(Client& client, std::string auth);
     void setOwner(Client& client);
     void setMode(std::string mode);
@@ -102,7 +94,6 @@ public:
     std::string getName();
     std::set<std::string> getMode();
     std::set<Client *> getClients();
-    // std::map<std::string, Client> getUsers();
 
     std::string getTopic();
     std::string getPassword();

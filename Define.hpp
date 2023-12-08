@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/09 01:20:23 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:53:38 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,10 @@ typedef std::set<Client *>					ClientSet;
 #define CRLF "\r\n"
 
 /*
- * colors
- */
-#define RED "\033[0;31m"
-#define GREEN "\033[0;32m"
-#define YELLOW "\033[0;33m"
-#define BLUE "\033[0;34m"
-#define PURPLE "\033[0;35m"
-#define CYAN "\033[0;36m"
-#define RESET "\033[0m"
-
-/*
  * Server messages
  */
 #define RPL_WELCOME(nick)											"001 " + nick + ":Welcome to our ircserv " + nick + ". Enjoy your stay!"
 #define RPL_YOURHOST(serverName)									"002 " + serverName + " :Your host is " + serverName + ", running version 1.0"
-// -> Server.hpp에 hostname 변수 추가
 
 /*
  * Error Replies
@@ -109,7 +97,6 @@ typedef std::set<Client *>					ClientSet;
 // :0은 hopcount, 서버와 사용자 사이의 거리
 #define RPL_NAMREPLY(nick, channel, users)									"353 " + nick + " = " + channel + " :" + users;
 #define RPL_ENDOFNAMES(nick, channel)										"366 " + nick + " " + channel + " :End of /NAMES list."
-
 
 /*
  * Commands

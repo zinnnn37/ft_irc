@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:30 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/09 01:50:05 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:51:21 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 		response += ERR_BADCHANNELKEY(client.getNick(), ch_name) + CRLF;
 		return response;
 	}
+
 	if (p_channel->getInviteMode() && !p_channel->checkInvite(client.getNick()))
 	{
 		response += ERR_INVITEONLYCHAN(client.getNick(), ch_name) + CRLF;
