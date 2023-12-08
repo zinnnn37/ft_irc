@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 10:10:07 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/08 22:08:33 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:55:38 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,5 @@ void	Command::user( Client *client, std::istringstream &iss )
 	std::cout << "< Client " << client->getSocket() << " > user information set" << std::endl;
 
 	client->setSendData(RPL_WELCOME(client->getNick()) + CRLF);
-	client->appendSendData(RPL_YOURHOST(client->getHostName()) + CRLF);
+	client->appendSendData(RPL_YOURHOST(client->getHostName()) + CRLF + CRLF);
 }

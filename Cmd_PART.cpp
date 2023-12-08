@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 18:35:31 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/09 01:52:18 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:56:18 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void Command::part( Server *server, Client *client, std::istringstream &buffer_s
 		if (server->getChannels().find(*it) == server->getChannels().end())
 		{
 			// 없는 채널일 경우
-			client->setSendData(ERR_NOSUCHCHANNEL2(client->getNick(), *it) + CRLF);
+			client->setSendData(ERR_NOSUCHCHANNEL2(client->getNick(), *it) + CRLF + CRLF);
 			return ;
 		}
 		Channel *ch_po = server->getChannels()[*it];
@@ -58,11 +58,11 @@ void Command::part( Server *server, Client *client, std::istringstream &buffer_s
 		if (!cl)
 		{
 			// 채널에 유저가 없을 때
-			client->setSendData(ERR_NOTONCHANNEL2(client->getNick(), *it) + CRLF);
+			client->setSendData(ERR_NOTONCHANNEL2(client->getNick(), *it) + CRLF + CRLF);
 			return ;
 		}
 
 		this->_clientLeaveChannel(server, client, ch_po);
-		client->appendSendData(ERR_NOTONCHANNEL2(client->getNick(), *it) + CRLF);
+		client->appendSendData(ERR_NOTONCHANNEL2(client->getNick(), *it) + CRLF + CRLF);
 	}
 }
