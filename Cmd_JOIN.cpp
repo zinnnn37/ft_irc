@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:30 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/08 22:10:08 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:37:42 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ std::string Command::_clientJoinChannel(Server *server, Client &client, std::str
 	// 채널의 토픽이 비어있지 않으면 토픽과 관련된 응답을 추가
 	if (!p_channel->getTopic().empty())
 	{
-		std::string msg1 = RPL_TOPIC(ch_name, p_channel->getTopic());
+		std::string msg1 = RPL_TOPIC2(client.getNick(), ch_name, p_channel->getTopic());
 		std::string msg2 = RPL_TOPICWHOTIME(client.getUserName(), ch_name, p_channel->getWhoSetTopic(), p_channel->getTopicSetTime());
 		response += makeCRLF2(msg1);
 		response += makeCRLF2(msg2);

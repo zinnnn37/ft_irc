@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 15:32:26 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/08 22:13:04 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:38:19 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	Command::topic( Server *server, Client *client, std::istringstream &iss )
 		// topic 없음
 		if (channel->getTopic().empty())
 		{
-			client->setSendData(RPL_NOTOPIC(channelName) + CRLF);
+			client->setSendData(RPL_NOTOPIC(client->getNick(), channelName) + CRLF);
 		}
 		// topic 있는 경우 토픽 && 설정한 사람, 시간
 		else
@@ -64,7 +64,7 @@ void	Command::topic( Server *server, Client *client, std::istringstream &iss )
 			std::cout << "getTopic(): " << channel->getTopic() << std::endl;
 			std::cout << "getWhoSetTopic(): " << channel->getWhoSetTopic() << std::endl;
 			std::cout << "getTopicSetTime(): " << channel->getTopicSetTime() << std::endl;
-			client->setSendData(RPL_TOPIC(channelName, channel->getTopic()) + CRLF);
+			client->setSendData(RPL_TOPIC(client->getNick(), channelName, channel->getTopic()) + CRLF);
 			client->appendSendData(RPL_TOPICWHOTIME(client->getNick(), channelName, channel->getWhoSetTopic(), channel->getTopicSetTime()) + CRLF + CRLF);
 		}
 

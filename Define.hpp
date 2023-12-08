@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 11:03:11 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/08 22:15:02 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:37:36 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,21 +93,21 @@ typedef std::set<Client *>					ClientSet;
 /*
  * Command Responses
  */
-#define RPL_ENDOFWHO(name)											"315 " + name + " :End of /WHO list"
-#define RPL_LISTSTART()												"321 Channels :Users Name"
-#define RPL_LIST(channel, visible, topic)							"322 " + channel + " " + visible + " :" + topic
-#define RPL_LISTEND()												"323 :End of /LIST"
-#define RPL_CHANNELMODEIS(nick, channel, mode, mode_params)			"324 " + nick + " " + channel + " " + mode + " " + mode_params
-#define RPL_CHANNELCREATETIME(nick, channel, date)					"329 " + nick + " " + channel + " :created at " + date
-#define RPL_NOTOPIC(channel)										"331 " + channel + " :Topic not set"
-#define RPL_TOPIC(channel, topic)									"332 " + channel + " :" + topic
-#define RPL_TOPICWHOTIME(nick, channel, nick2, setat)				"333" + nick + " " + channel + " " + nick + " " + setat
+#define RPL_ENDOFWHO(user, name)											"315 " + user + " " + name + " :End of /WHO list"
+#define RPL_LISTSTART(user)													"321 " + user + " Channels :Users Name"
+#define RPL_LIST(user, channel, visible, topic)								"322 " + user + " " + channel + " " + visible + " :" + topic
+#define RPL_LISTEND(user)													"323 " + user + " :End of /LIST"
+#define RPL_CHANNELMODEIS(nick, channel, mode, mode_params)					"324 " + nick + " " + channel + " " + mode + " " + mode_params
+#define RPL_CHANNELCREATETIME(nick, channel, date)							"329 " + nick + " " + channel + " :created at " + date
+#define RPL_NOTOPIC(user, channel)											"331 " + user + " " + channel + " :Topic not set"
+#define RPL_TOPIC(user, channel, topic)										"332 " + user + " " + channel + " :" + topic
+#define RPL_TOPICWHOTIME(nick, channel, nick2, setat)						"333 " + nick + " " + channel + " " + nick2 + " " + setat
 // topic이 마지막으로 변경된 시간과 변경한 사용자
-#define RPL_INVITING(nick, channel)									"341 " + nick + " " + channel
-#define RPL_WHOREPLY(channel, user, host, server, nick, opt, real)	"352 " + channel + " " + user + " " + host + " " + server + " " + nick + " " + opt + " " + ":0 " + real
+#define RPL_INVITING(user, nick, channel)									"341 " + user + " " + nick + " " + channel
+#define RPL_WHOREPLY(user1, channel, user2, host, server, nick, opt, real)	"352 " + user1 + " " + channel + " " + user2 + " " + host + " " + server + " " + nick + " " + opt + " " + ":0 " + real
 // :0은 hopcount, 서버와 사용자 사이의 거리
-#define RPL_NAMREPLY(nick, channel, users)							"353 " + nick + " = " + channel + " :" + users;
-#define RPL_ENDOFNAMES(nick, channel)								"366 " + nick + " " + channel + " :End of /NAMES list."
+#define RPL_NAMREPLY(nick, channel, users)									"353 " + nick + " = " + channel + " :" + users;
+#define RPL_ENDOFNAMES(nick, channel)										"366 " + nick + " " + channel + " :End of /NAMES list."
 
 
 /*
@@ -116,8 +116,8 @@ typedef std::set<Client *>					ClientSet;
 #define RPL_QUIT(nick, message)										":" + nick + " QUIT :Quit: " + message
 #define RPL_JOIN(nick, channel)										":" + nick + " JOIN :" + channel
 #define RPL_PRIVMSG(nick, target, msg)								":" + nick + " PRIVMSG " + target + msg
-#define RPL_TOPIC2(nick, channel, topic)							": TOPIC " + channel + " " + topic
-#define RPL_PART(user, nick, channel)								":" + user + " " + nick + " PART :" + channel
+#define RPL_TOPIC2(nick, channel, topic)								":" + nick + " TOPIC " + channel + " " + topic
+#define RPL_PART(user, nick, channel)								":" + nick + " PART :" + channel
 #define RPL_KICK(nick, channel, nick2, msg)							":" + nick + " KICK " + channel + " " + nick2 + " :" + msg
 #define RPL_INVITE(nick, nick2, channel)							":" + nick + " INVITE " + nick2 + " :" + channel
 #define RPL_MODE(nick, channel, modes, params)						":" + nick + " MODE " + channel + " " + modes + params

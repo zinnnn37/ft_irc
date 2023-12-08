@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 09:14:40 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/08 22:06:55 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:26:02 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void Command::mode(Server *server, Client *client, std::istringstream &iss){
     }
     else {
         std::cout <<  "ERROR: client is not this Channel OWNER or OPERATOR\n";
-        client->setSendData(ERR_CHANOPRIVSNEEDED(client->getNick(), channel_name) + CRLF);
+        client->setSendData(ERR_CHANOPRIVSNEEDED(channel_name) + CRLF);
         return ;
     }
     for (unsigned long i = 0; i < channel_mode.length(); i++){
