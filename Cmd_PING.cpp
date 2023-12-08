@@ -6,13 +6,13 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 01:10:49 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/09 01:13:51 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:14:58 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Command.hpp"
 
-void	Command::ping( Server *server, Client *client, std::istringstream &iss )
+void	Command::ping( Client *client, std::istringstream &iss )
 {
 	std::string		serverName;
 

@@ -6,7 +6,7 @@
 /*   By: minjinki <minjinki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 11:09:10 by minjinki          #+#    #+#             */
-/*   Updated: 2023/12/08 22:08:50 by minjinki         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:16:18 by minjinki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,6 +324,8 @@ void	Server::_handleCommand( Client *client, std::string line, std::string buf, 
 		command.topic(this, client, ss);
 	else if (cmd == "PART")
 		command.part(this, client, ss);
+	else if (cmd == "PING")
+		command.ping(client, ss);
 	else if (cmd == "TERM")
 		this->_exit("Server terminated");
 
